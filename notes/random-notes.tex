@@ -1,0 +1,314 @@
+\documentclass[12pt, a4paper]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage[russian, english]{babel}
+\usepackage{enumerate}
+\usepackage{comment}
+\usepackage{cite}
+\usepackage{mathrsfs}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+
+\begin{document}
+
+Impenetrable wall + delta function potential
+
+$$V(x) = \begin{cases}
+\infty, & x < 0 \\
+0, & x < 0 < a \\
+-\infty, & x = a \\
+0, & x > a
+\end{cases}$$
+
+Bound state: $E < 0$, $k = \sqrt{-E}$
+
+Region 1:
+
+$$\psi_1(x) = A e^{-kx} + B e^{kx}$$
+
+Boundary condition: $\psi_1(0) = 0$, $A = -B$
+
+Therefore,
+
+$$\psi_1(x) = A(e^{-kx} - e^{kx})$$
+
+Region 2:
+
+$$\psi_2(x) = C e^{-kx} + D e^{kx}$$
+
+Boundary condition: $\psi_2(\infty) = 0$
+
+Therefore,
+
+$$\psi_2(x) = C e^{-kx}$$
+
+Continuoty conditions:
+
+$$\psi_1(a) = \psi_2(a)$$
+
+$$\Delta \frac{d \psi}{d x} = - \frac{2m}{\hbar^2}\psi(a)$$
+
+!!! Assume $\Delta \frac{d \psi}{d x} = - \psi(a)$ for simplicity
+
+From the continuoty:
+
+$$A(e^{-ka} - e^{ka}) = C e^{-ka}$$
+
+$$C = A(1 - e^{2ka})$$
+
+Derivatives:
+
+$$ \left. \frac{d \psi_1}{dx} \right|_{x = a} = \left. A (-k e^{-kx} - k e^{kx}) \right|_{x = a} = -kA(e^{-ka} + e^{ka})$$
+
+$$ \left. \frac{d \psi_2}{dx} \right|_{x = a} = -k C e^{-ka} = -k A(1 - e^{2ka}) e^{-ka} = -k A(e^{-ka} - e^{ka})$$
+
+$$ \Delta \frac{d \psi}{dx} = 2 k A e^{ka} = -A(e^{-ka} - e^{ka})$$
+
+Assume $a = 1$ for simplicity.
+
+$$2k e^k = e^k - e^{-k}$$
+
+Scattering states:
+
+$$\psi_1(x) = A e^{-ikx} + B e^{ikx}$$
+
+$\psi_1(-1) = 0 = A e^{ik} + B e^{-ik}$. 
+
+TODO: suppose both A and B are real. 
+
+$\frac{A}{B} e^{2ik} = -1$, therefore, $A = B$ or $A = -B$ to match magnitudes. TODO is that important? We should distinguish, I suppose.
+
+Suppose $A = -B$
+
+$2k = 2 \pi n$, $k = \pi n, n \in \mathbb{Z}$
+
+$$\psi_1(x) = A (e^{-i \pi n x} - e^{i \pi n x})$$
+$$\psi'_1(x) = -i \pi n A (e^{-i \pi n x} + e^{i \pi n x})$$
+$$\psi'_1(0) = -2 i \pi n A$$
+
+
+
+$$\psi_2(x) = C e^{-i k x} + D e^{ikx}$$
+
+
+$\psi_1(0) = \psi_2(0) = 0$
+
+$0 = C + D$, $D = -C$
+
+$$\psi_2(x) = C (e^{-i \pi n x} - e^{i \pi n x})$$
+$$\psi'_2(x) = -i \pi n C (e^{-i \pi n x} + e^{i \pi n x})$$
+$$\psi'_2(0) = -2 i \pi n C$$
+
+$$\Delta \frac{d \psi}{dx} = -\psi(0) = 0$$
+
+So, $-C + A = 0$, $A = C$
+
+Ok, what does all that mean? For energies $\pi^2 n^2$, there is no delta barrier, there is just stationary point at zero?
+
+
+\section{Infinite well + step}
+
+$$V(x) = \begin{cases}
+\infty, & x < -1 \\
+0, & -1 < x < 0 \\
+-V_0, & 0 < x < 1 \\
+\infty, & x > 1
+\end{cases}$$
+
+Suppose $-V_0 < E < 0$
+
+$$k = \sqrt{-E}$$
+
+$$\psi_1(x) = A e^{-kx} + B e^{kx}$$
+
+$\psi_1(-1) = 0 = A e^k + B e^{-k}$, therefore, $B = -A e^{2k}$
+
+$$\psi_1(x) = A (e^{-kx} - e^{2k} e^{kx})$$
+
+$$\psi'_1(x) = -k A (e^{-kx} + e^{2k} e^{kx})$$
+
+$$k' = \sqrt{E + V_0} = \sqrt{-k^2 + V_0}$$
+
+$$\psi_2(x) = C e^{-ik'x} + D e^{ik'x}$$
+
+$\psi_2(1) = 0 = C e^{-ik'} + D e^{ik'}$, therefore, $D = -C e^{-2ik'}$
+
+$$\psi_2(x) = C (e^{-ik'x} - e^{-2ik'} e^{ik'x})$$
+
+$$\psi_1(0) = \psi_2(0)$$
+
+$$A (1 - e^{2k}) = C (1 - e^{-2ik'})$$
+
+$$\psi'_1(0) + \psi'_2(0)$$
+
+$$-k A (1 + e^{2k}) = -ik' C (1 + e^{-2ik'})$$
+
+Divide the second equation by the first:
+
+$$-k \frac{1 + e^{2k}}{1 - e^{2k}} = -ik' \frac{1 + e^{-2ik'}}{1 - e^{-2ik'}}$$
+
+$\frac{1 + e^{-2ik'}}{1 - e^{-2ik'}}$ is pure complex and equal to $\coth(ik') = -i \cot(k')$
+
+$$k \coth(k) = k' \cot(k')$$
+
+That actually has some solutions!
+
+\section{some weird basis}
+Particle in infinite well with $L = 1$.
+
+$$(-\frac{d^2}{dx} - E) \psi(x) = \psi(x)$$
+
+Let
+
+$$f_1(x) = x (1 - x)$$
+$$f_2(x) = x (\frac{1}{2} - x) (1 - x)$$
+
+(without normalization). Orthonormal because $f_1$ is symmetric around 0.5 and $f_2$ is antisymmetric. Same applies to the derivatives.
+
+$\langle f_1 \mid H - E \mid f_1 \rangle = 10 - E$
+
+$\langle f_2 \mid H - E \mid f_2 \rangle = 42 - E$
+
+Therefore, $E = 10$, $a_1 = 1$ and $E = 42$, $a_2 = 1$. These are clearly not solutions. Reason: incorrect assumption that $\psi(x) = a_1 f_1(x) + a_2 f_2(x)$.
+
+
+TODO something to do with bound states?
+
+TODO investigate scattering states.
+
+\section{Free particle + self-adjoint boundary conditions}
+
+Domain: $[0, a]$
+
+Boundary conditions:
+
+$$\psi(0) = 0$$
+
+$$a\frac{\psi'(a)}{\psi(a)} = B$$
+
+\begin{enumerate}
+\item Negative energy case:
+
+$k = \sqrt{-E}$
+
+$$\psi(x) = A (e^{-kx} - e^{kx})$$
+
+$$a \frac{-k e^{-ka} - k e^{ka}}{e^{-ka} - e^{ka}} = B$$
+
+$$-k a \coth (-ka) = k a \coth (ka) = B$$
+
+For $B > 1$, there exists a single solution with $k > 0$.
+
+\item Zero energy:
+
+$$\psi(x) = Ax$$
+
+$$a\frac{1}{a} = 1 = B$$
+
+\item Positive energy:
+
+$k = \sqrt{E}$
+
+$$\psi(x) = A (e^{-ikx} - e^{ikx}) = -2 I A \sin(kx)$$
+
+$$a \frac{-ik e^{-ika} - ik e^{ika}}{e^{-ika} - e^{ika}} = B$$
+
+$$-i k a \coth (-ika) = -i^2 k a \cot(ka) = k a \cot(ka) = B$$
+
+A lot of solutions for every value of $B$.
+
+For $B < 1$: extra solution.
+
+\end{enumerate}
+
+Suppose $B = -1.0$, $a = 1.0$.
+
+No solutions for negative and zero energy.
+
+$k \cot(k)$ tends to straight lines in the neighbourhood of zero.
+
+$k_n \sim \frac{\pi}{2} + \pi n$
+
+$u_n(1) \to 0$
+
+
+$$R(E) = \frac{1}{a} \sum\limits_{\lambda = 1}^{\infty} \frac{u_{\lambda}^2(a)}{k^2_{\lambda} - k^2}$$
+
+\subsection{Bounds on the sum}
+Suppose $a = 1$.
+
+Let $k_n$ be the nth positive root of $x \cot(x) = B$.
+
+Let $b_n$ be its asymptotic approximation: $b_n = \frac{pi}{2} + \pi n$
+
+If $B < 0$, $b_n < k_n$
+
+If $B > 0$, $b_n > k_n$
+
+Value of $n$th eigenfunction square on the boundary is $$\psi^2_n(a) = \frac{1}{4 (\frac{a}{2} - \frac{\sin(2 k_n a)}{4k_n})} (2 \sin(k_na))^2 = \frac{\sin^2 k_n}{\frac{1}{2} - \frac{\sin (2 k_n)}{4 k_n}}$$
+
+As function of $k$:
+
+\includegraphics[scale=0.6]{fun.png}
+
+That is, for $B < 0$, $\psi^2(b_n) > \psi^2(k_n)$ if $k_n$ is near $\frac{\pi}{2}$.
+
+So, starting from $i = n$ for which $k^2_i > k^2$:
+$$R_i = \sum\limits_{i = n}^\infty \frac{\psi_i^2(1.0)}{k_i^2 - k^2} < \sum \frac{\phi^2_i(1.0)}{b_i^2 - k^2} = \sum \frac{2.0}{b_i^2 - k^2}$$
+
+$$\sum \frac{1}{(\pi/2 + \pi i)^2 - k^2} = \frac{1}{\pi^2} \sum \frac{1}{i^2 + i + 1/4 - \frac{k^2}{\pi^2}}$$
+
+$$D = \sqrt{1 - (1 - 4 \frac{k^2}{\pi^2})} = 2 \frac{k}{\pi}$$
+
+$$i_{1, 2} = -\frac{1}{2} \pm \frac{k}{\pi}$$
+
+$$\frac{1}{i^2 + i + 1/4 - \frac{k^2}{\pi^2}} = \frac{\pi}{2 k} \left( \frac{1}{i + 0.5 - \frac{k}{\pi}} - \frac{1}{i + 0.5 + \frac{k}{\pi}} \right)$$
+
+$$R_n \le -\frac{1}{\pi k} (-PG(0.5 + n + \frac{k}{\pi}) + PG(0.5 + n - \frac{k}{\pi}))$$
+
+Where PG is the polygamma function.
+
+Seems to be working..
+
+% $k = 1.0$: $R \le 1.557$, real $R \approx 0.376$
+
+% $k = 2.0$: $R \le -1.09$, real $R \approx 0.922$. Fuck.
+
+\section{Trash}
+$$\psi(x) = e^{-ikx} + U e^{ikx}$$
+
+$$\frac{\psi'(a)}{\psi(a)} = X$$
+
+$$U = e^{-2 i k a} \frac{ik + X}{ik - X}$$
+
+\section{Delta potential}
+
+Suppose we have delta potential at $x = d$: $- a \delta(x - d)$
+
+$$\psi_1(x) = e^{-i k x} - e^{i k x}$$ 
+
+, we omit the $A$ coefficient and calculate the normalization later.
+
+$$\psi_2(x) = B e^{-i k x} + C e^{i k x}$$
+
+$$\begin{cases}
+\psi_1(d) = \psi_2(d) \\
+\psi_2'(d) - \psi_1'(d) = - a \psi_1(d) 
+\end{cases}$$
+
+After solving, we get:
+
+$$B = \frac{i a e^{2 i d k}-i a+2 k}{2 k}$$
+
+$$C = -\frac{e^{-2 i d k} \left(i a e^{2 i d k}-i a+2 k e^{2 i d k}\right)}{2 k}$$
+
+Suppose $d = 1.0$ and $a = 1.0$
+
+$$\psi_2(x) = \frac{\left(i e^{2 i k} - i+2 k\right) e^{-i k x}}{2 k}-\frac{\left(i e^{2 i k}+2 k e^{2 i k} -i\right) e^{-2 i k+i k x}}{2 k}$$
+
+\end{document}

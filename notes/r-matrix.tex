@@ -1,0 +1,215 @@
+\documentclass[12pt, a4paper]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage[russian, english]{babel}
+\usepackage{enumerate}
+\usepackage{cite}
+\usepackage{mathrsfs}
+% \usepackage[draft]{fixme}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{easy-todo}
+\usepackage{indentfirst}
+
+% conjugate
+\let\conj\overline
+
+\begin{document}
+
+\section{Motivation for calculating phase shifts}
+
+
+\section{One dimensional scattering}
+Suppose we have a potential
+
+$$V(x) = \begin{cases}
+\infty, & x \le 0 \\
+P(x), & 0 < x \le L \\
+0, & x > r
+\end{cases}$$
+
+That is, we have an impenetrable wall at $x \le 0$ and the potential $P(x)$ localized in the region $(0, L)$ (which is not the case of Coloumb potential of course).
+
+So, we have the wavefunction $\psi_1$ in the region $(0, L)$ and the wavefunction $\psi_2$ in the region $(L, + \infty)$.
+
+In the second region $$\psi_2(x) = C e^{-ikx} + D e^{ikx}$$. $C$ corresponds to the incoming wave amplitude, so we can divide all equations by it and make it one. Let $\frac{D}{C} = U$. Its magnitute has got to be $1$ due to the probability conservation \todo{prove that}, but its phase might not be, so $U = e^{2 i\delta}$, where $\delta$ is a phase shift.
+
+Suppose $P(x) = V_0$.
+
+$$\left( -\frac{d^2}{dx^2} + V_0 - E \right) \psi_1 = 0$$
+
+$$\psi_1(0) = 0$$
+
+$$\left( -\frac{d^2}{dx^2} - E \right) \psi_2 = 0$$
+
+$$\psi_1(L) = \psi_2(L)$$
+
+$$\psi'_1(L) = \psi'_2(L)$$
+
+Suppose $L = 1$
+
+$$k_1 = \sqrt{E - V_0}$$
+
+$$k_2 = \sqrt{E}$$
+
+$$\psi_1(x) = A (e^{-ik_1x} - e^{ik_1x})$$
+
+$$\psi_2(x) = e^{-ik_2x} + U e^{ik_2x}$$
+
+$$\begin{cases}
+A (e^{-ik_1} - e^{ik_1}) = e^{-ik_2} + U e^{ik_2}\\
+-ik'A (e^{-ik_1} + e^{ik_1}) = -ik_2 e^{-ik_2x} + ik_2 U e^{ik_2x}\\
+\end{cases}$$
+
+Ok, now we have system of two equations of with two unknows and we can clearly find $U$.
+
+\section{Radial scattering}
+
+$\psi(\mathbf{r}) = \frac{u_l(r)}{r} Y_l^m(\theta, \varphi)$.
+
+After separation of the angular part we get:
+$$H_l u_l = E u_l$$
+, where
+$$H_l = T_l + V(r)$$
+and
+$$T_l = - \frac{\hbar^2}{2 \mu} \left( \frac{d^2}{dr^2} - \frac{l (l + 1)}{r^2} \right)$$
+
+Since $\psi$ is bounded everywhere, we have an origin boundary condition \todo{Prove this}:
+$$u_l(0) = 0$$
+
+\todo{Write about asymptotic behaviour}
+
+Choose some R-matrix boundary $a$, then:
+
+$$u_l(r) = \begin{cases} u_l^I(r), & r \le a \\ u_l^E(r), & r > a \end{cases}$$
+
+We will the omit $l$ subscript further for simplicity, however, notice that we should solve for each orbital momentum $l$ at the end. \todo{actually for some small $l$ values}
+
+Next, we choose some \todo{orthonormal?} set of square integrable functions $\{\varphi_i\}_{i=1}^n$, which vanish at the origin, we are going to expand $u^I$ in terms of them, that is $u^I = \sum\limits_{i = 1}^n a_i \varphi_i$.
+
+Then we use the boundary conditions
+$$u^I(a) = u^E(a)$$
+$$\left.\frac{u^I(r)}{dr}\right|_{r = a} = \left.\frac{u^E(r)}{dr}\right|_{r = a}$$
+
+to connect internal and external wavefunctions.
+
+\section{The non-Hermiticity problem}
+Now we will show that Hamiltonian is not Hermitian in the internal region $[0, a]$ in general, which is not convenient for practical resolutions of the Schrodinger equation. \todo{Why? Baye p.3}
+\todo{Probably because otherwise the variational formulation would become incorrect?}
+
+Hermeticity of $H$ over the region $[0, a]$ means for each two wavefunctions $\phi$, $\xi$ defined on the interval $[0, a]$, we have $\langle H \phi, \xi \rangle_a = \langle \phi, H \xi \rangle_a$, where the inner product $\langle \phi, \xi \rangle_a$ defined as $\int\limits_{r = 0}^a \conj{\phi(r)} \xi(r) dr$.
+
+Suppose $\phi(r) = a(r) + i b(r)$ and $\xi(x) = c(x) + i d(x)$.
+Since Hamiltonian is real, we can write the following:
+$$\langle H \phi, \xi \rangle_a = \langle H(a + bi), c + di \rangle_a = \langle Ha, c \rangle_a + i \langle Ha, d \rangle_a - i \langle Hb, c \rangle_a + \langle Hb, d \rangle_a$$
+Similarly,
+$$\langle \phi, H \xi \rangle_a = \langle a + bi, H(c + di) \rangle_a = \langle a, Hc \rangle_a + i \langle a, Hd \rangle_a - i \langle b, Hc \rangle_a + \langle_a b, Hd \rangle_a$$
+
+Now, the difference $\langle H \phi, \xi \rangle_a - \langle \phi, H \xi \rangle_a$ is zero if the real and the complex parts of it are zero, that is:
+
+$$\langle Ha, c \rangle - \langle a, Hc \rangle + \langle Hb, d \rangle - \langle b, Hd \rangle = 0$$
+$$\langle Ha, d \rangle - \langle a, Hd \rangle - \langle Hb, c \rangle + \langle b, Hc \rangle = 0$$
+
+\todo{Prove that we should only disprove Hermeticity for pure real functions}
+
+Let's check Hermeticity for some pure real (so we won't have to complex conjugate in the inner product) functions $f$ and $g$, suppose $H = \frac{d^2}{dr^2}$ (free particle):
+
+$\langle Hf, g \rangle_a - \langle f, H g \rangle_a = \langle \frac{d^2}{d r^2} f, g \rangle_a - \langle f, \frac{d^2}{d r^2} g \rangle_a$
+
+$\langle f, \frac{d^2}{d r^2} g \rangle = \int\limits_{r = 0}^a f(r) \frac{d^2}{d r^2} g(r) dr = \int\limits_{r = 0}^a f(r) d \left(\frac{d}{d r} g(r) \right) = \left. f(r) \frac{d}{d r} g(r) \right|_0^a - \int\limits_{r = 0}^a \frac{d}{d r} f(r) \frac{d}{d r} g(r) dr$
+
+Similarly,
+
+$\langle \frac{d^2}{d r^2} f, g \rangle = \left. f(r) \frac{d}{d r} g(r) \right|_0^a - \int\limits_{r = 0}^a \frac{d}{d r} f(r) \frac{d}{d r} g(r) dr$
+
+From the boundary conditions we know $f(0) = g(0) = 0$, \todo{what about $f'(0)$?}, therefore, the difference \todo{I think I should have swapped subtraction order, and I forgot the minus sign before the Hamiltonian} is equal to $f'(a) g(a) - g'(a) f(a)$. So, how do we resolve this issue?
+
+\section{Boundary conditions on the basis functions}
+One way to force Hermiticity is to make $\left. \frac{d}{dr} \varphi_i(r) \right|_{x = a} = 0$. \todo{add some links}. \todo{why is this any better than making $\varphi_i(r) = 0$?}. Inappropriate for finite basis, due to the linearity of derivative, we will get $u^I(a) = 0$.
+
+We could demand $\frac{\phi_i'(a)}{\phi(a)} = C$. Then, $f'(a) g(a) - g'(a) g(a) = C f(a) g(a) - C g(a) f(a) = 0$.
+\todo{is that better? Why?}
+
+Then R-matrix expressed as an infinite sum which is typically trunkated and Buttle correction is introduced.
+
+
+\section{Bloch operator}
+\todo{find Bloch's article}
+Following Baye 2010:
+
+$\mathcal{L} = \frac{\hbar^2}{2 \mu} \delta(r - a) \frac{d}{dr}$
+
+\todo{Bloch operator with constant $B$. Constant may depend on $l$}
+
+The operator $H + \mathcal{L}$ is Hermetian over $(0, a)$. \todo{write some proof}
+
+$H + \mathcal{L}$ has a fully discrete spectrum as defines a self-adjoint problem over a finite interval. \todo{so what? and why?}
+
+Now solve $(H + \mathcal{L} - E) u^I = \mathcal{L} u^E$, which is equivalent \todo{prove} to
+
+$$\begin{cases}
+(H - E) u^I = 0 \\
+\left.\frac{u^I(r)}{dr}\right|_{r = a} = \left.\frac{u^E(r)}{dr}\right|_{r = a} \\
+\end{cases}$$
+
+We need to take into account the continuity condition of course: $u^I(a) = u^E(a)$. The derivative continuity is enforced by the Bloch operator. \todo{Are we gonna solve the Bloch-Schrodinger equation somehow?}
+
+\section{Obtaining the inner region wavefunction}
+Project LHS and RHS of the Bloch-Schrodinger equation onto each $\varphi_i$ to find the coefficients $a_i$:
+
+\todo{what is the theory behind doing that? How do we approximate the ODE solution by using a finite basis? Looks like it is the variational method. However, we need to prove it works for the Bloch-Schrodinger equation.}
+
+\todo{use nicer symbols for bras and kets}
+
+$\langle \varphi_i \mid \mathcal{L} u^E = \int\limits \frac{\hbar^2}{2 \mu} \delta(r - a) {u^E}'(r) \varphi_i(r) dr = {u^E}'(a) \varphi_i(a)$ \todo{limits of integration?}
+
+$\langle \varphi_i \mid (H + \mathcal{L} - E) \mid u^I \rangle = \sum\limits_{i = 1}^n a_i C_{ij}(E)$, where $C_{ij}(E) = \langle \varphi_i \mid H + \mathcal{L} - E \mid \varphi_j \rangle_a$.
+
+$C_{ij}$ is symmetric. \todo{so what?}
+
+\todo{And what if there is no solution??}
+
+For each $\varphi_i$ we have an equation $\sum\limits_{i = 1}^n a_i C_{ij}(E) = {u^E}'(a) \varphi_i(a)$, so we get a system:
+
+$C \begin{pmatrix} a_1 \\ \vdots \\ a_n \end{pmatrix} = \frac{\hbar^2}{2 \mu} {u^E}'(a) \begin{pmatrix} \varphi_1(a) \\ \vdots \\ \phi_n(a) \\ \end{pmatrix}$
+
+$$\boldsymbol{a} = C^{-1} \frac{\hbar^2}{2 \mu} {u^E}'(a) \boldsymbol{\varphi(a)}$$
+
+\todo{Damn, $a_i$ and $a$ clash}
+
+Still one more variable to resolve ($U$ in the ${u^E}'$). We do that by using continuity.
+
+Now that we have the coefficients, we get the expansion of $u^I$.
+
+Note that the state is not normalizable!
+
+\section{R-matrix}
+Define R-matrix as:
+
+$$u_l^I(a) = a R_l(E) {u_l^E}'(a)$$
+
+From the previous expression:
+$$R_l(E) = \frac{\hbar^2}{2 \mu a} \sum\limits_{i, j = 1}^n \varphi_i(a) (C^{-1})_{ij} \varphi_j(a)$$ \todo{check that}
+
+Now we have $R_l(E)$, use continuity:
+
+$$R_l(E) = \frac{a u^E_l(a)}{{u^E_l}'(a)} = \frac{\cos \delta_l F_l(ka) + \sin \delta_l G_l(ka)}{k (\cos \delta_l F_l'(ka) + \sin \delta_l G_l'(ka))}$$
+from which we can compute $\tan \delta_l$, and $U_l$.
+
+
+\section{References}
+\begin{itemize}
+\item Kolorenc: Green function for Schrodinger-Bloch equation
+\item Burke: good generalized R-matrix explanation (infinite basis) p. 175
+\item Gianozzi: variational method for solving Schrodinger's equation.
+\item Scott: infinite expansion with $\frac{\varphi(a)}{\varphi(a)}$ boundary conditions
+\item nuclear-reaction ii 114: boundary condition independence
+\item [Szmytkowski, Hinze] :proof of R-matrix expansion convergence
+\item Burke: Buttle correction
+\item Kim, Zubarev: $B = \infty$, counterexample for changing limit and sum
+\end{itemize}
+
+\end{document}
