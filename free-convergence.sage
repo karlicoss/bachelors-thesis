@@ -5,10 +5,18 @@ from numpy import arange
 def test_orthonormality(a, wf1, wf2):
 	return numerical_integral(lambda x: wf1(x) * wf2(x).conjugate(), 0.0, a)[0]
 
-# normalizes the functions f on the interval (0, a), also makes it real-valued
-def normalize(f, a):
-	raise NotImplemented
 
+def make_real(c):
+	if c.arg() > 0:
+		return c.abs()
+	else:
+		return -c.abs()
+
+# normalizes the functions f on the interval (0, a)
+# also makes functions pure real
+def normalize(f, a):
+	A = 1.0 / sqrt(numerical_integral(lambda x: f(x).norm(), 0.0, a)[0])
+	return lambda x: A * make_real(f(x))
 ###
 
 class FreeParticle:
@@ -43,11 +51,12 @@ class FreeParticle:
 	# Solution of -d^2 pdi/dx^2 = k^2 psi(x)
 	def get_wavefunction_positive(self, k):
 		a = self.r_A
-		A = sqrt(1.0 / (4 * (a / 2 - sin(2 * k * a) / (4 * k))))
+		# A = sqrt(1.0 / (4 * (a / 2 - sin(2 * k * a) / (4 * k))))
+			# return CC(A * I * (exp(- I * k * x) - exp(I * k * x))) # -2 * I * sin(k * x)
 		def wf(x):
-			# we make wavefunction real by multiplying by I
-			return CC(A * I * (exp(- I * k * x) - exp(I * k * x))) # -2 * I * sin(k * x)
-		return wf
+			return CC(exp(- I * k * x) - exp(I * k * x))
+		nwf = normalize(wf, a)
+		return nwf
 
 	def find_eigens(self):
 		states = []
@@ -174,10 +183,10 @@ def run_plots():
 # for i, (wn, _) in enumerate(eigens):
 	# print("i = {}, Wavenumber: {}, asymptotic: {}".format(i, wn, float(pi / 2 + pi * i)))
 
-# for i, (_, wf1) in enumerate(eigens):
-# 	for j, (_, wf2) in enumerate(eigens):
-# 		print("i = {}, j = {}:   {}".format(i, j, test_orthonormality(a, wf1, wf2)))
-# 	print("-------------")
+for i, wf1 in enumerate(fp.eigenstates):
+	for j, wf2 in enumerate(fp.eigenstates):
+		print("i = {}, j = {}:   {}".format(i, j, test_orthonormality(a, wf1, wf2)))
+	print("-------------")
 
 
 # print("First {} wavenumbers: {}".format(n, str(find_wavenumbers(a, b, n))))
