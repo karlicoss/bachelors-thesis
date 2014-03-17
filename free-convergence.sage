@@ -5,19 +5,22 @@ from numpy import arange
 def test_orthonormality(a, wf1, wf2):
 	return numerical_integral(lambda x: wf1(x) * wf2(x).conjugate(), 0.0, a)[0]
 
-
-def make_real(c):
-	if c.arg() > 0:
-		return c.abs()
-	else:
-		return -c.abs()
-
 # normalizes the functions f on the interval (0, a)
 # also makes functions pure real
 def normalize(f, a):
 	A = 1.0 / sqrt(numerical_integral(lambda x: f(x).norm(), 0.0, a)[0])
-	return lambda x: A * make_real(f(x))
+	return lambda x: A * f(x)
 ###
+
+def make_real(f):
+	def rotate(c):
+		if c.arg() > 0:
+			return c.abs()
+		else:
+			return -c.abs()
+
+
+	return lambda x: rotate(f(x))
 
 class FreeParticle:
 	# r_A is R-matrix parameter A
@@ -36,27 +39,26 @@ class FreeParticle:
 	def get_wavefunction_negative(self, k):
 		a = self.r_A
 		A = 1.0 / sqrt(sinh(2 * a * k) / k - 2 * a)
-		def wf(x):
-			return CC(A * (exp(- k * x) - exp(k * x))) # -2 * sinh(k * x)
-		return wf
+		wf = lambda x: CC(exp(- k * x) - exp(k * x)) # -2 * sinh(k * x)
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
 
 	# Solution of -d^2 psi/dx^2 = 0
 	def get_wavefunction_zero(self, k):
 		a = self.r_A
 		A = 1.0 / sqrt(a^3 / 3)
-		def wf(x):
-			return CC(A * x)
-		return wf
+		wf = lambda x: CC(x)
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
 
 	# Solution of -d^2 pdi/dx^2 = k^2 psi(x)
 	def get_wavefunction_positive(self, k):
 		a = self.r_A
-		# A = sqrt(1.0 / (4 * (a / 2 - sin(2 * k * a) / (4 * k))))
+		A = sqrt(1.0 / (4 * (a / 2 - sin(2 * k * a) / (4 * k))))
 			# return CC(A * I * (exp(- I * k * x) - exp(I * k * x))) # -2 * I * sin(k * x)
-		def wf(x):
-			return CC(exp(- I * k * x) - exp(I * k * x))
-		nwf = normalize(wf, a)
-		return nwf
+		wf = lambda x: CC(exp(- I * k * x) - exp(I * k * x))
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
 
 	def find_eigens(self):
 		states = []
@@ -152,8 +154,8 @@ def get_partial_shifts(a, b, energy, count):
 
 
 a = 1.0
-b = -2.0 # 2.0
-n = 10
+b = 4.0 # 2.0
+n = 200
 energy = 5.0
 
 fp = FreeParticle(a, b, n)
@@ -183,10 +185,10 @@ def run_plots():
 # for i, (wn, _) in enumerate(eigens):
 	# print("i = {}, Wavenumber: {}, asymptotic: {}".format(i, wn, float(pi / 2 + pi * i)))
 
-for i, wf1 in enumerate(fp.eigenstates):
-	for j, wf2 in enumerate(fp.eigenstates):
-		print("i = {}, j = {}:   {}".format(i, j, test_orthonormality(a, wf1, wf2)))
-	print("-------------")
-
+def adsffssf():
+	for i, wf1 in enumerate(fp.eigenstates):
+		for j, wf2 in enumerate(fp.eigenstates):
+			print("i = {}, j = {}:   {}".format(i, j, test_orthonormality(a, wf1, wf2)))
+		print("-------------")
 
 # print("First {} wavenumbers: {}".format(n, str(find_wavenumbers(a, b, n))))
