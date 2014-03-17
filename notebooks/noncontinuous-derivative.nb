@@ -1,0 +1,273 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7743,        263]
+NotebookOptionsPosition[      6492,        216]
+NotebookOutlinePosition[      6829,        231]
+CellTagsIndexPosition[      6786,        228]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"U", "[", 
+    RowBox[{"E_", ",", " ", "X_"}], "]"}], " ", ":=", " ", 
+   RowBox[{
+    RowBox[{"Exp", "[", 
+     RowBox[{
+      RowBox[{"-", "2"}], " ", "*", " ", "I", " ", "*", " ", 
+      RowBox[{"Sqrt", "[", "E", "]"}]}], "]"}], " ", "*", " ", 
+    RowBox[{
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"I", " ", "*", " ", 
+        RowBox[{"Sqrt", "[", "E", "]"}]}], " ", "+", " ", "X"}], ")"}], "/", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"I", " ", "*", " ", 
+        RowBox[{"Sqrt", "[", "E", "]"}]}], " ", "-", " ", "X"}], ")"}]}]}]}], 
+  "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.603644039417657*^9, 3.603644111482367*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"U", "[", 
+  RowBox[{"1", ",", " ", 
+   RowBox[{"2.0", " ", "/", " ", "3.0"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.603644112907956*^9, 3.603644135440465*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.9994079465110686`"}], "+", 
+  RowBox[{"0.03440576187979233`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{3.60364413621128*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"WfE", "[", 
+   RowBox[{"k_", ",", " ", "x_"}], "]"}], " ", ":=", " ", 
+  RowBox[{
+   RowBox[{"Exp", "[", 
+    RowBox[{
+     RowBox[{"-", " ", "I"}], " ", "*", " ", "k", " ", "*", " ", "x"}], "]"}],
+    " ", "+", " ", 
+   RowBox[{"U", " ", "*", " ", 
+    RowBox[{"Exp", "[", 
+     RowBox[{"I", " ", "*", " ", "k", " ", "*", " ", "x"}], 
+     "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.603644171659874*^9, 3.6036442154156237`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"WfE", "[", 
+  RowBox[{"1.0", ",", " ", "1.0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.6036442233920603`*^9, 3.603644227882197*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{"0.5403023058681398`", "\[VeryThinSpace]", "-", 
+    RowBox[{"0.8414709848078965`", " ", "\[ImaginaryI]"}]}], ")"}], "+", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"0.5403023058681398`", "\[VeryThinSpace]", "+", 
+     RowBox[{"0.8414709848078965`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+   "U"}]}]], "Output",
+ CellChangeTimes->{3.603644228450609*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"WfE", "'"}]], "Input",
+ CellChangeTimes->{{3.603644239652856*^9, 3.603644241691225*^9}}],
+
+Cell[BoxData[
+ SuperscriptBox["WfE", "\[Prime]",
+  MultilineFunction->None]], "Output",
+ CellChangeTimes->{3.603644242432555*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"DWfE", "[", 
+   RowBox[{"k_", ",", " ", "x_"}], "]"}], " ", ":=", " ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Derivative", "[", 
+     RowBox[{"0", ",", " ", "1"}], "]"}], "[", "WfE", "]"}], "[", 
+   RowBox[{"k", ",", " ", "x"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.603644245788765*^9, 3.6036442711843433`*^9}, {
+  3.603644327651792*^9, 3.603644373406808*^9}}],
+
+Cell[BoxData["DWfE"], "Input",
+ CellChangeTimes->{{3.6036443756262693`*^9, 3.603644377698414*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"DWfE", "[", 
+  RowBox[{"1.0", ",", " ", "1.0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.603644382114234*^9, 3.603644386716991*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"-", "0.8414709848078965`"}], "-", 
+    RowBox[{"0.5403023058681398`", " ", "\[ImaginaryI]"}]}], ")"}], "-", 
+  RowBox[{
+   RowBox[{"(", 
+    RowBox[{"0.8414709848078965`", "\[VeryThinSpace]", "-", 
+     RowBox[{"0.5403023058681398`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+   "U"}]}]], "Output",
+ CellChangeTimes->{3.6036443870284443`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"DWfE", "[", 
+      RowBox[{"1.0", ",", " ", "1.0"}], "]"}], " ", "/", " ", 
+     RowBox[{"WfE", "[", 
+      RowBox[{"1.0", ",", " ", "1.0"}], "]"}]}], " ", "==", " ", 
+    RowBox[{"2.0", "/", "3.0"}]}], ",", "U"}], "]"}]], "Input",
+ CellChangeTimes->{{3.603644410599873*^9, 3.6036444682326527`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Solve", "::", "ratnz"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Solve was unable to solve the system with inexact \
+coefficients. The answer was obtained by solving a corresponding exact system \
+and numericizing the result. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/Solve\\\", ButtonNote -> \
+\\\"Solve::ratnz\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.603644454982033*^9, 3.6036444686750917`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"{", 
+   RowBox[{"U", "\[Rule]", 
+    RowBox[{
+     RowBox[{"-", "0.9994079465110687`"}], "+", 
+     RowBox[{"0.03440576187979223`", " ", "\[ImaginaryI]"}]}]}], "}"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.603644454984503*^9, 3.6036444686790457`*^9}}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{"U", " ", ":=", " ", 
+  RowBox[{
+   RowBox[{"-", "0.9994079465110687"}], "+", 
+   RowBox[{"0.03440576187979223", " ", "\[ImaginaryI]"}]}]}]], "Input",
+ CellChangeTimes->{{3.6036445666725683`*^9, 3.603644577072535*^9}}],
+
+Cell[BoxData["WfE"], "Input",
+ CellChangeTimes->{{3.603644580306775*^9, 3.603644583313389*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"WfE", "[", 
+  RowBox[{"1.0", ",", " ", "1.0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.60364458964121*^9, 3.603644591981984*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.028631562466787885`"}], "-", 
+  RowBox[{"1.6638542613046012`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{3.603644592260283*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"DWfE", "[", 
+  RowBox[{"1.0", ",", " ", "1.0"}], "]"}]], "Input",
+ CellChangeTimes->{{3.603644633146983*^9, 3.603644637683288*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "0.019087708311191887`"}], "-", 
+  RowBox[{"1.1092361742030674`", " ", "\[ImaginaryI]"}]}]], "Output",
+ CellChangeTimes->{3.603644637954482*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 731},
+WindowMargins->{{142, Automatic}, {Automatic, 26}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (February 7, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 706, 20, 77, "Input"],
+Cell[CellGroupData[{
+Cell[1288, 44, 186, 4, 32, "Input"],
+Cell[1477, 50, 181, 4, 32, "Output"]
+}, Open  ]],
+Cell[1673, 57, 466, 13, 32, "Input"],
+Cell[CellGroupData[{
+Cell[2164, 74, 156, 3, 32, "Input"],
+Cell[2323, 79, 402, 10, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2762, 94, 112, 2, 32, "Input"],
+Cell[2877, 98, 129, 3, 32, "Output"]
+}, Open  ]],
+Cell[3021, 104, 397, 10, 32, "Input"],
+Cell[3421, 116, 98, 1, 32, "Input"],
+Cell[CellGroupData[{
+Cell[3544, 121, 155, 3, 32, InheritFromParent],
+Cell[3702, 126, 404, 11, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4143, 142, 387, 10, 32, "Input"],
+Cell[4533, 154, 549, 11, 61, "Message"],
+Cell[5085, 167, 295, 8, 32, "Output"]
+}, Open  ]],
+Cell[5395, 178, 241, 5, 32, "Input"],
+Cell[5639, 185, 95, 1, 32, "Input"],
+Cell[CellGroupData[{
+Cell[5759, 190, 153, 3, 32, InheritFromParent],
+Cell[5915, 195, 183, 4, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6135, 204, 155, 3, 32, "Input"],
+Cell[6293, 209, 183, 4, 65, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
