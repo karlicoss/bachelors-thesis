@@ -1,4 +1,5 @@
 from numpy import arange
+from scipy.optimize import newton, brentq, minimize_scalar
 
 ### Some common functions ###
 
@@ -7,10 +8,13 @@ def test_orthonormality(a, wf1, wf2):
 
 # normalizes the functions f on the interval (0, a)
 # also makes functions pure real
+# TODO convert to get_normalization
 def normalize(f, a):
-	A = 1.0 / sqrt(numerical_integral(lambda x: f(x).norm(), 0.0, a)[0])
 	return lambda x: A * f(x)
 ###
+
+def get_normalization(f, a):
+	return 1.0 / sqrt(numerical_integral(lambda x: f(x).norm(), 0.0, a)[0])
 
 def make_real(f):
 	def rotate(c):
@@ -35,27 +39,22 @@ class FreeParticle:
 		self.eigenvalues = values
 
 	# Solution of -d^2 psi/dx^2 = - k^2 psi(x)
-	# TODO normalize numerically maybe?
 	def get_wavefunction_negative(self, k):
-		a = self.r_A
-		A = 1.0 / sqrt(sinh(2 * a * k) / k - 2 * a)
+		A = 1.0 / sqrt(sinh(2 * self.r_A * k) / k - 2 * self.r_A)
 		wf = lambda x: CC(exp(- k * x) - exp(k * x)) # -2 * sinh(k * x)
 		nwf = lambda x: A * wf(x)
 		return make_real(nwf)
 
 	# Solution of -d^2 psi/dx^2 = 0
 	def get_wavefunction_zero(self, k):
-		a = self.r_A
-		A = 1.0 / sqrt(a^3 / 3)
+		A = 1.0 / sqrt(self.r_A^3 / 3)
 		wf = lambda x: CC(x)
 		nwf = lambda x: A * wf(x)
 		return make_real(nwf)
 
 	# Solution of -d^2 pdi/dx^2 = k^2 psi(x)
 	def get_wavefunction_positive(self, k):
-		a = self.r_A
-		A = sqrt(1.0 / (4 * (a / 2 - sin(2 * k * a) / (4 * k))))
-			# return CC(A * I * (exp(- I * k * x) - exp(I * k * x))) # -2 * I * sin(k * x)
+		A = sqrt(1.0 / (4 * (self.r_A / 2 - sin(2 * k * self.r_A) / (4 * k)))) # -2 * I * sin(k * x)
 		wf = lambda x: CC(exp(- I * k * x) - exp(I * k * x))
 		nwf = lambda x: A * wf(x)
 		return make_real(nwf)
@@ -68,7 +67,8 @@ class FreeParticle:
 		a = self.r_A # TODO
 
 		if b > 1.0:
-			root = find_root(lambda x: x * coth(x) - b, 0.01, 10.0 * abs(b)) # TODO investigate right boundary
+			eq = lambda x: x * coth(x) - b
+			root = brentq(eq, 0.01, 10.0 * abs(b)) # TODO investigate right boundary
 			root /= a
 			wf = self.get_wavefunction_negative(root)
 			states.append(wf)
@@ -80,7 +80,9 @@ class FreeParticle:
 			states.append(wf)
 			values.append(0.0)
 		else: # b < 1.0
-			root = find_root(lambda x: x * cot(x) - b, 0.01, pi - 0.01) # TODO 0.01
+			eq = lambda x: x * cot(x) - b
+			# root = brentq(eq, 0.01, pi - 0.01) # TODO 0.01
+			root = float(newton(eq, pi / 2))
 			root /= a
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
@@ -88,8 +90,122 @@ class FreeParticle:
 
 		i = 1
 		while len(states) < self.n:
-			root = find_root(lambda x: x * cot(x) - b, pi * i + 0.01, pi * (i + 1) - 0.01) # TODO 0.01
+			root = brentq(lambda x: x * cot(x) - b, pi * i + 0.01, pi * (i + 1) - 0.01) # TODO 0.01
 			root /= a
+			wf = self.get_wavefunction_positive(root)
+			states.append(wf)
+			values.append(root ** 2)
+			i += 1
+		return states, values
+
+# assuming f is decreasing with x increasing and f(x0) > 0
+def find_right_interval(f, x0, alpha):
+	x = x0
+	while True: 
+		fx = f(x)
+		if fx < 0:
+			return x
+		while f(x + alpha) > fx:
+			alpha /= 2
+		x += alpha
+
+def find_left_interval(f, x0, alpha):
+	x = x0
+	while True:
+		# print("x = {}".format(x))
+		fx = f(x)
+		if fx > 0:
+			return x
+		while f(x - alpha) < fx:
+			alpha /= 2
+		x -= alpha
+
+
+# V(x) = -1.0 delta(x - 1.0)
+class DeltaPotential:
+	def __init__(self, r_A, r_B, n):
+		self.r_A = r_A
+		self.r_B = r_B
+		self.n = n
+		self.dd = 1.0
+		self.aa = 1.0
+		states, values = self.find_eigens()
+		self.eigenstates = states
+		self.eigenvalues = values
+
+	def get_wavefunction_negative(self, k):
+		B = (0.5 - 0.5 * exp(2 * k) + k) / k
+		C = -1.0 + (0.5 - 0.5 * exp(-2 * k)) / k
+		def wf(x):
+			if x < self.dd:
+				return CC(exp(-k * x) - exp(k * x))
+			else:
+				return CC(B * exp(-k * x) + C * exp(k * x))
+		A = get_normalization(wf, self.r_A)
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
+
+	def get_wavefunction_zero(self, k):
+		B = 0.0
+		C = 1.0
+		def wf(x):
+			if x < self.dd:
+				return CC(x)
+			else:
+				return CC(B * x + C)
+		A = get_normalization(wf, self.r_A)
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
+
+	def get_wavefunction_positive(self, k):
+		B = (I * (-1 + exp(2 * I * k) - 2 * I * k)) / (2 * k)
+		C = -((exp(-2 * I * k) * (-I + I * exp(2 * I * k) + 2 * exp(2 * I * k) * k)) / (2 * k))
+		def wf(x):
+			if x < self.dd:
+				return CC(exp(-I * k * x) - exp(I * k * x))
+			else:
+				return CC(B * exp(-I * k * x) + C * exp(I * k * x))
+		A = get_normalization(wf, self.r_A)
+		nwf = lambda x: A * wf(x)
+		return make_real(nwf)
+
+	# TODO Assumes a = 2.0!!!!
+	def find_eigens(self):
+		states = []
+		values = []
+
+		eqn = lambda k: (2 * k * (k + coth(k) * (-1 + k * coth(k)))) / (-1 + 2 * k * coth(k)) - self.r_B
+		eqp = lambda k: (2 * k * (-k + cot(k) * (-1 + k * cot(k)))) / (-1 + 2 * k * cot(k)) - self.r_B
+
+
+		if self.r_B > 0.0:
+			root = newton(eqn, 0.01) # TODO investigate constant
+			wf = self.get_wavefunction_negative(root)
+			states.append(root)
+			values.append(-root ** 2)
+		elif self.r_B == 0.0:
+			root = 0.0
+			wf = self.get_wavefunction_zero(root)
+			states.append(wf)
+			values.append(0.0)
+		else: # self.r_B < 0.0
+			# root = newton(eqp, 0.01) # TODO constant
+			root = brentq(eqp, 0.01, find_right_interval(eqp, 0.01, 0.01))
+			wf = self.get_wavefunction_positive(root)
+			states.append(wf)
+			values.append(root ** 2)
+
+		i = 1
+		while len(states) < self.n:
+			root = None
+			if i % 2 == 1:
+				# root = newton(eqp, (i + 1) / 2 * pi - 0.1) # TODO 0.01
+				right = (i + 1) / 2 * pi - 0.01
+				root = brentq(eqp, find_left_interval(eqp, right, 0.01), right)
+			else:
+				left = i / 2 * pi + 0.01
+				root = brentq(eqp, left, find_right_interval(eqp, left, 0.01))
+			print("Found root: {} : {}".format(root, eqp(root)))
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
 			values.append(root ** 2)
@@ -104,7 +220,7 @@ def get_U(p, energy, X):
 	return CC(U)
 
 
-def compute_phase_shift(p, energy):
+def compute_phase_shift(p, energy, debug = False):
 	def get_R(p, energy):
 		s = 0.0
 		# print(energies)
@@ -117,7 +233,13 @@ def compute_phase_shift(p, energy):
 	# Rub = get_R_upper_bound(a, b, energy, n)
 	X = (1 + R * b) / (R * a)
 	U = get_U(p, energy, X)
-	print("n = {}, R = {}, U = {}, phase shift = {}".format(n, R, U, U.arg()))
+	if debug:
+		print("n = {}, R = {}, U = {}, phase shift = {}".format(n, R, U, U.arg()))
+	return U.arg()
+
+def plot_phase_shift(p, left, right):
+	p = plot(lambda energy: compute_phase_shift(p, energy), left, right)
+	p.save("plot-delta.png")
 
 
 # TODO refactor
@@ -153,14 +275,17 @@ def get_partial_shifts(a, b, energy, count):
 	return shifts
 
 
-a = 1.0
-b = 4.0 # 2.0
-n = 200
-energy = 5.0
+a = 2.0
+b = -1.0 # 2.0
+n = 50
+energy = 4
 
-fp = FreeParticle(a, b, n)
+# p = FreeParticle(a, b, n)
 
-compute_phase_shift(fp, energy)
+p = DeltaPotential(a, b, n)
+
+# compute_phase_shift(p, energy)
+plot_phase_shift(p, 0.1, 100.0)
 
 
 
