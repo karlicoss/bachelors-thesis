@@ -1,0 +1,26 @@
+* What is quasi-two-dimensional?
+* What is "zero-dimensional system"?
+* What is the purpose of magnetic field?
+* What is the charge of the particle? e?
+* What is "symmetric gauge"?
+* What "tunneling between the dot and the channel" means? What is the channel in this context?
+* Where does "V(r) = 1/2 m omega^2 r^2" comes from?
+* What is U exactly? delta potential or what?
+
+
+Baye An introduction...
+Burke
+Descouvermont
+Scott
+Bloch operator
+
+
+u_l = I_l(r) - U_l O_l(r)
+
+U_l = exp(2i delta_l): S-matrix
+
+
+
+* Bloch surface operator? Non-self-adjoint Hamiltonian? Bloch-Schrodinger equation.
+* u_0(0) = 0. Why? Because the particles should not collide?
+

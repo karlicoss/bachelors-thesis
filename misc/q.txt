@@ -1,0 +1,81 @@
+* Scattering matrix
+** Griffith, p. 90
+
+* What is energy [operator]?
+** i h d/dt arises from classical analogy?
+
+* What is quantum [well]wire/dot?
+** Physical implementation of potential well.
+
+* What exactly are we going to compute and why we want to compute it?
+?? wave function, then we can easily compute scattering cross sections, etc
+
+* What is electron-electron exchange?
+?? Additional (axiomatized) constraint on states?
+?? Spin exchange should be antisymmetric?
+
+* What is channel?
+?? Quantum state of the colliding system before/after the collision? (wiki)
+?? Scattering asymptotes??
+
+* Why we include spin in the wave function, and not (for example) momentum?
+?? momentum is derived quantity? We axiomatize which quantities are axiomatized?
+
+* What is separable potential?
+
+* What is waveguide (formally)?
+
+* Is Hamiltonial linear? (since all quantum operators should be linear)
+** yes
+
+* What are waves? How de we investigate transmission/reflection (time-dependent process) usign stationary states?
+** Townsend 139
+
+* What does it mean if eigenvalue has non-onedimensional eigenspace?
+
+* What is pole energy/wave function?
+
+* R-matrix
+** involves real, energy-independent parameters
+** internal, external regions. channel radius
+** inverse of the logarithmic derivative of the wave function at the boundary
+** R matrix at energy E is defined through u_l(a) = R_l(E) a u'_l(a)
+
+* phase shifts??
+* scattering matrix?
+
+Spin-statistics theorem
+
+Nuclear potential is complicated, Shrodinger equation cannot be solved directly.
+
+Central potential: psi(r, Omega) = r^{-1} u_l(r) Y^m_l(Omega)
+* spherical harmonics
+
+
+Bessel functions of first kind: solutions of Shrodinger's equation for constant spherical potential; Spherical Bessel function
+
+
+Potential step scattering:
+* non-normalizable
+* arbitary energy values
+* reflection and transition probabilities: probability current!
+
+
+Singular potential???
+
+!!! Intermediate structure and channel coupling theory
+
+Stern–Gerlach:
+* When exactly the measurement is done?
+
+* How are half-integer l (orbital angular momentum values) ruled out?
+
+* How exactly magnetic force affect spin?
+
+
+
+It is assumed for simplicity that the colliding particles do not have any internal structure, i.e., corresponding to single channel scattering. (from Solving the quantum scattering problem for systems of two and three charged particles by Mikhail Volkov).
+
+QTN_LB!!!
+
+
