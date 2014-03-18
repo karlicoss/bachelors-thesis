@@ -256,7 +256,7 @@ As function of $k$:
 
 \includegraphics[scale=0.6]{fun.png}
 
-That is, for $B < 0$, $\psi^2(b_n) > \psi^2(k_n)$ if $k_n$ is near $\frac{\pi}{2}$.
+That is, for $B < 0$, $\psi^2(b_n) > \psi^2(k_n)$ if $k_n$ is slightly greater than $\frac{\pi}{2}$.
 
 So, starting from $i = n$ for which $k^2_i > k^2$:
 $$R_i = \sum\limits_{i = n}^\infty \frac{\psi_i^2(1.0)}{k_i^2 - k^2} < \sum \frac{\phi^2_i(1.0)}{b_i^2 - k^2} = \sum \frac{2.0}{b_i^2 - k^2}$$
@@ -278,6 +278,25 @@ Seems to be working..
 % $k = 1.0$: $R \le 1.557$, real $R \approx 0.376$
 
 % $k = 2.0$: $R \le -1.09$, real $R \approx 0.922$. Fuck.
+
+\subsection{Bounds on the sum: more general case}
+$$a k \cot(ak) = B$$
+$$k_n \sim \frac{1}{a}(\frac{\pi}{2} + \pi n)$$
+
+$$\psi_n^2(a) = \frac{4 \sin^2(k_n a)}{2 a - \frac{\sin (2 k_n a)}{k_n}}$$
+
+Asymptotically, $\psi_n^2(a) \le 2 / a$.
+
+
+$$\left( \frac{1}{a} (\frac{\pi}{2} + \pi i) \right)^2 - k^2 \le k_i^2 - k^2$$
+
+$$\frac{1}{a^2 } \left( (\frac{\pi}{2} + \pi i)^2 - a^2 k^2\right)$$
+
+$$R \le \frac{1}{a} \sum \frac{2 / a}{\frac{1}{a^2 } \left( (\frac{\pi}{2} + \pi i)^2 - a^2 k^2\right)} = \sum \frac{2}{(\frac{\pi}{2} + \pi i)^2 - a^2 k^2} = \frac{1}{\pi^2} \frac{\pi}{ak} \sum \frac{1}{i + 0.5 - \frac{ak}{\pi}} - \frac{1}{i + 0.5 + \frac{ak}{\pi}}$$
+
+$$R_{n_0} \le \frac{1}{\pi^2} \frac{\pi}{ak} (PG(n_0 + 0.5 + \frac{ak}{\pi}) - PG(n_0 + 0.5 - \frac{ak}{\pi}))$$
+
+
 
 \section{Trash}
 $$\psi(x) = e^{-ikx} + U e^{ikx}$$

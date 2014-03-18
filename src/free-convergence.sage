@@ -1,5 +1,6 @@
 from numpy import arange
 from scipy.optimize import newton, brentq, minimize_scalar
+from sage.functions.other import psi1
 
 ### Some common functions ###
 
@@ -66,9 +67,11 @@ class FreeParticle:
 		b = self.r_B # TODO
 		a = self.r_A # TODO
 
+		eqn = lambda x: x * coth(x) - b
+		eqp = lambda x: x * cot(x) - b
+
 		if b > 1.0:
-			eq = lambda x: x * coth(x) - b
-			root = brentq(eq, 0.01, 10.0 * abs(b)) # TODO investigate right boundary
+			root = brentq(eqn, 0.01, 10.0 * abs(b)) # TODO investigate right boundary
 			root /= a
 			wf = self.get_wavefunction_negative(root)
 			states.append(wf)
@@ -80,9 +83,7 @@ class FreeParticle:
 			states.append(wf)
 			values.append(0.0)
 		else: # b < 1.0
-			eq = lambda x: x * cot(x) - b
-			# root = brentq(eq, 0.01, pi - 0.01) # TODO 0.01
-			root = float(newton(eq, pi / 2))
+			root = brentq(eqp, 0.01, pi - 0.01) # TODO 0.01
 			root /= a
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
@@ -90,7 +91,7 @@ class FreeParticle:
 
 		i = 1
 		while len(states) < self.n:
-			root = brentq(lambda x: x * cot(x) - b, pi * i + 0.01, pi * (i + 1) - 0.01) # TODO 0.01
+			root = brentq(eqp, pi * i + 0.01, pi * (i + 1) - 0.01) # TODO 0.01
 			root /= a
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
@@ -231,10 +232,10 @@ def compute_phase_shift(p, energy, debug = False):
 
 	R = get_R(p, energy)
 	# Rub = get_R_upper_bound(a, b, energy, n)
-	X = (1 + R * b) / (R * a)
+	X = (1 + R * p.r_B) / (R * p.r_A)
 	U = get_U(p, energy, X)
 	if debug:
-		print("n = {}, R = {}, U = {}, phase shift = {}".format(n, R, U, U.arg()))
+		print("a = {}, b = {}, n = {}, R = {}, U = {}, phase shift = {}".format(p.r_A, p.r_B, p.n, R, U, U.arg()))
 	return U.arg()
 
 def plot_phase_shift(p, left, right):
@@ -242,23 +243,26 @@ def plot_phase_shift(p, left, right):
 	p.save("plot-delta.png")
 
 
-# TODO refactor
-def get_R_upper_bound(a, b, energy, count):
-	s = 0.0
+def compute_R_upper_bound(p, energy):
 	k = sqrt(energy)
-	eigens = find_eigens(a, b, count)
-	i = 0
-	for (elambda, wflambda) in eigens:
-		if pi / 2 + pi * i  < k:
-			s += wflambda(a) * wflambda(a) / (elambda - energy) / a
-			i += 1
+	s = 0.0
+	rest0 = 0.0
+	n0 = None
+	for i, (es, ee) in enumerate(zip(p.eigenstates, p.eigenvalues)):
+		val = float(es(p.r_A) ** 2 / (ee - energy) / p.r_A)
+		if (pi / 2 + pi * i) / p.r_A  < k:
+			s += val
 		else:
-			break
-	from sage.functions.other import psi1
-	print(i)
-	rest = - 1.0 / (pi * k) * (-psi1(0.5 + i + k / pi) + psi1(0.5 + i - k / pi))
-	print(float(rest))
-	return float(s + rest)
+			if n0 is None:
+				n0 = i
+			rest0 += val
+
+
+	X = p.r_A * k / pi
+	rest = float(1 / pi ** 2 * 1 / X * (psi1(n0 + 0.5 + X) - psi1(n0 + 0.5 - X)))
+	print("partial sum = {}".format(s))
+	print("rest0 = {}".format(rest0))
+	print("rest = {}".format(rest))
 
 
 
@@ -275,20 +279,39 @@ def get_partial_shifts(a, b, energy, count):
 	return shifts
 
 
-a = 2.0
-b = -1.0 # 2.0
-n = 50
-energy = 4
+# a = 10.0
+# b = -2.0 # 2.0
+# n = 50
+# energy = 10.0
+
+# a = 2.5
+
+# p = FreeParticle(a, b, n)
+# print(compute_phase_shift(p, energy, debug = True))
 
 # p = FreeParticle(a, b, n)
 
-p = DeltaPotential(a, b, n)
+# p = DeltaPotential(a, b, n)
 
-# compute_phase_shift(p, energy)
-plot_phase_shift(p, 0.1, 100.0)
+# compute_phase_shift(p, energy, debug = True)
+# compute_R_upper_bound(p, energy)
+# plot_phase_shift(p, 0.1, 100.0)
 
+def test(n):
+	b = -2.0 # 2.0
+	energy = 10.0
 
+	l = []
+	for a in arange(0.5, 50.0, 0.1):
+		p = FreeParticle(a, b * a, n)
+		l.append((a, compute_phase_shift(p, energy, debug = True)))
+	plot = list_plot(l, plotjoined = True, ymin = -pi, ymax = pi)
+	plot.save("bbbbb{}.png".format(n))
 
+# test(25)
+# test(50)
+test(100)
+# test(200)
 
 # wf1 = get_wavefunction(a, 11.17270)
 # wf2 = get_wavefunction(a, 14.27635)
