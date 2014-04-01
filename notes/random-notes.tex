@@ -330,4 +330,156 @@ Suppose $d = 1.0$ and $a = 1.0$
 
 $$\psi_2(x) = \frac{\left(i e^{2 i k} - i+2 k\right) e^{-i k x}}{2 k}-\frac{\left(i e^{2 i k}+2 k e^{2 i k} -i\right) e^{-2 i k+i k x}}{2 k}$$
 
+\section{Random definitions}
+Resonance: pole of resolvent/Green's function continued meromorphically to the lower half-plance.
+
+Real part: energy of the resonance, imaginary part: rate of decay.
+
+\subsection{Resolvent of the free particle}
+$$G(x, s; E) = \int\limits_{0}^{\infty} \frac{\psi_\lambda(x) \psi_\lambda^*(s)}{E - \lambda} d \lambda$$
+
+$\psi_\lambda(x) = $
+
+\section{Question}
+Green's function is kernel of the resolvent:
+
+$R_\lambda(f) = \int G(x, s) f(s) ds$
+
+What is incoming and outgoing Green's function/resolvent?
+
+\section{Cylinder delta scattering}
+
+$$\Delta \Psi(r, \theta, z) = E \Psi(r, \theta, z)$$
+
+Symmetric w.r.t. to $\theta$, separate variables:
+
+$$\Psi_m(E; r, \theta, z) = \frac{e^{i m \theta}}{\sqrt{2 \pi}} \psi_m(E; r, z)$$
+
+Each $m$ defines a 2D scattering problem.
+
+$$\left( - \left( \frac{\partial^2}{\partial r^2} + \frac{1}{r} \frac{\partial}{\partial r} - \frac{m^2}{r^2} + \frac{\partial^2}{\partial z^2} \right) + V(r, z) \right) \psi_m(E; r, z) = E \psi_m(E; r, z)$$
+
+Again, separate variables:
+
+$$\psi_m(E; r, z) = \phi(r) \varphi(z)$$
+
+$\phi(r)$: radial equation
+
+$$- \left( \frac{d^2}{dr^2} + \frac{1}{r} \frac{d}{dr} - \frac{m^2}{r^2} + V_\perp(r) \right) \phi(r) = E_\perp \phi(r)$$
+
+Solutions: 
+
+$$\phi_n^m(r) = \frac{\sqrt{2}}{RJ_{|m| + 1}(x_{mn})}J_m(x_{mn} \frac{r}{R}), n = 1, 2 \dots$$
+
+$$E_{\perp n}^m = \left( \frac{x_{mn}}{R} \right)^2, n = 1, 2 \dots$$
+
+$\varphi(z)$: one-dimensional spatial equation
+
+$$\left( -\frac{d^2}{dz^2} + V_s \right) \varphi(z) = (E - E_\perp) \varphi(z)$$
+
+For fixed $n, m$ two linearly independent solutions.
+
+\subsection{Next attempt}
+Fix channels $m$ and $n$:
+
+Left region:
+$$\psi^1_n(r, z) = \exp(I k_n z) \phi_n(r) + \sum\limits_{t = 1}^\infty R_{nt} \exp(-i k_t z) \phi_t(r)$$
+
+Right region:
+$$\psi^2_n(r, z) = \sum\limits_{t = 1}^\infty T_{nt} \exp(i k_t z) \phi_t(r)$$
+
+
+Boundary conditions at $z = 0$: for any $r$:
+
+$$\psi_n^1(r, 0) = \psi_n^2(r, 0)$$
+
+$$\partial_z \psi^2(r, 0) - \partial_z \psi_n^1(r, 0) = u \psi^1_n(r, 0)$$
+
+Substituting expressions:
+
+$$\phi_n(r) + \sum\limits_{t = 1}^\infty R_{nt} \phi_t(r) = \sum\limits_{t = 1}^\infty T_{nt} \phi_t(r)$$
+
+$$\sum\limits_{t = 1}^\infty T_{nt} i k_t \phi_t(r) - (ik_n \phi_n(r) - \sum\limits_{t = 1}^\infty R_{nt} i k_t \phi_t(r)) =  u \sum\limits_{t = 1}^\infty T_{nt} \phi_t(r)$$
+
+For each $q$, multiply by $\phi_q(r)$ and integrate from $0$ to $R$.
+
+For $q = n$:
+
+$$1 + R_{nn} = T_{nn}$$
+
+$$k_n T_{nn} - (k_n - k_n R_{nn}) = \frac{u}{i} T_{nn}$$
+
+$$\begin{cases}
+R = \frac{2 k_n}{2 k_n + i u} \\
+T = \frac{- iu}{2 k_n + iu} \\
+\end{cases}$$
+
+For $q \ne n$:
+
+$$0 + R_{nq} = T_{nq}$$
+
+$$k_q T_{nq} - (0 - k_q R_{nq}) = \frac{u}{i} T_{nq} $$
+
+$$\begin{cases}
+R = 0\\
+T = 0\\
+\end{cases}$$
+
+\section{Cylindric delta well, surrounded by host material}
+Fix channels $m$ and $n$:
+
+Left region:
+$$\psi^1_n(r, z) = \exp(i k_n z) \phi_n(r) + \sum\limits_{t = 1}^\infty R_{t} \exp(-i k_t z) \phi_t(r)$$
+
+Right region:
+$$\psi^2_n(r, z) = \sum\limits_{t = 1}^\infty T_{t} \exp(i k_t z) \phi_t(r)$$
+
+
+Boundary conditions at $z = 0$:
+
+$\forall 0 \le r \le RR: \psi_n^1(r, 0) = \psi_n^2(r, 0)$
+
+$\forall 0 \le r \le R: \partial_z \psi^2(r, 0) = \partial_z \psi_n^1(r, 0) + u \psi^1_n(r, 0)$
+
+$\forall R \le r \le RR: \partial_z \psi^2(r, 0) = \partial_z \psi_n^1(r, 0)$
+
+Substituting expressions:
+
+$\forall 0 \le r \le RR: \phi_n(r) + \sum\limits_{t = 1}^\infty R_{t} \phi_t(r) = \sum\limits_{t = 1}^\infty T_{t} \phi_t(r)$
+
+$\forall 0 \le r \le R: \sum\limits_{t = 1}^\infty T_{t} k_t \phi_t(r) = k_n \phi_n(r) - \sum\limits_{t = 1}^\infty R_{t} k_t \phi_t(r) +  \frac{u}{i} \sum\limits_{t = 1}^\infty T_{t} \phi_t(r)$
+
+$\forall R \le r \le RR: \sum\limits_{t = 1}^\infty T_{t} k_t \phi_t(r) = k_n \phi_n(r) - \sum\limits_{t = 1}^\infty R_{t} k_t \phi_t(r)$
+
+For each $q$, multiply first equation by $r \phi_q(r)$ and integrate from $0$ to $RR$:
+
+\begin{itemize}
+\item for $q = n$: $1 + R_{n} = T_{n}$
+\item for $q \ne n$ :$R_{q} = T_{q}$
+\end{itemize}
+
+For each $q$, multiply second and third equation by $r \phi_q(r)$, integrate second from $0$ to $R$, third from $R$ to $RR$, and add them up:
+
+$\int\limits_0^{RR} \sum\limits_{t = 1}^\infty T_{t} k_t r \phi_t(r) \phi_q(r) = \int\limits_0^{RR} k_n r \phi_n(r) \phi_q(r) - \int\limits_0^{RR} \sum\limits_{t = 1}^\infty R_{t} k_t r \phi_t(r) \phi_q(r) + \int\limits_0^R \frac{u}{i} \sum\limits_{t =1}^\infty T_{t} r \phi_t(r) \phi_q(r)$
+
+\begin{itemize}
+\item for $q = n$: $T_{n} k_n = k_n - R_{n} k_n + \frac{u}{i} \sum\limits_{t = 1}^{\infty} T_{t} \int\limits_{0}^R r \phi_t(r) \phi_n(r)$
+\item for $q \ne n$: $T_{q} k_q = -R_{q} k_q + \frac{u}{i} \sum\limits_{t = 1}^\infty T_{t} \int\limits_{0}^R r \phi_t(r) \phi_q(r)$
+\end{itemize}
+
+Substitute $T_{n} = R_{n} + 1, T_{q} = R_{q}$:
+
+\begin{itemize}
+\item for $q = n$: $(R_{n} + 1) k_n = k_n - R_{n} k_n + \frac{u}{i} (\sum\limits_{t = 1}^{\infty} R_{t} \int\limits_{0}^R r \phi_t(r) \phi_n(r) + \int\limits_{0}^R r \phi_n(r) \phi_n(r))$
+\item for $q \ne n$: $R_{q} k_q = -R_{q} k_q + \frac{u}{i} (\sum\limits_{t = 1}^\infty R_{t} \int\limits_{0}^R r \phi_t(r) \phi_q(r) + \int\limits_0^R r \phi_n(r) \phi_q(r))$
+\end{itemize}
+
+Simplify,
+
+\begin{itemize}
+\item for $q = n$: $2 R_{n} k_n - \frac{u}{i} \sum\limits_{t = 1}^{\infty} R_{t} \int\limits_{0}^R r \phi_t(r) \phi_n(r) =  \frac{u}{i} \int\limits_{0}^R r \phi_n(r) \phi_n(r)$
+\item for $q \ne n$: $2 R_q k_q - \frac{u}{i} \sum\limits_{t = 1}^\infty R_{t} \int\limits_{0}^R r \phi_t(r) \phi_q(r) = \frac{u}{i} \int\limits_0^R r \phi_n(r) \phi_q(r)$
+\end{itemize}
+
+
 \end{document}

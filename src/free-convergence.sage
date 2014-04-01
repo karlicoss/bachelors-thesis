@@ -39,6 +39,8 @@ class FreeParticle:
 		self.eigenstates = states
 		self.eigenvalues = values
 
+		self.descripion = "Free particle"
+
 	# Solution of -d^2 psi/dx^2 = - k^2 psi(x)
 	def get_wavefunction_negative(self, k):
 		A = 1.0 / sqrt(sinh(2 * self.r_A * k) / k - 2 * self.r_A)
@@ -121,6 +123,12 @@ def find_left_interval(f, x0, alpha):
 			alpha /= 2
 		x -= alpha
 
+def find_interval(f, x0, alpha):
+	if f(x0) > 0:
+		return (x0, find_right_interval(f, x0, alpha))
+	else:
+		return (find_left_interval(f, x0, alpha), x0)
+
 
 # V(x) = -1.0 delta(x - 1.0)
 class DeltaPotential:
@@ -130,9 +138,21 @@ class DeltaPotential:
 		self.n = n
 		self.dd = 1.0
 		self.aa = 1.0
+		self.eqn = lambda k: (k * self.r_A * (2 * k * cosh(k * self.r_A) + sinh(k (-2 + self.r_A)) - sinh(k * self.r_A)))/ \
+						(cosh(k * (-2 + self.r_A)) - cosh(k * self.r_A) + 2 * k * sinh(k * self.r_A)) - self.r_B
+		self.eqp = lambda k: (k * self.r_A * (2 * k * cos(k * self.r_A) + sin(k * (-2 + self.r_A)) - sin(k * self.r_A))) / \
+						(-cos(k * (-2 + self.r_A)) + cos(k * self.r_A) + 2 * k * sin(k * self.r_A)) - self.r_B
 		states, values = self.find_eigens()
 		self.eigenstates = states
 		self.eigenvalues = values
+
+		self.descripion = "Delta potential at 1.0"
+		
+
+	def debug(self):
+		p = plot(lambda k: self.eqp(k), 0.01, self.eigenvalues[-1], detect_poles = True, ymin = -60.0, ymax = 60.0)
+		vals = list_plot([(sqrt(v), 0.0) for v in self.eigenvalues], color = "red", pointsize = 20)
+		(p + vals).save("debug.png")
 
 	def get_wavefunction_negative(self, k):
 		B = (0.5 - 0.5 * exp(2 * k) + k) / k
@@ -170,13 +190,13 @@ class DeltaPotential:
 		nwf = lambda x: A * wf(x)
 		return make_real(nwf)
 
-	# TODO Assumes a = 2.0!!!!
+	# TODO Assumes a is an integer!
 	def find_eigens(self):
 		states = []
 		values = []
 
-		eqn = lambda k: (2 * k * (k + coth(k) * (-1 + k * coth(k)))) / (-1 + 2 * k * coth(k)) - self.r_B
-		eqp = lambda k: (2 * k * (-k + cot(k) * (-1 + k * cot(k)))) / (-1 + 2 * k * cot(k)) - self.r_B
+		# eqn = lambda k: (2 * k * (k + coth(k) * (-1 + k * coth(k)))) / (-1 + 2 * k * coth(k)) - self.r_B
+		# eqp = lambda k: (2 * k * (-k + cot(k) * (-1 + k * cot(k)))) / (-1 + 2 * k * cot(k)) - self.r_B
 
 
 		if self.r_B > 0.0:
@@ -191,22 +211,25 @@ class DeltaPotential:
 			values.append(0.0)
 		else: # self.r_B < 0.0
 			# root = newton(eqp, 0.01) # TODO constant
-			root = brentq(eqp, 0.01, find_right_interval(eqp, 0.01, 0.01))
+			root = brentq(self.eqp, 0.01, find_right_interval(self.eqp, 0.01, 0.01))
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
 			values.append(root ** 2)
 
+		aa = int(self.r_A) # IMPORTANT!!
 		i = 1
 		while len(states) < self.n:
-			root = None
-			if i % 2 == 1:
-				# root = newton(eqp, (i + 1) / 2 * pi - 0.1) # TODO 0.01
-				right = (i + 1) / 2 * pi - 0.01
-				root = brentq(eqp, find_left_interval(eqp, right, 0.01), right)
-			else:
-				left = i / 2 * pi + 0.01
-				root = brentq(eqp, left, find_right_interval(eqp, left, 0.01))
-			print("Found root: {} : {}".format(root, eqp(root)))
+			left, right = find_interval(self.eqp, pi / aa * i + 0.01, 0.01) # TODO 0.01
+			root = brentq(self.eqp, left, right)
+
+			# if i % 2 == 1:
+			# 	# root = newton(eqp, (i + 1) / 2 * pi - 0.1) # TODO 0.01
+			# 	right = (i + 1) / 2 * pi - 0.01
+			# 	root = brentq(eqp, find_left_interval(eqp, right, 0.01), right)
+			# else:
+			# 	left = i / 2 * pi + 0.01
+			# 	root = brentq(eqp, left, find_right_interval(eqp, left, 0.01))
+			print("Found root: {} : {}".format(root, self.eqp(root)))
 			wf = self.get_wavefunction_positive(root)
 			states.append(wf)
 			values.append(root ** 2)
@@ -221,12 +244,32 @@ def get_U(p, energy, X):
 	return CC(U)
 
 
-def compute_phase_shift(p, energy, debug = False):
+def compute_phase_shift(p, energy, debug = False, count = None, tolerance = 0.0):
+	if count is None:
+		count = p.n * 2 # To take every value
 	def get_R(p, energy):
+		k = sqrt(energy)
+		# left = 0
+		# while left < p.n and energy < p.eigenvalues[left]:
+		# 	left += 1
+		# left = max(0, left - count / 2)
+		# right = min(p.n, left + count)
+
+		n0 = None
+
 		s = 0.0
 		# print(energies)
-		for es, ee in zip(p.eigenstates, p.eigenvalues):
+		for i, (es, ee) in enumerate(zip(p.eigenstates, p.eigenvalues)):
+			if (pi / 2 + pi * i) / p.r_A > k:
+				n0 = i
+			if n0 is not None:
+				X = p.r_A * k / pi
+				rest = float(1 / pi ** 2 * 1 / X * (psi1(n0 + 0.5 + X) - psi1(n0 + 0.5 - X)))
+				if rest / (abs(s) + rest) < tolerance:
+					print("Stopping at {}, rest {}".format(n0, rest))
+					break
 			s += es(p.r_A) ** 2 / (ee - energy) / p.r_A
+			# print("Using eigenvalue: {}".format(ee))
 			# print("i = {}, R = {}".format(i, s))
 		return s
 
@@ -298,25 +341,72 @@ def get_partial_shifts(a, b, energy, count):
 # plot_phase_shift(p, 0.1, 100.0)
 
 def test(n):
+	a = 24.5
+	b = -2.0 * a
+	energy = 15.0
+	p = FreeParticle(a, b, n)
+	# compute_R_upper_bound(p, energy)
+	compute_phase_shift(p, energy, debug = True, tolerance = 0.01)
+
+def test_delta(n):
+	a = 2.0
+	b = -2.0
+	energy = 5.0
+	p = DeltaPotential(a, b, n)
+	compute_phase_shift(p, energy, debug = True)
+
+
+def test_plot(n):
 	b = -2.0 # 2.0
-	energy = 10.0
+	energy = 15.0
 
 	l = []
-	for a in arange(0.5, 50.0, 0.1):
+	for a in arange(0.5, 50.0, 0.2):
 		p = FreeParticle(a, b * a, n)
-		l.append((a, compute_phase_shift(p, energy, debug = True)))
+		l.append((a, compute_phase_shift(p, energy, debug = True, tolerance = 0.01)))
 	plot = list_plot(l, plotjoined = True, ymin = -pi, ymax = pi)
-	plot.save("bbbbb{}.png".format(n))
+	plot.save("plot.png".format(n))
 
 # test(25)
 # test(50)
-test(100)
-# test(200)
+# test_plot(1000)
+# test_delta(25)
+# test(1000)
 
 # wf1 = get_wavefunction(a, 11.17270)
 # wf2 = get_wavefunction(a, 14.27635)
 # print(numerical_integral(lambda x: wf1(x).conjugate() * wf2(x), 0.0, a))
 
+
+def plot_phase_shift(n):
+	a = 10.0
+	b = -10.0
+	l = []
+	p = DeltaPotential(a, b, n)
+	p.debug()
+	max_energy = 500.0
+	for energy in arange(0.5, max_energy, 1.0):
+		shift = compute_phase_shift(p, energy, debug = True)
+		if len(l) > 0:
+			pshift = l[-1][1]
+			if abs(shift + 2 * pi - pshift) < abs(shift - pshift):
+				shift += 2 * pi
+			if abs(shift - 2 * pi - pshift) < abs(shift - pshift):
+				shift -= 2 * pi
+		l.append((energy, shift))
+
+	title = "{}, a = {}, b = {}, n = {}".format(p.descripion, a, b, n)
+
+	r_plot = list_plot(l, plotjoined = True, ymin = -2 * pi, ymax = 2 * pi, title = title)
+
+	## exact value
+	UU = lambda k: CC(-((exp(-2 * I * k) * (-1 + exp(2 * I * k) - 2 * I * exp(2 * I * k) * k)) / (-1 + exp(2 * I * k) - 2 * I * k)))
+	plot_exact = plot(lambda x: UU(sqrt(x)).argument(), 0.5, max_energy, color = "red")
+	##
+
+	(r_plot + plot_exact).save("{}.png".format(title))
+
+plot_phase_shift(200)
 
 
 def run_plots():
