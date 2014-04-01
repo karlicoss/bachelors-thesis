@@ -1,3 +1,4 @@
+from collections import namedtuple
 from pprint import pprint
 
 import scipy.special
@@ -16,6 +17,8 @@ jn = lambda x, y: scipy.special.jn(int(x), float(y))
 # 		return -sqrt(CC(x))
 
 
+ScatteringResult = namedtuple('ScatteringResult', ['wf', 'T'])
+
 class DeltaCylinderScattering:
 	def __init__(self, R, RR, uu, m, maxn):
 		self.R = R
@@ -30,13 +33,31 @@ class DeltaCylinderScattering:
 		self.phis = [self.get_phi_function(n) for n in range(1, self.maxn + 1)]
 		self.phi_energies = [(self.jzeros[n - 1] / self.RR)^2 for n in range(1, self.maxn + 1)]
 
+		print("Transversal mode energies:")
+		print(self.phi_energies)
+
 	# phis are orthonormalized w.r.t. to weight function r
 	def get_phi_function(self, n):
 		def fun(r):
 			return CC(sqrt(2.0) / (self.RR * jn(abs(self.m) + 1, self.jzeros[n - 1])) * jn(self.m, self.jzeros[n - 1] * r / self.RR))
 		return fun
 
-	def get_wavefunction(self, n, energy):
+	def compute_scattering_full(self, energy):
+		res = []
+		for i, phiE in enumerate(self.phi_energies):
+			if phiE < energy:
+				res.append(self.compute_scattering(i + 1, energy))
+		T = 0.0
+		for r in res:
+			T += r.T
+
+		print("Energy = {}, T = {}".format(energy, T))
+		return T
+
+	def compute_scattering(self, n, energy, verbose = False):
+		if verbose:
+			print("-------------------")
+			print("Energy: {}".format(energy))
 		kks = [sqrt(CC(energy - phiE)) for phiE in self.phi_energies]
 		integrals = [[numerical_integral(lambda r: r * self.phis[i](r) * self.phis[j](r), 0, self.R)[0] for j in range(self.maxn)] for i in range(self.maxn)]
 
@@ -57,18 +78,20 @@ class DeltaCylinderScattering:
 			else:
 				Ts[i - 1] = Rs[i - 1]
 
-		print("Rs:")
-		print(Rs)
-		print("Ts:")
-		print(Ts)
+		if verbose:
+			print("Rs:")
+			print(Rs)
+			print("Ts:")
+			print(Ts)
 
 		## calculation of total transmission coefficient
 		T = 0.0
 		for i, t in enumerate(Ts):
 			if self.phi_energies[i] < energy: # open channel
-				T += (kks[i] / kks[n] * t * t.conj()).real
-		print("Total transmission coefficient:")
-		print(T)
+				T += (kks[i] / kks[n - 1] * t * t.conj()).real
+		if verbose:
+			print("Total transmission coefficient:")
+			print(T)
 		##
 
 
@@ -90,12 +113,13 @@ class DeltaCylinderScattering:
 				return psi1(z, r)
 			else:
 				return psi2(z, r)
-
-		return psi
+		if verbose:
+			print("-------------------")
+		return ScatteringResult(wf = psi, T = T)
 
 def test():
 	R = 1.0
-	RR = 2.0
+	RR = 5.0
 	uu = -0.4
 	m = 0
 	maxn = 5
@@ -103,23 +127,28 @@ def test():
 	dcs = DeltaCylinderScattering(R, RR, uu, m, maxn)
 
 	n = 1
-	energy = 8.0
-	wf = dcs.get_wavefunction(n, energy)
+	energy = 1.5
+	
+	res = dcs.compute_scattering(n, energy)
+	T = res.T
+	wf = res.wf
 	pf = lambda z, r: wf(z, r).norm()
 
-	d = 5.0
+	d = 20.0
 
 	print(wf(0, R / 2))
 	print(wf(0, R / 2))
 	print(wf(0, R))
 	print(wf(0, R))
+
+	plot(lambda en: dcs.compute_scattering_full(en).T, (0.5, 9.0), plot_points = 100).show()
 
 	# plot(lambda r: pf(0, r), (0.0, RR)).show()
-	# plot3d(pf, (-d, d), (0.0, RR), axes_labels = ['z', 'r'], plot_points = 100).show(viewer = 'jmol')
+	# plot3d(pf, (-d, d), (0.0, RR), axes_labels = ['z', 'r'], plot_points = 200).show(viewer = 'jmol')
 
-	p = density_plot(pf, (-d, d), (0.0, RR), cmap = 'jet', axes_labels = ['z', 'r'], aspect_ratio = 3, plot_points = 50)
-	p.save("plot.png")
-	p.show()
+	# p = density_plot(pf, (-d, d), (0.0, RR), cmap = 'jet', axes_labels = ['z', 'r'], aspect_ratio = 3, plot_points = 200)
+	# p.save("plot.png")
+	# p.show()
 	input()
 
 
