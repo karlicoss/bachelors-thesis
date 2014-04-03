@@ -1,22 +1,31 @@
 from collections import namedtuple
 from pprint import pprint
 
-import scipy.constants as sc
-import scipy.special
 import numpy as np
 from numpy import arange, eye, linalg
+from numpy import complex_ as complex # TODO not sure if that's ok
+from numpy import sqrt, exp
 
-jn_zeros = lambda x, y: scipy.special.jn_zeros(int(x), int(y))
-jn = lambda x, y: scipy.special.jn(int(x), float(y))
+import pylab as pl
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+
+from matplotlib.colors import LogNorm, Normalize
+
+import scipy as sp
+import scipy.integrate
+import scipy.constants as sc
+import scipy.special
 
 
-# TODO seems that the default branch is ok
-# def my_sqrt(x):
-# 	if x > 0:
-# 		return sqrt(CC(x))
-# 	else:
-# 		return -sqrt(CC(x))
+def cnorm(z):
+	return (z * np.conj(z)).real
 
+I = complex(1j) # TODO not sure if ok
+
+
+jn_zeros = lambda x, y: scipy.special.jn_zeros(x, int(y))
+jn = lambda x, y: scipy.special.jn(x, float(y))
 
 ScatteringResult = namedtuple('ScatteringResult', ['wf', 'T'])
 
@@ -26,8 +35,14 @@ ScatteringResult = namedtuple('ScatteringResult', ['wf', 'T'])
 hbar = sc.hbar
 
 
+def integrate_complex(f, a, b, **kwargs):
+	real_integrand = scipy.integrate.quad(lambda x: sp.real(f(x)), a, b, **kwargs)
+	imag_integrand = scipy.integrate.quad(lambda x: sp.imag(f(x)), a, b, **kwargs)
+	return (real_integrand[0] + I * imag_integrand[0], real_integrand[1] + I * imag_integrand[1])
+
 # df: [0, RR] -> {0, 1}, returns if there is a delta at point (0, r)
 # intf: f1, f2 -> float
+# m : int
 class PiecewiseDeltaCylinderScattering:
 	def __init__(self, mu, RR, uu, intf, m, maxn):
 		self.mu = mu
@@ -44,14 +59,14 @@ class PiecewiseDeltaCylinderScattering:
 
 		## !!! n scope interference
 		self.phis = [self.get_phi_function(n) for n in range(1, self.maxn + 1)]
-		self.phi_energies = [hbar ** 2 / (2 * self.mu) * (self.jzeros[n - 1] / self.RR)^2 for n in range(1, self.maxn + 1)]
+		self.phi_energies = [hbar ** 2 / (2 * self.mu) * (self.jzeros[n - 1] / self.RR) ** 2 for n in range(1, self.maxn + 1)]
 
 	# phis are orthonormalized w.r.t. to weight function r
+	# n: int
 	def get_phi_function(self, n):
 		coeff = sqrt(2.0) / (self.RR * jn(abs(self.m) + 1, self.jzeros[n - 1]))
-		print(type(coeff))
 		def fun(r):
-			return CC(coeff * jn(self.m, self.jzeros[n - 1] * r / self.RR))
+			return complex(coeff * jn(self.m, self.jzeros[n - 1] * r / self.RR))
 		return fun
 
 	def compute_scattering_full(self, energy):
@@ -63,14 +78,14 @@ class PiecewiseDeltaCylinderScattering:
 		for r in res:
 			T += r.T
 
-		print("Energy = {}, T = {}".format(energy, T))
+		print("Energy = {} eV, T = {}".format(energy / sc.eV, T))
 		return T
 
 	def compute_scattering(self, n, energy, verbose = False):
 		if verbose:
 			print("-------------------")
-			print("Energy: {}".format(energy / sc.eV)) # TODO eV
-		kks = [sqrt(CC(2 * self.mu * (energy - phiE))) / hbar for phiE in self.phi_energies]
+			print("Energy: {} eV".format(energy / sc.eV)) # TODO eV
+		kks = [sqrt(complex(2 * self.mu * (energy - phiE))) / hbar for phiE in self.phi_energies]
 
 		if verbose:
 			print("Wavevectors:")
@@ -121,16 +136,16 @@ class PiecewiseDeltaCylinderScattering:
 
 
 		def psi1(z, r):
-			res = CC(0)
-			res += CC(exp(I * kks[n - 1] * z) * self.phis[n - 1](r))
+			res = complex(0.0)
+			res += exp(I * kks[n - 1] * z) * self.phis[n - 1](r)
 			for i in range(1, self.maxn + 1):
-				res += CC(Rs[i - 1] * exp(-I * kks[i - 1] * z) * self.phis[i - 1](r))
+				res += Rs[i - 1] * exp(-I * kks[i - 1] * z) * self.phis[i - 1](r)
 			return res
 
 		def psi2(z, r):
-			res = CC(0)
+			res = complex(0.0)
 			for i in range(1, self.maxn + 1):
-				res += CC(Ts[i - 1] * exp(I * kks[i - 1] * z) * self.phis[i - 1](r))
+				res += Ts[i - 1] * exp(I * kks[i - 1] * z) * self.phis[i - 1](r)
 			return res
 
 		def psi(z, r):
@@ -148,44 +163,76 @@ def test_cylinder():
 	uu = -0.4 * sc.nano * sc.eV
 	m = 0
 	mu = 0.19 * sc.m_e # mass
-	maxn = 2
+	maxn = 5
 
-	intf = lambda f, g: numerical_integral(lambda r: r * f(r) * g(r), 0, R)[0]
+	intf = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), 0, R)[0]
 	dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
 
 	print("Transversal mode energies:")
 	print([en / sc.eV for en in dcs.phi_energies])
 
-	n = 1
-	# energy = dcs.phi_energies[1] - 1e-17 * sc.eV
-	# energy = 0.24 * sc.eV
-	energy = 1.0 * sc.eV
-	
-	for i in range(20):
-		res = dcs.compute_scattering(n, energy, verbose = False)
+	# n = 1
+	# energy = 0.22 * sc.eV
+	n = 2
+	energy = 0.4 * sc.eV
+
+	# for i in range(20):
+	res = dcs.compute_scattering(n, energy, verbose = False)		
+
+
 	T = res.T
-	print(T)
+	print("Total transmission: {}".format(T))
 	wf = res.wf
-	pf = lambda z, r: wf(z, r).norm()
+	pf = lambda z, r: cnorm(wf(z, r))
+	vpf = np.vectorize(pf)
 
-	d = 20.0 * sc.nano
+	d = 5.0 * sc.nano
 
 	print(wf(0, R / 2))
 	print(wf(0, R / 2))
 	print(wf(0, R))
 	print(wf(0, R))
 
-	ll = 0.0
-	rr = 1.0
-	step = 0.1
-	left = ll * sc.eV
-	right = rr * sc.eV
-	# plot(lambda en: dcs.compute_scattering_full(en),
+	#######
+	# ll = 0.0
+	# rr = 1.0
+	# step = 0.01
+	# left = ll * sc.eV
+	# right = rr * sc.eV
+
+	# # left = energy - 0.01 * sc.eV
+	# # right = energy + 0.01 * sc.eV
+
+	# xs = arange(left, right, step * sc.eV)
+	# ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
+	# plt.plot(xs, ys)
+	# plt.show()
+	########
+
+	# pl.plot(lambda en: dcs.compute_scattering_full(en),
 	# 	(left, right),
 	# 	plot_points = 300,
 	# 	axes_labels = ['E, eV', 'T'],
 	# 	ticks = [[a for a in arange(left, right, step * sc.eV)], [a for a in arange(0.0, 5.0, 1.0)]],
 	# 	tick_formatter = [["{:.1f} eV".format(a) for a in arange(ll, rr, step)], ["{:.1f}".format(a) for a in arange(0.0, 5.0, 1.0)]]).show()
+
+	#######
+	dx = 0.01 * sc.nano
+	dy = 0.01 * sc.nano
+	x, y = np.mgrid[slice(-d, d, dx), slice(0.0, RR, dy)]
+	z = vpf(x, y)
+
+	z_min, z_max = np.abs(z).min(), np.abs(z).max()
+
+	print(z_min)
+	print(z_max)
+
+	plt.pcolor(x, y, z, cmap = 'jet', norm = Normalize(z_min, z_max))
+	plt.axis([x.min(), x.max(), y.min(), y.max()])
+	plt.colorbar()
+	plt.show()
+	#######
+
 
 	# plot(lambda r: pf(0, r), (0.0, RR)).show()
 	# plot3d(pf, (-d, d), (0.0, RR), axes_labels = ['z', 'r'], plot_points = 200).show(viewer = 'jmol')
