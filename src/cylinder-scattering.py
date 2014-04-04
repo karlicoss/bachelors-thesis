@@ -82,6 +82,8 @@ class PiecewiseDeltaCylinderScattering:
 		return T
 
 	def compute_scattering(self, n, energy, verbose = False):
+		assert(energy > self.phi_energies[n - 1])
+
 		if verbose:
 			print("-------------------")
 			print("Energy: {} eV".format(energy / sc.eV)) # TODO eV
@@ -128,7 +130,7 @@ class PiecewiseDeltaCylinderScattering:
 		T = 0.0
 		for i, t in enumerate(Ts):
 			if self.phi_energies[i] < energy: # open channel
-				T += (kks[i] / kks[n - 1] * t * t.conj()).real
+				T += (kks[i] / kks[n - 1] * cnorm(t)).real
 		if verbose:
 			print("Total transmission coefficient:")
 			print(T)
@@ -157,6 +159,88 @@ class PiecewiseDeltaCylinderScattering:
 			print("-------------------")
 		return ScatteringResult(wf = psi, T = T)
 
+
+def plot_transmission(dcs, left, right, step):
+	xs = arange(left, right, step)
+	ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
+
+	fig = plt.figure(figsize = (15, 10), dpi = 500)
+	ax = fig.add_subplot(111) # , aspect = 'equal'
+	
+	ax.vlines(dcs.phi_energies, 0.0, dcs.maxn)
+
+	xticks = arange(left, right, 0.1 * sc.eV)
+	xlabels = ["{:.1f}".format(t / sc.eV) for t in xticks]
+	ax.set_xlim(left, right)
+	ax.set_xticks(xticks)
+	ax.set_xticklabels(xlabels)
+	ax.set_xlabel("E, eV")
+
+	yticks = arange(0.0, dcs.maxn, 1.0)
+	ylabels = ["{:.1f}".format(t) for t in yticks]
+	ax.set_ylim(0.0, dcs.maxn)
+	ax.set_yticks(yticks)
+	ax.set_yticklabels(ylabels)
+	ax.set_ylabel("T")
+
+	cax = ax.plot(xs, ys)
+	ax.set_title("Transmission coefficient, m = {}".format(dcs.m))
+
+	fig.savefig("transmission.png")
+
+def plot_wavefunction(dcs, n, energy, fname = "plot.png"):
+	res = dcs.compute_scattering(n, energy, verbose = False)		
+
+	T = res.T
+	wf = res.wf
+	pf = lambda z, r: cnorm(wf(z, r))
+	vpf = np.vectorize(pf)
+
+	print("Total transmission: {}".format(T))
+
+
+	d = 40.0 * sc.nano
+
+	dd = 0.05 * sc.nano
+	dr = 0.05 * sc.nano
+	x, y = np.mgrid[slice(-d, d + dd, dd), slice(0.0, dcs.RR + dr, dr)]
+	z = vpf(x, y)
+
+	z_min, z_max = np.abs(z).min(), np.abs(z).max()
+
+	print(z_min)
+	print(z_max)
+
+	fig = plt.figure(figsize = (15, 10), dpi = 500)
+	ax = fig.add_subplot(211) # , aspect = 'equal'
+
+	ax.set_title("m = {}, n = {}, E = {:.2f} eV, T = {:.2f}".format(dcs.m, n, energy / sc.eV, T))
+
+	xticks = arange(-d, d, 10 * sc.nano)
+	xlabels = ["{:.1f}".format(t / sc.nano) for t in xticks]
+	ax.set_xlim(-d, d)
+	ax.set_xticks(xticks)
+	ax.set_xticklabels(xlabels)
+
+	yticks = arange(0.0, dcs.RR, sc.nano)
+	ylabels = ["{:.1f}".format(t / sc.nano) for t in yticks]
+	ax.set_ylim(0.0, dcs.RR)
+	ax.set_yticks(yticks)
+	ax.set_yticklabels(ylabels)
+
+	cax = ax.pcolor(x, y, z, cmap = 'gnuplot', norm = Normalize(z_min, z_max))
+	
+	cbar = fig.colorbar(cax)
+
+	bx = fig.add_subplot(212)
+	bx.set_title("Wavefunction at z = 0")
+
+	rr = arange(0.0, dcs.RR, 0.01 * sc.nano)
+	ww = list(map(lambda r: pf(0, r), rr))
+	bx.plot(rr, ww)
+
+	fig.savefig(fname)
+
 def test_cylinder(R, RR, uu, m, mu, maxn):
 	intf = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), 0, R)[0]
 	dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
@@ -164,140 +248,45 @@ def test_cylinder(R, RR, uu, m, mu, maxn):
 	print("Transversal mode energies:")
 	print([en / sc.eV for en in dcs.phi_energies])
 
-	# n = 2
-	# energy = 0.4 * sc.eV
+	# energy = 0.2179999 * sc.eV
+	energy = 0.244 * sc.eV
+	n = 1
+	plot_wavefunction(dcs, n, energy)
 
-	## sanity check
-	# print(wf(0, R / 2))
-	# print(wf(0, R / 2))
-	# print(wf(0, R))
-	# print(wf(0, R))
-	##
 
-	def plot_transmission():
-		ll = 0.0
-		rr = 1.0
-		step = 0.01
-		left = ll * sc.eV
-		right = rr * sc.eV
-
-		# left = energy - 0.01 * sc.eV
-		# right = energy + 0.01 * sc.eV
-
-		xs = arange(left, right, step * sc.eV)
-		ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
-		plt.plot(xs, ys)
-		plt.show()
-
-	# pl.plot(lambda en: dcs.compute_scattering_full(en),
-	# 	(left, right),
-	# 	plot_points = 300,
-	# 	axes_labels = ['E, eV', 'T'],
-	# 	ticks = [[a for a in arange(left, right, step * sc.eV)], [a for a in arange(0.0, 5.0, 1.0)]],
-	# 	tick_formatter = [["{:.1f} eV".format(a) for a in arange(ll, rr, step)], ["{:.1f}".format(a) for a in arange(0.0, 5.0, 1.0)]]).show()
+	# plot_transmission(dcs, 0.0 * sc.eV, 1.0 * sc.eV, 0.001 * sc.eV)
 
 	#######
-	def plot_wavefunction(n, energy):
-		res = dcs.compute_scattering(n, energy, verbose = False)		
-
-		T = res.T
-		wf = res.wf
-		pf = lambda z, r: cnorm(wf(z, r))
-		vpf = np.vectorize(pf)
-
-		print("Total transmission: {}".format(T))
+	# n = 1
+	# for ee in arange(0.05, 1.0, 0.01):
+	# 	print("Plotting for energy = {:.2f} eV".format(ee))
+	# 	energy = ee * sc.eV
+	# 	plot_wavefunction(n, energy, "{:.2f}".format(ee))
+	# #######
 
 
-		d = 40.0 * sc.nano
 
-		dd = 0.1 * sc.nano
-		dr = 0.1 * sc.nano
-		x, y = np.mgrid[slice(-d, d + dd, dd), slice(0.0, RR + dr, dr)]
-		z = vpf(x, y)
-
-		z_min, z_max = np.abs(z).min(), np.abs(z).max()
-
-		print(z_min)
-		print(z_max)
-
-		fig = plt.figure(figsize = (15, 10), dpi = 500)
-		ax = fig.add_subplot(111) # , aspect = 'equal'
-		
-		xticks = arange(-d, d, 10 * sc.nano)
-		xlabels = ["{:.1f}".format(t / sc.nano) for t in xticks]
-		ax.set_xlim(-d, d)
-		ax.set_xticks(xticks)
-		ax.set_xticklabels(xlabels)
-
-		yticks = arange(0.0, RR, sc.nano)
-		ylabels = ["{:.1f}".format(t / sc.nano) for t in yticks]
-		ax.set_ylim(0.0, RR)
-		ax.set_yticks(yticks)
-		ax.set_yticklabels(ylabels)
-		# ax.axes.set_aspect('datalim')
-
-		cax = ax.pcolor(x, y, z, cmap = 'gnuplot', norm = Normalize(z_min, z_max))
-		ax.set_title("m = {}, n = {}, E = {:.2f} eV, T = {:.2f}".format(m, n, energy / sc.eV, T))
-
-		cbar = fig.colorbar(cax)
-
-		fig.savefig("pplot.png")
-		print("FSFdsf")
-		# fig.show()
-
-	n = 2
-	energy = 0.5948 * sc.eV
-
-	# plot_transmission()
-	plot_wavefunction(n, energy)
-	input()
-	#######
-
-
-	# plot(lambda r: pf(0, r), (0.0, RR)).show()
-	# plot3d(pf, (-d, d), (0.0, RR), axes_labels = ['z', 'r'], plot_points = 200).show(viewer = 'jmol')
-
-	# p = density_plot(pf, (-d, d), (0.0, RR), cmap = 'jet', axes_labels = ['z', 'r'], aspect_ratio = 3, plot_points = 200)
-	# p.save("plot.png")
-	# p.show()
-	# input()
 
 def test_slit():
-	R = 0.1
-	RR = 3.0
-	uu = 1.0
-	mu = 1.0
+	R = 2.0 * sc.nano
+	RR = 3.0 * sc.nano
+	uu = -0.1 * sc.nano * sc.eV
+	mu = 0.19 * sc.m_e
 	m = 0
 	maxn = 5
 
 
-	intf = lambda f, g: numerical_integral(lambda r: r * f(r) * g(r), R, RR)[0]
+	intf = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), R, RR)[0]
 	dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
 
+	print("Transversal mode energies:")
+	print([en / sc.eV for en in dcs.phi_energies])
+
+	# plot_transmission(dcs, 0.0 * sc.eV, 1.0 * sc.eV, 0.001 * sc.eV)
+
 	n = 1
-	energy = 2.0
-	
-	res = dcs.compute_scattering(n, energy)
-	T = res.T
-	wf = res.wf
-	pf = lambda z, r: wf(z, r).norm()
-
-	d = 10.0
-
-	print(wf(0, R / 2))
-	print(wf(0, R / 2))
-	print(wf(0, R))
-	print(wf(0, R))
-
-	plot(lambda en: dcs.compute_scattering_full(en).T, (0.65, 4.0), plot_points = 300).show()
-
-	# plot(lambda r: pf(0, r), (0.0, RR)).show()
-	# plot3d(pf, (-d, d), (0.0, RR), axes_labels = ['z', 'r'], plot_points = 200).show(viewer = 'jmol')
-
-	# p = density_plot(pf, (-d, d), (0.0, RR), cmap = 'jet', axes_labels = ['z', 'r'], aspect_ratio = 3, plot_points = 200)
-	p.save("plot.png")
-	p.show()
-	input()
+	energy = 0.676999 * sc.eV
+	plot_wavefunction(dcs, n, energy)
 
 
 def main():
@@ -308,6 +297,5 @@ def main():
 	mu = 0.19 * sc.m_e # mass
 	maxn = 5
 	test_cylinder(R, RR, uu, m, mu, maxn)
-	# test_slit()
 
 main()
