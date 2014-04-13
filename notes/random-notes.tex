@@ -553,7 +553,7 @@ E = \frac{\hbar^2 \pi^2}{2 m} \left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} \r
 
 Let $n = n_x$, $m = n_y$.
 
-Green's function:
+\subsubsection{Green's function}
 
 $$G(x, y, x_s, y_s; E) = \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E}$$
 
@@ -566,7 +566,7 @@ $$G(x_0, y_0, x_0, y_0; E) = \frac{4}{L_x L_y} \sum\limits_{n, m = 1}^\infty \fr
 $$G(x_0, y_0, x_0, y_0; E) = \frac{4}{L_x L_y} \sum\limits_{n = 1}^\infty \cos^2(\frac{\pi}{2}n) \sum\limits_{m = 1}^\infty \frac{1}{E_{nm} - E} = \frac{4}{L_x L_y} \sum\limits_{n' = 1}^\infty \sum\limits_{m = 1}^\infty \frac{1}{E_{(2n')m} - E}$$
 
 \subsection{1D free particle}
-We have two fold-eigenvalue degeneracy: for each $E$, there is $\psi^E_+(x) = N_E e^{i \sqrt{E} x}$ and $\psi^E_-(x) = N_E e^{-i \sqrt{E} x}$. $\psi_+$ and $\psi_-$ are orthonormal: $\int \psi_+(x) \psi^*_-(x) dx = \int |N_E|^2 e^{2 i \sqrt{E} x} dx = \int |N_E|^2 \frac{1}{2} e^{i \sqrt{E} x} = \frac{1}{2} |N_E|^2 2 \pi \delta(\sqrt{E})$, which is zero for non-zero $E$.
+We have two fold-eigenvalue degeneracy: for each $E$, there is $\psi^E_+(x) = N_E e^{i k x}$ and $\psi^E_-(x) = N_E e^{-i k x}$, where $k = \frac{\sqrt{2 m E}}{\hbar}$. $\psi_+$ and $\psi_-$ are orthonormal: $\int \psi_+(x) \psi^*_-(x) dx = \int |N_E|^2 e^{2 i \sqrt{E} x} dx = \int |N_E|^2 \frac{1}{2} e^{i \sqrt{E} x} = \frac{1}{2} |N_E|^2 2 \pi \delta(k)$, which is zero for non-zero $E$.
 
 Eigenstates normalization: $\bra{\psi_E} \ket{\psi_{E'}} = \int\limits_{x = - \infty}^\infty \psi_E(x) \psi_{E'}^*(x) = N_E N_{E'}^* \int\limits_{x = - \infty}^\infty e^{i (k - k') x} dx = \\ N_E N^*_{E'} 2 \pi \delta(k - k')$
 
@@ -578,39 +578,44 @@ It has to be equal to $\delta(E - E')$. For $E \ne E'$, the normalization could 
 
 $|N_E|^2 2 \pi \sqrt{\frac{2 E}{m}} \hbar = 1$, therefore, $|N_E| = \left( \frac{m}{2E}\right)^{1/4}  \frac{1}{\sqrt{2 \pi \hbar}}$
 
+\subsubsection{Green's function}
+$$G(x, s; E) = \frac{1}{2 \pi \hbar} \left( \frac{m}{2}\right)^{1/2}  \left( \int\limits_{0}^{\infty} \frac{1}{\sqrt{\lambda}}\frac{e^{i \frac{\sqrt{2 m \lambda}}{\hbar} (x - s)}}{\lambda - E} d \lambda + \int\limits_{0}^{\infty} \frac{1}{\sqrt{\lambda}}\frac{e^{-i \frac{\sqrt{2 m \lambda}}{\hbar} (x - s)}}{\lambda - E} d \lambda \right)$$
 
+Change the variable of integration: 
+
+$\begin{cases}
+k = \frac{\sqrt{2 m \lambda}}{\hbar} \\
+\lambda = \frac{\hbar^2 k^2}{2m}\\
+d \lambda = 2\frac{\hbar^2}{2 m} k dk
+\end{cases}$
+
+
+\begin{align*}
+G(x, s; E) &= C (\int + \int) \\
+&= C \int \frac{1}{\frac{\hbar k}{\sqrt{2 m}}} \frac{e^{ikx}}{\frac{\hbar^2 k^2}{2m} - E} 2 \frac{\hbar^2}{2 m} k dk + C \int \\
+&= C 2 \frac{\sqrt{2m}}{\hbar} \int\limits_{-\infty}^\infty \frac{e^{ikx}}{k^2 - \frac{2mE}{\hbar^2}} dk \\
+&= \frac{1}{2 \pi \hbar} \sqrt{\frac{m}{2}} 2 \frac{\sqrt{2 m}}{\hbar} \int  \\
+&= \frac{2m}{\hbar^2} \frac{i}{2 k_0} e^{i k_0 |x - s|}
+\end{align*}
+, where $k_0 = \frac{\sqrt{2 m E}}{\hbar^2}$. That was for positive energy. For negative energy:
+
+$k_0 = \frac{\sqrt{2m|E|}}{\hbar^2}$.
+
+
+$$\int\limits_{-\infty}^\infty \frac{e^{ik|x -s|}}{k^2 - E} dk = 2 \pi i \res\limits_{k = i k_0} f(k) = \frac{e^{i i k_0 |x - s|}}{2 i k_0} = 2 \pi \frac{e^{-k_0 |x - s|}}{2 k_0}$$
+
+$$G(x, s; E) = \frac{2m}{\hbar^2} \frac{1}{2 k_0} e^{-k_0 |x - s|}$$
+
+That is, we have to choose branch of the square root with positive imaginary part.
 
 \subsection{Pipe}
-$$\psi(x) = e^{i \sqrt{\frac{2 m E}{\hbar^2}} x} = e^{i p x / \hbar}$$
-
-Dirac normalization:
-
-$$\psi_E(x) = \left( \frac{m}{2E}\right)^{1/4}  \frac{1}{\sqrt{2 \pi \hbar}} e^{i \frac{p}{\hbar} x}$$
-
-$$G(x, s; E_0) = \frac{1}{2 \pi \hbar} \left( \frac{m}{2}\right)^{1/2}  \left( \int\limits_{0}^{\infty} \frac{1}{\sqrt{E_\lambda}}\frac{e^{i \frac{\sqrt{2 m E_\lambda}}{\hbar} (x - s)}}{E_\lambda - E_0} d E_\lambda + \int\limits_{0}^{\infty} \frac{1}{\sqrt{E_\lambda}}\frac{e^{-i \frac{\sqrt{2 m E_\lambda}}{\hbar} (x - s)}}{E_\lambda - E_0} d E_\lambda \right)$$
-
-Change the variable of integration: $E_\lambda = \lambda^2, d E_\lambda = 2 \lambda d \lambda$:
-
-$$G(x, s; E) = \frac{1}{2 \pi \hbar} \int\limits_{-\infty}^\infty \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E}$$
-
-$$\int\limits_{-\infty}^\infty \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E} + \int_C = 2 \pi i \res_{\lambda = \sqrt{E}} f(\lambda)$$
-
-$$f(\lambda) = \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E} = \frac{e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda - \sqrt{E}} + \frac{e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda + \sqrt{E}}$$
-
-If $\sqrt{E}$ lies in upper complex plane simple pole, residue is $f(\lambda) (\lambda - \sqrt{E})$
-
-  
-
-$G(x, s; E) = \frac{1}{2 \pi \hbar} 2 \pi i e^{i \frac{\sqrt{2 m}}{\hbar} \sqrt{E} (x - s)}$
-
-\subsection{Green's function for a pipe, Neumann boundary condition, scattering from the left}
 
 Height of the pipe $H$.
 
 $$\begin{cases}
 X(x) = N_E e^{i k_x x} \\
 Y(y) = \frac{2}{\sqrt{H}} \cos(k_y y) \\
-k_x = \sqrt{E} \\
+k_x = \frac{\sqrt{2 \mu E}}{\hbar^2} \\
 k_y = \frac{\pi m}{H} \\
 \end{cases}$$
 
@@ -624,13 +629,19 @@ E = \frac{\hbar^2 \pi^2}{2 m} \left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} \r
 \end{cases}$$
 \end{comment}
 
+\subsubsection{Green's function}
+
 Suppose $M(E)$ is the count of open transversal modes for the given energy $E$.
 
 \begin{align*}
-G(x, y, x_s, y_s; E) = \int\limits_{0}^{\infty} \frac{\sum\limits_{m = 0}^{M(\lambda)} Y_m(y) Y^*_m(y_s) X(x) X^*(x_s)  }{\lambda - E} d \lambda \\
-= \sum_{m = 0}^\infty \int\limits_{0}^\infty \frac{Y_m(y) Y_m^*(y_s) X(x) X^*(x_s)}{E^y_m + \lambda - E} d\lambda \\
-= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) \int\limits_{0}^\infty \frac{X(x) X^*(x_s)}{E^y_m + \lambda - E} d\lambda \\
-= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) G^x(x_s, y_s; E - E^y_m) \\
+G(x, y, x_s, y_s; E)
+&= \int\limits_{0}^{\infty} \frac{\sum\limits_{m = 0}^{M(\lambda)} Y_m(y) Y^*_m(y_s) X'(x) X'^*(x_s)  }{\lambda - E} d \lambda \\
+&= \sum_{m = 0}^\infty \int\limits_{E^Y_m}^\infty \frac{Y_m(y) Y^*_m(y_s) X'(x) X'^*(x_s)}{\lambda - E} d\lambda \\
+&= \sum_{m = 0}^\infty \int\limits_{0}^\infty \frac{Y_m(y) Y_m^*(y_s) X(x) X^*(x_s)}{\lambda + E^y_m - E} d\lambda \\
+&= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) \int\limits_{0}^\infty \frac{X(x) X^*(x_s)}{\lambda - (E - E^y_m)} d\lambda \\
+&= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) G^x(x, x_s; E - E^y_m) \\
 \end{align*}
+
+TODO make clear that negative wavevectors were taken into account.
 
 \end{document}
