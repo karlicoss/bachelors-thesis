@@ -13,6 +13,10 @@
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{indentfirst}
+\usepackage{bm}
+\usepackage{braket}
+
+\def\res{\mathop{\operatorname{Res}}\limits}
 
 \begin{document}
 
@@ -482,5 +486,151 @@ Simplify,
 \end{itemize}
 
 DO NOT FORGET TO SET $u = \frac{2 \mu}{\hbar^2} u$ IN REAL WORLD CALCULATIONS.
+
+\section{Zero width slit, 2D geometry}
+Domain of the adjoint operator:
+
+$$u(r) = \begin{cases}
+\beta_1 G_1^{E}(r, r_{12}, k_0) + u_1(r), & r \in \Omega_1 \\
+\beta_{12} G^{I}(r, r_{12}, k_0) + \beta_{23} G^{I}(r, r_{23}, k_0) + u_2(r), & r \in \Omega_2 \\
+\beta_3 G_3^{E}(r, r_{23}, k_0) + u_3(r), & r \in \Omega_3 \\
+\end{cases}$$
+
+$k_0$ is some regular (TODO: what's that) value of the spectral parameter.
+
+$u_i \in W_2^2(\Omega_i)$ (TODO what's $W_2^2$?)
+
+Boundary conditions: conservation of flux:
+
+$$\begin{cases}
+\beta_1 = - \beta_{12} \\
+\beta_3 = - \beta_{23} \\
+u_1(r_{12}) = u_2(r_{12}) \\
+u_3(r_{23}) = u_2(r_{23}) \\
+\end{cases}$$
+
+Search solution of scattering problem in form:
+
+$$u(r, k) = \begin{cases}
+\alpha_1 G^E_1(r, r_{12}, k) + {\tilde u}(x, k), & x \in \Omega_1 \\
+\alpha_{12} G^I(r, r_{12}, k) + \alpha_{23} G^I(r, r_{23}, k), & x \in \Omega_1 \\
+\alpha_3 G^E_3(r, r_{23}, k), & x \in \Omega_1 \\
+\end{cases}$$
+
+\subsection{Particle in a 2D box: von Neumann boundary conditions}
+
+$$-\frac{\hbar^2}{2 m} \left( \frac{\partial^2}{\partial x^2} + \frac{\partial^2}{\partial y^2} \right) \psi(x, y) = E \psi(x, y) $$
+
+$$\begin{cases}
+\psi(x, y) = X(x) Y(y) \\
+- \frac{\hbar^2}{2 m} \frac{\partial^2}{\partial x^2} X(x) = E_x X(x) \\
+- \frac{\hbar^2}{2 m} \frac{\partial^2}{\partial y^2} Y(x) = E_y Y(y) \\
+E = E_x + E_y
+\end{cases}$$
+
+$$\begin{cases}
+X(x) = A_x \sin(k_x x) + B_x \cos(k_x x) \\
+Y(y) = A_y \sin(k_y y) + B_y \cos(k_y y) \\
+k_x = \sqrt{\frac{2 m E_x}{\hbar^2}} \\
+k_y = \sqrt{\frac{2 m E_y}{\hbar^2}} \\
+\end{cases}$$
+
+Boundary conditions:
+
+$$\begin{cases}
+X'(0) = 0, A_x = 0 \\
+X'(L_x) = 0, k_x L_x = \pi n_x \\
+Y'(0) = 0, A_y = 0 \\
+Y'(L_y) = 0, k_y L_y = \pi n_y \\
+\end{cases}$$
+
+$$\begin{cases}
+\psi(x, y) = \frac{2}{\sqrt{L_x L_y}} \cos(k_x x) \cos(k_y y) \\
+k_x = \frac{\pi n_x}{L_x} \\
+k_y = \frac{\pi n_y}{L_y} \\
+E = \frac{\hbar^2 \pi^2}{2 m} \left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} \right) \\
+\end{cases}$$
+
+Let $n = n_x$, $m = n_y$.
+
+Green's function:
+
+$$G(x, y, x_s, y_s; E) = \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E}$$
+
+TODO investigate convergence on the boundary
+
+$$G(x, y, x_0, y_0; E) = G(x, y, \frac{L_x}{2}, 0; E) = \sum\limits_{n, m = 1}^\infty \frac{4}{L_x L_y} \frac{\cos(k^x_n x) \cos(k^y_m y) \cos(\frac{\pi}{2}m)}{E_{nm} - E}$$
+
+$$G(x_0, y_0, x_0, y_0; E) = \frac{4}{L_x L_y} \sum\limits_{n, m = 1}^\infty \frac{\cos(\frac{\pi}{2}n) \cos(\frac{\pi}{2}n)}{E_{nm} - E} = \frac{4}{L_x L_y} \sum\limits_{n, m = 1}^\infty \frac{\cos^2(\frac{\pi}{2}n)}{E_{nm} - E}$$
+
+$$G(x_0, y_0, x_0, y_0; E) = \frac{4}{L_x L_y} \sum\limits_{n = 1}^\infty \cos^2(\frac{\pi}{2}n) \sum\limits_{m = 1}^\infty \frac{1}{E_{nm} - E} = \frac{4}{L_x L_y} \sum\limits_{n' = 1}^\infty \sum\limits_{m = 1}^\infty \frac{1}{E_{(2n')m} - E}$$
+
+\subsection{1D free particle}
+We have two fold-eigenvalue degeneracy: for each $E$, there is $\psi^E_+(x) = N_E e^{i \sqrt{E} x}$ and $\psi^E_-(x) = N_E e^{-i \sqrt{E} x}$. $\psi_+$ and $\psi_-$ are orthonormal: $\int \psi_+(x) \psi^*_-(x) dx = \int |N_E|^2 e^{2 i \sqrt{E} x} dx = \int |N_E|^2 \frac{1}{2} e^{i \sqrt{E} x} = \frac{1}{2} |N_E|^2 2 \pi \delta(\sqrt{E})$, which is zero for non-zero $E$.
+
+Eigenstates normalization: $\bra{\psi_E} \ket{\psi_{E'}} = \int\limits_{x = - \infty}^\infty \psi_E(x) \psi_{E'}^*(x) = N_E N_{E'}^* \int\limits_{x = - \infty}^\infty e^{i (k - k') x} dx = \\ N_E N^*_{E'} 2 \pi \delta(k - k')$
+
+Next, use $\delta(g(x)) = \frac{\delta(x - x_0)}{g'(x_0)}$ (the function has only one root).
+
+$\bra{\psi_E} \ket{\psi_{E'}} = N_E N^*_{E'} 2 \pi \delta(\frac{\sqrt{2 m E}}{\hbar} - \frac{\sqrt{2 m E'}}{\hbar}) = N_E N^*_{E'} 2 \pi \sqrt{\frac{2 E }{m}} \hbar \delta(E - E')$
+
+It has to be equal to $\delta(E - E')$. For $E \ne E'$, the normalization could be arbitrary, for $E = E'$ the coefficient should be equal to 1:
+
+$|N_E|^2 2 \pi \sqrt{\frac{2 E}{m}} \hbar = 1$, therefore, $|N_E| = \left( \frac{m}{2E}\right)^{1/4}  \frac{1}{\sqrt{2 \pi \hbar}}$
+
+
+
+\subsection{Pipe}
+$$\psi(x) = e^{i \sqrt{\frac{2 m E}{\hbar^2}} x} = e^{i p x / \hbar}$$
+
+Dirac normalization:
+
+$$\psi_E(x) = \left( \frac{m}{2E}\right)^{1/4}  \frac{1}{\sqrt{2 \pi \hbar}} e^{i \frac{p}{\hbar} x}$$
+
+$$G(x, s; E_0) = \frac{1}{2 \pi \hbar} \left( \frac{m}{2}\right)^{1/2}  \left( \int\limits_{0}^{\infty} \frac{1}{\sqrt{E_\lambda}}\frac{e^{i \frac{\sqrt{2 m E_\lambda}}{\hbar} (x - s)}}{E_\lambda - E_0} d E_\lambda + \int\limits_{0}^{\infty} \frac{1}{\sqrt{E_\lambda}}\frac{e^{-i \frac{\sqrt{2 m E_\lambda}}{\hbar} (x - s)}}{E_\lambda - E_0} d E_\lambda \right)$$
+
+Change the variable of integration: $E_\lambda = \lambda^2, d E_\lambda = 2 \lambda d \lambda$:
+
+$$G(x, s; E) = \frac{1}{2 \pi \hbar} \int\limits_{-\infty}^\infty \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E}$$
+
+$$\int\limits_{-\infty}^\infty \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E} + \int_C = 2 \pi i \res_{\lambda = \sqrt{E}} f(\lambda)$$
+
+$$f(\lambda) = \frac{2 \lambda e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda^2 - E} = \frac{e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda - \sqrt{E}} + \frac{e^{i \frac{\sqrt{2m}}{\hbar} \lambda (x - s)}}{\lambda + \sqrt{E}}$$
+
+If $\sqrt{E}$ lies in upper complex plane simple pole, residue is $f(\lambda) (\lambda - \sqrt{E})$
+
+  
+
+$G(x, s; E) = \frac{1}{2 \pi \hbar} 2 \pi i e^{i \frac{\sqrt{2 m}}{\hbar} \sqrt{E} (x - s)}$
+
+\subsection{Green's function for a pipe, Neumann boundary condition, scattering from the left}
+
+Height of the pipe $H$.
+
+$$\begin{cases}
+X(x) = N_E e^{i k_x x} \\
+Y(y) = \frac{2}{\sqrt{H}} \cos(k_y y) \\
+k_x = \sqrt{E} \\
+k_y = \frac{\pi m}{H} \\
+\end{cases}$$
+
+TODO don't forget the energy normalization and wavefunction normalization
+
+\begin{comment}
+$$\begin{cases}
+\psi(x, y) = \frac{2}{\sqrt{L_x L_y}} \cos(k_x x) \cos(k_y y) \\
+k_x = \frac{\pi n_x}{L_x} \\
+E = \frac{\hbar^2 \pi^2}{2 m} \left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} \right) \\
+\end{cases}$$
+\end{comment}
+
+Suppose $M(E)$ is the count of open transversal modes for the given energy $E$.
+
+\begin{align*}
+G(x, y, x_s, y_s; E) = \int\limits_{0}^{\infty} \frac{\sum\limits_{m = 0}^{M(\lambda)} Y_m(y) Y^*_m(y_s) X(x) X^*(x_s)  }{\lambda - E} d \lambda \\
+= \sum_{m = 0}^\infty \int\limits_{0}^\infty \frac{Y_m(y) Y_m^*(y_s) X(x) X^*(x_s)}{E^y_m + \lambda - E} d\lambda \\
+= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) \int\limits_{0}^\infty \frac{X(x) X^*(x_s)}{E^y_m + \lambda - E} d\lambda \\
+= \sum_{m = 0}^\infty Y_m(y) Y^*_m(y_s) G^x(x_s, y_s; E - E^y_m) \\
+\end{align*}
 
 \end{document}
