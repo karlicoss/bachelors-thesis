@@ -644,4 +644,105 @@ G(x, y, x_s, y_s; E)
 
 TODO make clear that negative wavevectors were taken into account.
 
+\subsection{summing up}
+Let $\frac{\hbar^2}{2 \mu} = 1$.
+
+$$\begin{cases}
+x_0 = \frac{L_x}{2} \\
+y_0 = 0
+\end{cases}$$
+
+Resonator:
+
+$$\begin{cases}
+\psi_{nm}(x, y) = X_n(x) Y_m(y) \\
+E_{nm} = E^x_n + E^y_m \\
+k^x_n = \sqrt{E^x_n} = \frac{\pi n}{L_x} \\
+k^y_m = \sqrt{E^y_m} = \frac{\pi m}{L_y} \\
+X_n(x) = \sqrt{\frac{2}{L_x}} \cos(k^x_n x) \\
+Y_m(y) = \sqrt{\frac{2}{L_y}} \cos(k^y_m y) \\
+\end{cases}$$
+
+$$G_R(x, y, x_s, y_s; E) = \sum\limits_{n = 0, m = 0}^\infty \frac{\psi_{nm}(x, y) \psi_{nm}^*(x_s, y_s)}{E_{nm} - E}$$
+
+\begin{align*}
+G_R(x, y, x_0, y_0; E)
+&= G_R(x, y, \frac{L_x}{2}, 0; E) \\
+&= \sum\limits_{n = 0, m = 0}^\infty \sqrt{\frac{4}{L_x L_y}} \frac{\psi_{nm}(x, y) \cos(\frac{\pi}{2} n) \cos(0)}{E_{nm} - E} \\
+&= \sum\limits_{n' = 0}^\infty \sum\limits_{m = 0}^\infty \sqrt{\frac{4}{L_x L_y}} (-1)^{n'} \frac{\psi_{(2n')m}(x, y)}{E_{(2n')m} - E}
+\end{align*}
+
+Wire:
+
+$$\begin{cases}
+\psi_{m}(x, y) = X(x) Y_m(y) \\
+E_{m} = E^x + E^y_m \\
+k^x = \sqrt{E^x} \\
+k^y_m = \sqrt{E^y_m} = \frac{\pi m}{H} \\
+X(x) = \sqrt{\frac{1}{4 \pi \sqrt{E^x}}} = \sqrt{\frac{1}{4 \pi |k^x|}} \\
+Y_m(y) = \sqrt{\frac{2}{H}} \cos(k^y_m y) \\
+\end{cases}$$
+
+\begin{align*}
+G_W(x, y, x_s, y_s; E)
+&= \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_s) G^x(x, x_s, E - E^y_m) \\
+&= \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_s) \frac{-i}{2 k_m} e^{i k_m |x - x_s|} \\
+\end{align*}
+
+$$k_m =
+\begin{cases}
+\sqrt{E - E^y_m}, & E - E^y_m > 0 \\
+i \sqrt{|E - E^y_m|}, & E - E^y_m < 0 \\
+\end{cases}$$
+
+
+$$\psi(x; k) =
+\begin{cases}
+u(x, y; k) + \alpha_P G_W(x, y, x_0, y_0; k), & x \in \Omega_P \\
+\alpha_R G_R(x, y, x_0, y_0; k), & x \in \Omega_R
+\end{cases}
+$$
+
+$\begin{cases}
+A = (G_W(x, y, x_0, y_0; k) - G_W(x, y, x_0, y_0; k_0)) \mid_{x = x_0, y = y_0} \\
+B = (G_R(x, y, x_0, y_0; k) - G_R(x, y, x_0, y_0; k_0)) \mid_{x = x_0, y = y_0} \\
+\alpha_W = \frac{-u(x_0, y_0; k)}{A + B} \\
+\alpha_R = \frac{u(x_0, y_0; k)}{A + B} \\
+\end{cases}$
+
+\subsection{fdsfsdf}
+$x_0 = 0$, $y_0 = 0$.
+
+$k_n$ is pure real
+
+$$\psi(x, y; k) = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \frac{-i}{2 k_m} e^{i k_m |x|}$$
+
+$$\psi'(x, y; k) = Y_n(y) i k_n e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \frac{1}{2 } e^{i k_m |x|}$$
+
+
+\begin{align*}
+\int\limits_{0}^H \psi \nabla \psi^* dy &=
+   \int Y_n(y) Y_n(y) (-i k_n) = -i k_n \\
+&+ \alpha^* \int Y_n(y) Y_n(y) \frac{1}{2}  = \frac{1}{2} \alpha^* \\
+&+ \alpha \int Y_n(y) Y_n(y) \frac{-i}{2k_n}(-i k_n) =  -\frac{1}{2} \alpha \\
+&+ |\alpha|^2 \sum \int Y_m(y) Y_m(y) \frac{-i}{4 k_m} = |\alpha|^2 \sum \frac{-i}{4 k_m}  \\
+&= % -i k_n - i \sum \frac{1}{4 k_m}
+\end{align*}
+
+\begin{align*}
+\int\limits_{0}^H \psi^* \nabla \psi dy &=
+   i k_n \\
+&+ \alpha \frac{1}{2} \\
+&+ \frac{i}{2 k_n} (i k_n) = -\frac{1}{2} \alpha^* \\
+&+ |\alpha|^2 \sum \frac{i}{4 k_m^*} \\
+&= i k_n + i \sum \frac{1}{4 k^*_m}
+\end{align*}
+
+$$j_{inc} = - 2 i k_n $$
+
+$$j_{trans} = - 2 i k_n - \alpha + \alpha^* + |\alpha|^2 \sum (\frac{-i}{4 k_m} - \frac{i}{4 k_m^*})$$
+
+Actually, sum over open channels, for closed channels, $k_m = i \sqrt{|E|}$, and $\frac{1}{4 i \sqrt{|E|}} + \frac{1}{4 -i \sqrt{|E|}} = 0$, so:
+
+$$j_{trans} = -2 i k_n - \alpha + \alpha^* - |\alpha|^2 \sum_{m = 0}^{Open} \frac{2i}{4 k_m})$$
 \end{document}
