@@ -15,12 +15,15 @@ from matplotlib.colors import LogNorm, Normalize
 import scipy as sp
 import scipy.integrate
 import scipy.constants as sc
+import scipy.optimize as opt
 import scipy.special
 
 
-def cnorm(z):
+def cnorm2(z):
     return (z * np.conj(z)).real
 
+def cnorm(z):
+    return sqrt(cnorm2(z))
 
 I = complex(1j)  # TODO not sure if ok
 
@@ -199,7 +202,7 @@ class DoubleDeltaCylinderScattering:
         T = 0.0
         for i, t in enumerate(Ts):
             if self.phi_energies[i] < energy:  # open channel
-                T += (kks[i] / kks[n - 1] * cnorm(t)).real
+                T += (kks[i] / kks[n - 1] * cnorm2(t)).real
         if verbose:
             print("Total transmission coefficient:")
             print(T)
@@ -332,7 +335,7 @@ class PiecewiseDeltaCylinderScattering:
         T = 0.0
         for i, t in enumerate(Ts):
             if self.phi_energies[i] < energy:  # open channel
-                T += (kks[i] / kks[n - 1] * cnorm(t)).real
+                T += (kks[i] / kks[n - 1] * cnorm2(t)).real
         if verbose:
             print("Total transmission coefficient:")
             print(T)
@@ -363,17 +366,13 @@ class PiecewiseDeltaCylinderScattering:
         return ScatteringResult(wf=psi, T=T)
 
 
-# df: [0, RR] -> {0, 1}, returns if there is a delta at point (0, r)
-# intf: f1, f2 -> float
-# m : int
-# Lx, Ly, H
 class ResonatorRectangular2DScattering:
-    def __init__(self, mu, H, Lx, Ly, maxn):
-        self.mu = mu
-
+    def __init__(self, H, Lx, Ly, delta, maxn):
         self.H = H
         self.Lx = Lx
         self.Ly = Ly
+
+        self.delta = delta
 
         self.x0 = self.Lx / 2
         self.y0 = 0
@@ -382,7 +381,7 @@ class ResonatorRectangular2DScattering:
         self.maxn = maxn
 
         def well_energy(width, n):
-            return hbar ** 2 / (2 * self.mu) * (sc.pi * n / width) ** 2
+            return (sc.pi * n / width) ** 2
 
         def well_neumann_mode(width, n):
             k = sc.pi * n / width
@@ -391,10 +390,17 @@ class ResonatorRectangular2DScattering:
                 return coeff * np.cos(k * x)
             return fun
 
+        def well_neumann_mode_dy(width, n):
+            k = sc.pi * n / width
+            coeff = sqrt(2 / width)
+            def fun(x):
+                return k * coeff * -np.sin(k * x)
+            return fun
 
         # Wire
         self.wirey_energies = [well_energy(self.H, n) for n in range(self.maxn)]
         self.wirey_modes = [well_neumann_mode(self.H, n) for n in range(self.maxn)]
+        self.wirey_modes_dy = [well_neumann_mode_dy(self.H, n) for n in range(self.maxn)]
 
         # Resonatos
         self.resx_energies = [well_energy(self.Lx, n) for n in range(self.maxn)]
@@ -403,29 +409,33 @@ class ResonatorRectangular2DScattering:
         self.resx_modes = [well_neumann_mode(self.Lx, n) for n in range(self.maxn)]
         self.resy_modes = [well_neumann_mode(self.Ly, n) for n in range(self.maxn)]
 
-        print([i / sc.eV for i in self.wirey_energies])
-        print([i / sc.eV for i in self.resx_energies])
-        print([i / sc.eV for i in self.resy_energies])
+        print([i for i in self.wirey_energies])
+        print([i for i in self.resx_energies])
+        print([i for i in self.resy_energies])
 
 
+    # TODO only 1st mode
     def compute_scattering_full(self, energy):
-        raise NotImplementedError
-        res = []
-        for i, phiE in enumerate(self.phi_energies):
-            if phiE < energy:
-                res.append(self.compute_scattering(i + 1, energy))
-        T = 0.0
-        for r in res:
-            T += r.T
-
+        res = [self.compute_scattering(0, energy)]
+        T = sum([i.T for i in res])
         # print("Energy = {} eV, T = {}".format(energy / sc.eV, T))
         return T
 
     def compute_greens_function_wirex(self, energy, n):
-        kk = sqrt(complex(2 * self.mu * (energy - self.wirey_energies[n]))) / hbar
-        coeff = -2 * self.mu / hbar ** 2 * I / (2 * kk) # TODO negate?
+        kk = sqrt(complex(energy - self.wirey_energies[n]))
+        coeff = -I / (2 * kk)
         def fun(x, s):
             return coeff * exp(I * kk * abs(x - s))
+        return fun
+
+    def compute_greens_function_wirex_dx(self, energy, n):
+        kk = sqrt(complex(energy - self.wirey_energies[n]))
+        coeff = -I / 2 * kk
+        def fun(x, s):
+            if x < 0:
+                return coeff * - I * kk * exp(I * kk * abs(x - s))
+            else:
+                return coeff * I * kk * exp(I * kk * abs(x - s))
         return fun
 
     def compute_greens_function_wire(self, energy):
@@ -433,24 +443,40 @@ class ResonatorRectangular2DScattering:
         def fun(x, y, xs, ys):
             s = complex(0.0)
             for n in range(0, self.maxn):
-                s += self.resy_modes[n](y) * np.conj(self.resy_modes[n](ys)) * greenxs[n](x, xs)
+                s += self.wirey_modes[n](y) * np.conj(self.wirey_modes[n](ys)) * greenxs[n](x, xs)
             return s
         return fun
+
+    def compute_greens_function_wire_dx(self, energy):
+        greenxsdx = [self.compute_greens_function_wirex_dx(energy, n) for n in range(self.maxn)]
+        def fun(x, y, xs, ys):
+            s = complex(0.0)
+            for n in range(0, self.maxn):
+                s += self.wirey_modes[n](y) * np.conj(self.wirey_modes[n](ys)) * greenxsdx[n](x, xs)
+            return s
+        return fun
+
+    def compute_greens_function_wire_dy(self, energy):
+        greenxs = [self.compute_greens_function_wirex(energy, n) for n in range(self.maxn)]
+        def fun(x, y, xs, ys):
+            s = complex(0.0)
+            for n in range(0, self.maxn):
+                s += self.wirey_modes_dy[n](y) * np.conj(self.wirey_modes[n](ys)) * greenxs[n](x, xs)
+            return s
+        return fun
+
 
     def compute_greens_function_resonator(self, energy):
         def fun(x, y, xs, ys):
             s = complex(0.0)
             for n in range(0, self.maxn):
                 for m in range(0, self.maxn):
-                    s += (self.resx_modes[n](x) * np.conj(self.resx_modes[n](xs)) *
-                          self.resy_modes[m](y) * np.conj(self.resy_modes[m](ys))) /\
-                         (self.resx_energies[n] + self.resy_energies[m] - energy)
+                    s += (self.resx_modes[n](x) * np.conj(self.resx_modes[n](xs)) * self.resy_modes[m](y) * np.conj(self.resy_modes[m](ys))) / (self.resx_energies[n] + self.resy_energies[m] - energy)
             return s
         return fun
 
 
-    # TODO confusion with modes indexing :(
-    # This one should be zero-indexed
+    # Modes are zero indexed (since von Neumann's BCs admit constant eigenfunction)
     def compute_scattering(self, n, energy, verbose=False):
         assert (energy > self.wirey_energies[n])
 
@@ -458,14 +484,14 @@ class ResonatorRectangular2DScattering:
             print("-------------------")
             print("Energy: {} eV".format(energy / sc.eV))
 
-        # incoming wavefunction
-        kk = sqrt(2 * self.mu * (energy - self.wirey_energies[n])) / hbar
-        uwf = lambda x, y: self.wirey_modes[n](y) * exp(I * kk * x)
+        kks = [sqrt(complex(energy - self.wirey_energies[i])) for i in range(self.maxn)]
 
-        delta = 0.01 * sc.nano
+        # incoming wavefunction
+        uwf = lambda x, y: self.wirey_modes[n](y) * exp(I * kks[n] * x)
+
         gamma = 0.57721566490153286060
-        k0 = I / delta * exp(-gamma) # TODO
-        e0 = hbar ** 2 * k0 ** 2 / (2 * self.mu)
+        k0 = I / self.delta * exp(-gamma)
+        e0 = k0 ** 2
 
         greens_wire = self.compute_greens_function_wire(energy)
         greens_wire0 = self.compute_greens_function_wire(e0)
@@ -475,29 +501,78 @@ class ResonatorRectangular2DScattering:
         AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)
         BB = greens_resonator(self.x0, self.y0, self.x0, self.y0) - greens_resonator0(self.x0, self.y0, self.x0, self.y0)
 
-        a1 = -uwf(self.x0, self.y0) / (AA + BB)
-        a2 = -a1
+        # print(AA)
+        # print(BB)
+
+        alphaW = -uwf(self.x0, self.y0) / (AA + BB)
+        alphaR = -alphaW
+
+        print("AA = {}, BB = {}".format(AA, BB))
+        print("aw = {}, ar = {}".format(alphaW, alphaR))
+
+        uwfdx = lambda x, y: self.wirey_modes[n](y) * I * kks[n] * exp(I * kks[n] * x)
+        uwfdy = lambda x, y: self.wirey_modes_dy[n](y) * exp(I * kks[n] * x)
+        def jinc_x(x, y):
+            w = uwf(x, y)
+            dw = uwfdx(x, y)
+            return np.conj(w) * dw - w * np.conj(dw)
+
+        def jinc_y(x, y):
+            w = uwf(x, y)
+            dw = uwfdy(x, y)
+            return np.conj(w) * dw - w * np.conj(dw)
+
+        greens_wire_dx = self.compute_greens_function_wire_dx(energy)
+        def jtrans_x(x, y):
+            w = uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
+            dw = uwfdx(x, y) + alphaW * greens_wire_dx(x, y, self.x0, self.y0)
+            return np.conj(w) * dw - w * np.conj(dw)
+
+        greens_wire_dy = self.compute_greens_function_wire_dy(energy)
+        def jtrans_y(x, y):
+            w = uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
+            dw = uwfdy(x, y) + alphaW * greens_wire_dy(x, y, self.x0, self.y0)
+            return np.conj(w) * dw - w * np.conj(dw)
+
+        # print(integrate_complex(lambda h: jinc_x(-1000, h), - self.H, 0)[0])
+        # print(integrate_complex(lambda h: jtrans_x(1000, h), - self.H, 0)[0])
+
+        jinc_cross = integrate_complex(lambda h: jinc_x(-100, h), - self.H, 0)[0]
+        jtrans_cross = integrate_complex(lambda h: jtrans_x(1000, h), - self.H, 0)[0]
+
+
+        T = cnorm(jtrans_cross) / cnorm(jinc_cross)
+        # T = cnorm(jtrans_cross) / cnorm(jtrans2_cross)
+        # T = cnorm(jtransc) / cnorm(jincc)
+        print("Energy = {}, T = {:.2f}, Ta = {:.2f}".format(energy, T, Ta))
 
         def psi(x, y):
             if y < -self.H:
                 return complex(0.0)
             elif y < 0:
-                return uwf(x, y) + a1 * greens_wire(x, y, self.x0, self.y0)
+                if x < self.x0:
+                    return uwf(x, y)
+                else:
+                    return uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
             elif y < self.Ly:
                 if x < 0:
                     return complex(0.0)
                 elif x < self.Lx:
-                    return a2 * greens_resonator(x, y, self.x0, self.y0)
+                    return alphaR * greens_resonator(x, y, self.x0, self.y0)
                 else:
                     return complex(0.0)
             else:
                 return complex(0.0)
 
-        return ScatteringResult(wf=psi, T=-1.0)
+
+        return ScatteringResult(wf=psi, T=T)
 
 def plot_transmission(dcs, left, right, step, maxt = None, fname="transmission.png", info = None):
     if maxt is None:
         maxt = dcs.maxn
+
+    if info is None:
+        info = ""
 
     xs = arange(left, right, step)
     ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
@@ -505,38 +580,32 @@ def plot_transmission(dcs, left, right, step, maxt = None, fname="transmission.p
     fig = plt.figure(figsize=(15, 10), dpi=500)
     ax = fig.add_subplot(111)  # , aspect = 'equal'
 
-    ax.vlines(dcs.phi_energies, 0.0, dcs.maxn)
+    # ax.vlines(dcs.phi_energies, 0.0, dcs.maxn)
 
-    xticks = arange(left, right, 0.1 * sc.eV)
-    xlabels = ["{:.1f}".format(t / sc.eV) for t in xticks]
+    # xticks = arange(left, right, 0.1 * sc.eV)
+    # xlabels = ["{:.1f}".format(t / sc.eV) for t in xticks]
     ax.set_xlim(left, right)
-    ax.set_xticks(xticks)
-    ax.set_xticklabels(xlabels)
+    # ax.set_xticks(xticks)
+    # ax.set_xticklabels(xlabels)
     ax.set_xlabel("E, eV")
 
-    yticks = arange(0.0, maxt, 1.0)
-    ylabels = ["{:.1f}".format(t) for t in yticks]
+    # yticks = arange(0.0, maxt, 1.0)
+    # ylabels = ["{:.1f}".format(t) for t in yticks]
     ax.set_ylim(0.0, maxt)
-    ax.set_yticks(yticks)
-    ax.set_yticklabels(ylabels)
+    # ax.set_yticks(yticks)
+    # ax.set_yticklabels(ylabels)
     ax.set_ylabel("T")
 
     cax = ax.plot(xs, ys)
-    ax.set_title("Transmission coefficient, m = {}".format(dcs.m) + ("" if info is None else "\n" + info))
+    ax.set_title(info)
 
     fig.savefig(fname)
     plt.close(fig)
 
 # TODO MODIFY PLOT_WAVEFUNCTION USAGES
-def plot_wavefunction(dcs, n, energy, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", info=None):
-    res = dcs.compute_scattering(n, energy, verbose=False)
-
-    T = res.T
-    wf = res.wf
-    pf = lambda z, r: cnorm(wf(z, r))
+def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", title=None):
+    pf = lambda z, r: cnorm2(wf(z, r))
     vpf = np.vectorize(pf)
-
-    print("Total transmission: {}".format(T))
 
     x, y = np.mgrid[slice(fx, tx + dx, dx), slice(fy, ty + dy, dy)]
     z = vpf(x, y)
@@ -544,19 +613,25 @@ def plot_wavefunction(dcs, n, energy, fx, tx, dx, fy, ty, dy, fname="wavefunctio
     z_min, z_max = np.abs(z).min(), np.abs(z).max()
 
     fig = plt.figure(figsize=(15, 10), dpi=500)
-    ax = fig.add_subplot(211)  # , aspect = 'equal'
+    ax = fig.add_subplot(111, aspect = 'equal')
 
-    ax.set_title("n = {}, E = {:.2f} eV, T = {:.2f}".format(n, energy / sc.eV, T) + (
-        "" if info is None else "\n{}".format(info)))
+    # ax.set_title("n = {}, E = {:.2f} eV, T = {:.2f}".format(n, energy / sc.eV, T) + (
+    #     "" if info is None else "\n{}".format(info)))
+    if title is not None:
+        ax.set_title(title)
 
-    xticks = arange(fx, tx, 1 * sc.nano)
-    xlabels = ["{:.1f}".format(t / sc.nano) for t in xticks]
+    # xticks = arange(fx, tx, sc.nano)
+    # xlabels = ["{:.1f}".format(t / sc.nano) for t in xticks]
+    xticks = arange(fx, tx, 1.0)
+    xlabels = ["{:.1f}".format(t) for t in xticks]
     ax.set_xlim(fx, tx)
     ax.set_xticks(xticks)
     ax.set_xticklabels(xlabels)
 
-    yticks = arange(fy, ty, sc.nano)
-    ylabels = ["{:.1f}".format(t / sc.nano) for t in yticks]
+    # yticks = arange(fy, ty, sc.nano)
+    # ylabels = ["{:.1f}".format(t / sc.nano) for t in yticks]
+    yticks = arange(fy, ty, 1.0)
+    ylabels = ["{:.1f}".format(t) for t in yticks]
     ax.set_ylim(fy, ty)
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
@@ -565,12 +640,12 @@ def plot_wavefunction(dcs, n, energy, fx, tx, dx, fy, ty, dy, fname="wavefunctio
 
     cbar = fig.colorbar(cax)
 
-    bx = fig.add_subplot(212)
-    bx.set_title("Wavefunction at x = 0")
-
-    rr = arange(fy, ty, 0.01 * sc.nano)
-    ww = list(map(lambda r: pf(0, r), rr))
-    bx.plot(rr, ww)
+    # bx = fig.add_subplot(212)
+    # bx.set_title("Wavefunction at x = 0")
+    #
+    # rr = arange(fy, ty, 0.01 * sc.nano)
+    # ww = list(map(lambda r: pf(0, r), rr))
+    # bx.plot(rr, ww)
 
     fig.savefig(fname)
     plt.close(fig)
@@ -634,27 +709,179 @@ def test_racec(maxn):
     # test_same(maxn)
     test_surrounded(maxn)
 
-def test_resonator():
-    Lx = 5 * sc.nano
-    Ly = 5 * sc.nano
-    H = 5 * sc.nano
-    mu = 0.19 * sc.m_e
-    maxn = 40
-    sp = ResonatorRectangular2DScattering(mu, H, Lx, Ly, maxn)
+class ResonatorScattering:
+    def __init__(self, H, Lx, Ly, delta, maxn):
+        self.H = H
+        self.Lx = Lx
+        self.Ly = Ly
 
-    energy = 0.5 * sc.eV
-    fx = -10.0 * sc.nano
-    tx = 15.0 * sc.nano
-    dx = 0.1 * sc.nano
+        self.delta = delta
+        self.maxn = maxn
+
+        self.x0 = 0.0
+        self.y0 = 0.0
+
+
+        def well_energy(width, n):
+            return (sc.pi * n / width) ** 2
+
+        def well_function(width, shift, n):
+            return lambda x: sqrt(2.0 / width) * np.cos(sc.pi * n / width * (x + shift))
+
+        self.res_x_modes = [well_function(self.Lx, self.Lx / 2, n) for n in range(self.maxn)]
+        self.res_x_energies = [well_energy(self.Lx, n) for n in range(self.maxn)]
+        self.res_y_modes = [well_function(self.Ly, 0, m) for m in range(self.maxn)]
+        self.res_y_energies = [well_energy(self.Ly, m) for m in range(self.maxn)]
+
+        self.wire_y_modes = [well_function(self.H, 0, m) for m in range(self.maxn)]
+        self.wire_y_energies = [well_energy(self.H, m) for m in range(self.maxn)]
+
+        print(self.wire_y_energies)
+
+    def greens_function_resonator(self, energy):
+        def fun(x, y, xs, ys):
+            res = complex(0.0)
+            for n in range(self.maxn):
+                for m in range(self.maxn):
+                    res += self.res_x_modes[n](x) * self.res_y_modes[m](y) * \
+                           np.conj(self.res_x_modes[n](xs) * self.res_y_modes[m](ys)) / \
+                           (self.res_x_energies[n] + self.res_y_energies[m] - energy)
+            return res
+        return fun
+
+    def get_kks(self, energy):
+        return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn)]
+
+    def greens_function_wire(self, energy):
+        kks = self.get_kks(energy)
+        def fun(x, y, xs, ys):
+            res = complex(0.0)
+            for m in range(self.maxn):
+                res += self.wire_y_modes[m](y) * np.conj(self.wire_y_modes[m](ys)) * \
+                    -I / (2 * kks[m]) * exp(I * kks[m] * np.abs(x - xs))
+            return res
+        return fun
+
+    def compute_scattering_full(self, energy):
+        res = [self.compute_scattering(1, energy)]
+        T = sum([i.T for i in res])
+        # print("Energy = {} eV, T = {}".format(energy / sc.eV, T))
+        return T
+
+    def compute_scattering(self, m, energy, verbose=False):
+        assert (energy > self.wire_y_energies[m])
+        kks = self.get_kks(energy)
+
+        # incoming wavefunction
+        uwf = lambda x, y: self.wire_y_modes[m](y) * exp(I * kks[m] * x)
+
+        gamma = 0.57721566490153286060
+        k0 = I / self.delta * exp(-gamma)
+        e0 = k0 ** 2
+
+        greens_wire = self.greens_function_wire(energy)
+        greens_wire0 = self.greens_function_wire(e0)
+        greens_resonator = self.greens_function_resonator(energy)
+        greens_resonator0 = self.greens_function_resonator(e0)
+
+        AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)
+        BB = greens_resonator(self.x0, self.y0, self.x0, self.y0) - greens_resonator0(self.x0, self.y0, self.x0, self.y0)
+
+        print("AA = {}, BB = {}".format(AA, BB))
+
+        alphaW = -uwf(self.x0, self.y0) / (AA + BB)
+        alphaR = -alphaW
+
+        print("aW = {}, aR = {}".format(alphaW, alphaR))
+
+        jinca = -2 * I * kks[m]
+        jtransa = -2 * I * kks[m] - alphaW + np.conj(alphaW)
+        for i in range(self.maxn):
+            if self.wire_y_energies[i] > energy:
+                break
+            jtransa += cnorm2(alphaW) * -2 * I / (4 * kks[i])
+
+        T = cnorm(jtransa) / cnorm(jinca)
+        print("Energy = {}, T = {:.2f}".format(energy, T))
+
+        def psi(x, y):
+            if y < -self.H:
+                return complex(0.0)
+            elif y < 0:
+                if x < self.x0:
+                    return uwf(x, y)
+                else:
+                    return uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
+            elif y < self.Ly:
+                if x < -self.Lx / 2:
+                    return complex(0.0)
+                elif x < self.Lx / 2:
+                    return alphaR * greens_resonator(x, y, self.x0, self.y0)
+                else:
+                    return complex(0.0)
+            else:
+                return complex(0.0)
+
+
+        return ScatteringResult(wf=psi, T=T)
+
+def test_resonator():
+    Lx = 2.0
+    Ly = 2.0
+    H = 2.0
+    delta = 0.00001
+    maxn = 20
+    # sp = ResonatorRectangular2DScattering(H, Lx, Ly, delta, maxn)
+    sp = ResonatorScattering(H, Lx, Ly, delta, maxn)
+
+    energy = 5.9
+    fx = -5.0
+    tx = 6.0
+    dx = 0.05
     fy = -H
     ty = Ly
-    dy = 0.1 * sc.nano
+    dy = 0.02
 
-    n = 2
+    n = 0
 
-    plot_wavefunction(sp, n, energy,
-                      fx, tx, dx,
-                      fy, ty, dy)
+    # res = sp.compute_scattering(n, energy)
+    # plot_wavefunction(res.wf,
+    #                   fx, tx, dx,
+    #                   fy, ty, dy,
+    #                   fname="rwavefunction.png",
+    #                   title="Wavefunction at energy {:.2f}".format(energy))
+
+
+    # sp.compute_scattering(n, energy)
+
+
+    # res_en = opt.fmin(lambda en: sp.compute_scattering_full(en[0]), 45.0, xtol = 0.000000001, ftol = 0.0000000001)
+    # print(res_en)
+
+
+    plot_transmission(sp,
+                      10.0, 90.0, 0.1,
+                      maxt=5.0,
+                      fname="sq_transmission.png",
+                      info="Transmission")
+
+
+    # for energy in arange(10.0, 95.0, 1.0):
+    #     res = sp.compute_scattering(n, energy)
+    #     plot_wavefunction(res.wf,
+    #                       fx, tx, dx,
+    #                       fy, ty, dy,
+    #                       fname="wavefunction{:.2f}.png".format(energy),
+    #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+
+    # return
+    # for en in arange(10.0, 100.0, 5.0):
+    #     res = sp.compute_scattering(n, en)
+    #     plot_wavefunction(res.wf,
+    #                       fx, tx, dx,
+    #                       fy, ty, dy,
+    #                       fname="sq_wavefunction{:.1f}.png".format(en),
+    #                       title="Wavefunction at energy {:.1f}".format(en))
 
 
 def test_cylinder(maxn):
@@ -723,7 +950,7 @@ def test_double_delta_slits():
     dr = 0.1 * sc.nano
     energy = 0.0773102 * sc.eV
     plot_wavefunction(dcs, n, energy, -d, d, dz, dr,
-                      info="u1 = {:.2f} nm * eV (at a = {:.2f}) nm\nu2 = {:.2f} nm * eV (at b = {:.2f})\nslit width = {:.2f} nm".format(
+                      title="u1 = {:.2f} nm * eV (at a = {:.2f}) nm\nu2 = {:.2f} nm * eV (at b = {:.2f})\nslit width = {:.2f} nm".format(
                           u1 / sc.nano / sc.eV,
                           a / sc.nano,
                           u2 / sc.nano / sc.eV,
