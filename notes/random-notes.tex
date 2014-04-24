@@ -715,34 +715,118 @@ $x_0 = 0$, $y_0 = 0$.
 
 $k_n$ is pure real
 
-$$\psi(x, y; k) = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \frac{-i}{2 k_m} e^{i k_m |x|}$$
+$$\psi(x, y; k) = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_0) \frac{-i}{2 k_m} e^{i k_m |x|} = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{-i}{2 k_m} e^{i k_m |x|} $$
 
-$$\psi'(x, y; k) = Y_n(y) i k_n e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \frac{1}{2 } e^{i k_m |x|}$$
+$$\psi'(x, y; k) = Y_n(y) i k_n e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{1}{2 } e^{i k_m |x|}$$
 
 
 \begin{align*}
 \int\limits_{0}^H \psi \nabla \psi^* dy &=
    \int Y_n(y) Y_n(y) (-i k_n) = -i k_n \\
-&+ \alpha^* \int Y_n(y) Y_n(y) \frac{1}{2}  = \frac{1}{2} \alpha^* \\
-&+ \alpha \int Y_n(y) Y_n(y) \frac{-i}{2k_n}(-i k_n) =  -\frac{1}{2} \alpha \\
-&+ |\alpha|^2 \sum \int Y_m(y) Y_m(y) \frac{-i}{4 k_m} = |\alpha|^2 \sum \frac{-i}{4 k_m}  \\
+&+ \alpha^* \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{1}{2}  = \sqrt{\frac{2}{H}}\frac{1}{2} \alpha^* \\
+&+ \alpha \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{-i}{2k_n}(-i k_n) =  - \sqrt{\frac{2}{H}}\frac{1}{2} \alpha \\
+&+ |\alpha|^2 \sum \int \sqrt{\frac{2}{H}} \sqrt{\frac{2}{H}} Y_m(y) Y_m(y) \frac{-i}{4 k_m} = |\alpha|^2 \frac{2}{H} \sum \frac{-i}{4 k_m}  \\
 &= % -i k_n - i \sum \frac{1}{4 k_m}
 \end{align*}
 
 \begin{align*}
 \int\limits_{0}^H \psi^* \nabla \psi dy &=
    i k_n \\
-&+ \alpha \frac{1}{2} \\
-&+ \frac{i}{2 k_n} (i k_n) = -\frac{1}{2} \alpha^* \\
-&+ |\alpha|^2 \sum \frac{i}{4 k_m^*} \\
-&= i k_n + i \sum \frac{1}{4 k^*_m}
+&+ \alpha \sqrt{\frac{2}{H}} \frac{1}{2} \\
+&+ \frac{i}{2 k_n} (i k_n) = -\frac{1}{2} \sqrt{\frac{2}{H}} \alpha^* \\
+&+ |\alpha|^2 \frac{2}{H} \sum \frac{i}{4 k_m^*} \\
+&= % i k_n + i \sum \frac{1}{4 k^*_m}
 \end{align*}
 
 $$j_{inc} = - 2 i k_n $$
 
-$$j_{trans} = - 2 i k_n - \alpha + \alpha^* + |\alpha|^2 \sum (\frac{-i}{4 k_m} - \frac{i}{4 k_m^*})$$
+$$j_{trans} = - 2 i k_n - \sqrt{\frac{2}{H}} \alpha + \sqrt{\frac{2}{H}} \alpha^* + \frac{2}{H}|\alpha|^2 \sum (\frac{-i}{4 k_m} - \frac{i}{4 k_m^*})$$
 
 Actually, sum over open channels, for closed channels, $k_m = i \sqrt{|E|}$, and $\frac{1}{4 i \sqrt{|E|}} + \frac{1}{4 -i \sqrt{|E|}} = 0$, so:
 
-$$j_{trans} = -2 i k_n - \alpha + \alpha^* - |\alpha|^2 \sum_{m = 0}^{Open} \frac{2i}{4 k_m})$$
+$$j_{trans} = -2 i k_n - \sqrt{\frac{2}{H}} \alpha + \sqrt{\frac{2}{H}} \alpha^* - \frac  {2}{H}|\alpha|^2 \sum_{m = 0}^{Open} \frac{2i}{4 k_m})$$
+
+\section{Single point-like opening}
+Opening at $x_0 = 0$, $y_0 = 0$.
+
+$$Y_m(y) = \sqrt{\frac{2}{H}} \cos(\frac{\pi m}{H} (y - \frac{H}{2}))$$
+
+$$\psi(x, y; E) =
+\begin{cases}
+u(x, y; E) + \alpha_L G_L(x, y, x_0, y_0; E), & x \in \Omega_L \\
+\alpha_R G_R(x, y, x_0, y_0; E), & x \in \Omega_R \\
+\end{cases}$$
+
+$$u(x, y; E) = Y_n(y) e^{i k_n x}$$
+
+$$C_L = (G_L(x, y, x_0, y_0; E) - G_L(x, y, x_0, y_0; E_0))\mid_{x = x_0, y = y_0}$$
+$$C_R = (G_R(x, y, x_0, y_0; E) - G_R(x, y, x_0, y_0; E_0))\mid_{x = x_0, y = y_0}$$
+
+$$\alpha_L = -\alpha_R = \frac{-u(x_0, y_0; E_0)}{C_L + C_R}$$
+
+$$G_L(x, y, x_s, y_s; E) = G_R(x, y, x_s, y_s; E) = \sum\limits_{m = 0}^\infty Y_m(y) Y_m(y_s) \frac{-i}{2 k_m} e^{i k_m |x - x_s|}$$
+
+$$j_{inc} = -2 i k_n$$
+
+
+$$\psi_R(x, y; E) = \alpha_R Y_m(y) Y_m(y_0) \frac{-i}{2 k_m} e^{i k_m x}$$
+
+$$\nabla \psi_R(x, y; E) = \alpha_R Y_m(y) Y_m(y_0) \frac{1}{2} e^{i k_m x}$$
+
+
+\begin{align*}
+\int \psi_R \nabla \psi_R^* &= |\alpha_R|^2 \sum\limits_{m = 0}^\infty Y_m^2(y_0) \frac{-i}{4 k_m} e^{i k_m x} e^{-i k_m^* x}
+\end{align*}
+
+\begin{align*}
+\int \psi^*_R \nabla \psi_R* &= |\alpha_R|^2 \sum\limits_{m = 0}^\infty Y_m^2(y_0) \frac{i}{4 k_m^*} e^{-i k_m^* x} e^{i k_m x}
+\end{align*}
+
+For open modes: $k_m$ is pure real, $k_m^* = k_m$, exponents annihilate.
+
+For closed modes: $k_m$ is pure imaginaty, $e^{i i |k_m| x} e^{-i (-i |k_m|) x} = e^{- |k_m| x}$, tend to zero at infinity. TODO what if $k_m$ is very small?
+
+$$j_{trans} = -2i |\alpha_R|^2 \sum\limits_{m = 0}^{Open} Y_m^2(y_0) \frac{1}{4 k_m}$$
+
+TODO Green's function for half-space!!!
+
+\subsection{Green's function for half-space}
+From Porter, p.15:
+
+$$G(x, x_s; E) = \frac{i}{2 k} \left( e^{i k |x - x_s|} - e^{i k (x + x_s)} \right)$$
+
+TODO that was Dirichlet :(
+
+TODO:
+Mathematics: $L_x G(x, s) = \delta(x - s)$, $G(x, s; E) = \sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$
+
+Physics: $L_x G(x, s) = -\delta(x - s)$, $G(x, s; E) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$
+
+We use PHYSICS notation, the same thing in the eigendecomposition!
+
+Green's function for differential operator, and as the kernel of the resolvent!
+
+TODO what about sign?
+
+$W(z) = \begin{vmatrix} u_L'(x; z) & u_L(x; z) \\ u_R'(x; z) & u_R(x; z)\end{vmatrix}$
+
+$G(x, s; z) = \frac{1}{W(z)} (u_L(x; z) u_R(s; z) \theta(s - x) + u_L(s; z) u_R(x; z) \theta(x - s))$ 
+
+Ok, Neumann BC on $u_L$:
+
+$u_L'(0) = 0$, $u_L(x) = e^{ikx} + e^{-ikx}$
+
+$u_R(\infty) = 0$, $u_R(x) = e^{ikx}$
+
+$W(z) = \begin{vmatrix} 0 & 2\\ ik & 1 \end{vmatrix} = -2 i k$
+
+$\frac{1}{W(z)} = \frac{i}{2k}$
+
+\begin{align*}
+G(x, y; z)
+&= \frac{i}{2k} [(e^{ikx} + e^{-ikx}) e^{iks} \theta(s - x) +  (e^{iks} + e^{-iks}) e^{ikx} \theta(x - s)] \\
+&= \frac{i}{2k} [(e^{ik(x + s)} + e^{ik(s - x)}) \theta(s - x) + (e^{ik(x + s)} + e^{ik (x - s)}) \theta(x - s)] \\
+&= \frac{i}{2k} [e^{ik|x - s|} + e^{ik (x + s)}]
+\end{align*}
+
 \end{document}
