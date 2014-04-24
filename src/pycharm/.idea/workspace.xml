@@ -26,7 +26,7 @@
       <file leaf-file-name="cylinder-scattering.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="964" column="13" selection-start="32569" selection-end="32569" vertical-scroll-proportion="10.979716" vertical-offset="9047" max-vertical-offset="17505">
+            <state line="365" column="44" selection-start="11936" selection-end="11936" vertical-scroll-proportion="-0.50395256" vertical-offset="5730" max-vertical-offset="14475">
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -328,10 +328,6 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/cylinder-scattering.py</url>
-          <line>547</line>
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/../../../../../Dropbox/study/univer/thesis/src/pycharm/cylinder-scattering.py</url>
           <line>629</line>
           <option name="timeStamp" value="1" />
@@ -494,7 +490,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="964" column="13" selection-start="32569" selection-end="32569" vertical-scroll-proportion="10.979716" vertical-offset="9047" max-vertical-offset="17505">
+        <state line="365" column="44" selection-start="11936" selection-end="11936" vertical-scroll-proportion="-0.50395256" vertical-offset="5730" max-vertical-offset="14475">
           <folding>
             <element signature="e#0#34#0" expanded="true" />
           </folding>
