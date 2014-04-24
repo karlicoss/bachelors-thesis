@@ -567,12 +567,15 @@ class ResonatorRectangular2DScattering:
 
         return ScatteringResult(wf=psi, T=T)
 
-def plot_transmission(dcs, left, right, step, maxt = None, fname="transmission.png", info = None):
+def plot_transmission(dcs, left, right, step, maxt = None, fname="transmission.png", info = None, vlines = None):
     if maxt is None:
         maxt = dcs.maxn
 
     if info is None:
         info = ""
+
+    if vlines is None:
+        vlines = []
 
     xs = arange(left, right, step)
     ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
@@ -580,7 +583,8 @@ def plot_transmission(dcs, left, right, step, maxt = None, fname="transmission.p
     fig = plt.figure(figsize=(15, 10), dpi=500)
     ax = fig.add_subplot(111)  # , aspect = 'equal'
 
-    # ax.vlines(dcs.phi_energies, 0.0, dcs.maxn)
+
+    ax.vlines(vlines, 0.0, maxt)
 
     # xticks = arange(left, right, 0.1 * sc.eV)
     # xlabels = ["{:.1f}".format(t / sc.eV) for t in xticks]
@@ -736,7 +740,12 @@ class ResonatorScattering:
         self.wire_y_modes = [well_function(self.H, 0, m) for m in range(self.maxn)]
         self.wire_y_energies = [well_energy(self.H, m) for m in range(self.maxn)]
 
+        print("Wire:")
         print(self.wire_y_energies)
+        print("Resx:")
+        print(self.res_x_energies)
+        print("Resy:")
+        print(self.res_y_energies)
 
     def greens_function_resonator(self, energy):
         def fun(x, y, xs, ys):
@@ -746,6 +755,10 @@ class ResonatorScattering:
                     res += self.res_x_modes[n](x) * self.res_y_modes[m](y) * \
                            np.conj(self.res_x_modes[n](xs) * self.res_y_modes[m](ys)) / \
                            (self.res_x_energies[n] + self.res_y_energies[m] - energy)
+                    # print("n = {}, m = {}: {}".format(n, m, self.res_x_energies[n] + self.res_y_energies[m] - energy))
+                    # print(self.res_x_modes[n](x) * self.res_y_modes[m](y) * \
+                    #        np.conj(self.res_x_modes[n](xs) * self.res_y_modes[m](ys)) / \
+                    #        (self.res_x_energies[n] + self.res_y_energies[m] - energy))
             return res
         return fun
 
@@ -758,7 +771,7 @@ class ResonatorScattering:
             res = complex(0.0)
             for m in range(self.maxn):
                 res += self.wire_y_modes[m](y) * np.conj(self.wire_y_modes[m](ys)) * \
-                    -I / (2 * kks[m]) * exp(I * kks[m] * np.abs(x - xs))
+                    I / (2 * kks[m]) * exp(I * kks[m] * np.abs(x - xs)) # TODO sign
             return res
         return fun
 
@@ -779,27 +792,35 @@ class ResonatorScattering:
         k0 = I / self.delta * exp(-gamma)
         e0 = k0 ** 2
 
+
         greens_wire = self.greens_function_wire(energy)
         greens_wire0 = self.greens_function_wire(e0)
         greens_resonator = self.greens_function_resonator(energy)
         greens_resonator0 = self.greens_function_resonator(e0)
 
+
+        # ???
         AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)
         BB = greens_resonator(self.x0, self.y0, self.x0, self.y0) - greens_resonator0(self.x0, self.y0, self.x0, self.y0)
 
-        print("AA = {}, BB = {}".format(AA, BB))
+        # print(greens_wire(self.x0, self.y0, self.x0, self.y0))
+        # if verbose:
+        print("|AA| = {}, |BB| = {}".format(cnorm(AA), cnorm(BB)))
 
         alphaW = -uwf(self.x0, self.y0) / (AA + BB)
         alphaR = -alphaW
 
-        print("aW = {}, aR = {}".format(alphaW, alphaR))
+        if verbose:
+            print("aW = {}, aR = {}".format(alphaW, alphaR))
 
         jinca = -2 * I * kks[m]
-        jtransa = -2 * I * kks[m] - alphaW + np.conj(alphaW)
+        jtransa = -2 * I * kks[m]
+        jtransa += sqrt(2 / self.H) * alphaW # TODO sign
+        jtransa -= sqrt(2 / self.H) * np.conj(alphaW) # TODO sign
         for i in range(self.maxn):
             if self.wire_y_energies[i] > energy:
                 break
-            jtransa += cnorm2(alphaW) * -2 * I / (4 * kks[i])
+            jtransa += 2 / self.H * cnorm2(alphaW) * -2 * I / (4 * kks[i])
 
         T = cnorm(jtransa) / cnorm(jinca)
         print("Energy = {}, T = {:.2f}".format(energy, T))
@@ -808,10 +829,11 @@ class ResonatorScattering:
             if y < -self.H:
                 return complex(0.0)
             elif y < 0:
-                if x < self.x0:
-                    return uwf(x, y)
-                else:
-                    return uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
+                return uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
+                # if x < self.x0:
+                #     return uwf(x, y)
+                # else:
+                #     return uwf(x, y) + alphaW * greens_wire(x, y, self.x0, self.y0)
             elif y < self.Ly:
                 if x < -self.Lx / 2:
                     return complex(0.0)
@@ -825,16 +847,125 @@ class ResonatorScattering:
 
         return ScatteringResult(wf=psi, T=T)
 
+
+
+class OnePointScattering:
+    def __init__(self, H, delta, maxn):
+        self.H = H
+
+        self.delta = delta
+        self.maxn = maxn
+
+        self.x0 = 0.0
+        self.y0 = 0.0
+
+        def well_energy(width, n):
+            return (sc.pi * n / width) ** 2
+
+        def well_function(width, shift, n):
+            return lambda x: sqrt(2.0 / width) * np.cos(sc.pi * n / width * (x + shift))
+
+        self.wire_y_modes = [well_function(self.H, -self.H / 2, m) for m in range(self.maxn)]
+        self.wire_y_energies = [well_energy(self.H, m) for m in range(self.maxn)]
+
+        print("Wire:")
+        print(self.wire_y_energies)
+
+    def get_kks(self, energy):
+        return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn)]
+
+    def greens_function_wire(self, energy):
+        kks = self.get_kks(energy)
+        def fun(x, y, xs, ys):
+            res = complex(0.0)
+            for m in range(self.maxn):
+                res += self.wire_y_modes[m](y) * np.conj(self.wire_y_modes[m](ys)) * \
+                    -I / (2 * kks[m]) * exp(I * kks[m] * np.abs(x - xs))
+            return res
+        return fun
+
+    def compute_scattering_full(self, energy):
+        res = [self.compute_scattering(0, energy)]
+        T = sum([i.T for i in res])
+        return T
+
+    def compute_scattering(self, m, energy, verbose=False):
+        assert (energy > self.wire_y_energies[m])
+        kks = self.get_kks(energy)
+
+        # incoming wavefunction
+        uwf = lambda x, y: self.wire_y_modes[m](y) * exp(I * kks[m] * x)
+
+        gamma = 0.57721566490153286060
+        k0 = I / self.delta * exp(-gamma)
+        e0 = k0 ** 2
+
+
+        greens_wire = self.greens_function_wire(energy)
+        greens_wire0 = self.greens_function_wire(e0)
+
+        AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)
+
+        print("AA = {}".format(AA))
+
+        alphaL = -uwf(self.x0, self.y0) / (AA + AA)
+        alphaR = -alphaL
+
+        print("aL = {}, aR = {}".format(alphaL, alphaR))
+
+        jinca = -2 * I * kks[m]
+        jtransa = complex(0.0)
+        for i in range(self.maxn):
+            if self.wire_y_energies[i] > energy:
+                break
+            jtransa += self.wire_y_modes[i](self.y0) ** 2 / (4 * kks[i])
+        jtransa *= -2 * I * cnorm2(alphaR)
+
+        T = cnorm(jtransa) / cnorm(jinca)
+        print("Energy = {}, T = {:.2f}".format(energy, T))
+
+        def psi(x, y):
+            if y < -self.H / 2:
+                return complex(0.0)
+            elif y < self.H / 2:
+                if x < 0:
+                    return uwf(x, y) + alphaL * greens_wire(x, y, self.x0, self.y0) # TODO green's function
+                else:
+                    return alphaR * greens_wire(x, y, self.x0, self.y0) # TODO green's function
+            else:
+                return complex(0.0)
+
+
+        return ScatteringResult(wf=psi, T=T)
+
+def test_onepoint():
+    H = 1.0
+    delta = 0.001
+    maxn = 10
+    sp = OnePointScattering(H, delta, maxn)
+
+    fx = -5.0
+    tx = 6.0
+    dx = 0.05
+    fy = -H / 2
+    ty = H / 2
+    dy = 0.02
+
+    plot_transmission(sp,
+                  0.1, 10.0, 0.1,
+                  maxt=2.0,
+                  fname="op_transmission.png",
+                  info="Transmission")
+
 def test_resonator():
-    Lx = 2.0
-    Ly = 2.0
-    H = 2.0
-    delta = 0.00001
-    maxn = 20
+    Lx = 1.0
+    Ly = 1.0
+    H = 1.0
+    delta = 0.001
+    maxn = 100 # TODO
     # sp = ResonatorRectangular2DScattering(H, Lx, Ly, delta, maxn)
     sp = ResonatorScattering(H, Lx, Ly, delta, maxn)
 
-    energy = 5.9
     fx = -5.0
     tx = 6.0
     dx = 0.05
@@ -842,7 +973,9 @@ def test_resonator():
     ty = Ly
     dy = 0.02
 
-    n = 0
+    energy = 10.0
+    n = 1
+
 
     # res = sp.compute_scattering(n, energy)
     # plot_wavefunction(res.wf,
@@ -851,37 +984,25 @@ def test_resonator():
     #                   fname="rwavefunction.png",
     #                   title="Wavefunction at energy {:.2f}".format(energy))
 
-
-    # sp.compute_scattering(n, energy)
-
-
-    # res_en = opt.fmin(lambda en: sp.compute_scattering_full(en[0]), 45.0, xtol = 0.000000001, ftol = 0.0000000001)
-    # print(res_en)
+    # print(opt.fmin(lambda x: sp.compute_scattering_full(x[0]), 9.0))
 
 
+    import itertools
+    resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
     plot_transmission(sp,
-                      10.0, 90.0, 0.1,
-                      maxt=5.0,
+                      10.0, 100.0, 0.1,
+                      maxt=2.0,
                       fname="sq_transmission.png",
-                      info="Transmission")
+                      info="Transmission",
+                      vlines=resenergies)
 
-
-    # for energy in arange(10.0, 95.0, 1.0):
+    # for energy in arange(2.5, 30.0, 0.5):
     #     res = sp.compute_scattering(n, energy)
     #     plot_wavefunction(res.wf,
     #                       fx, tx, dx,
     #                       fy, ty, dy,
     #                       fname="wavefunction{:.2f}.png".format(energy),
     #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
-
-    # return
-    # for en in arange(10.0, 100.0, 5.0):
-    #     res = sp.compute_scattering(n, en)
-    #     plot_wavefunction(res.wf,
-    #                       fx, tx, dx,
-    #                       fy, ty, dy,
-    #                       fname="sq_wavefunction{:.1f}.png".format(en),
-    #                       title="Wavefunction at energy {:.1f}".format(en))
 
 
 def test_cylinder(maxn):
@@ -1023,6 +1144,7 @@ def test_slit():
 
 
 def main():
+    # test_onepoint()
     test_resonator()
     # test_racec(5)
     # test_cylinder(1)
