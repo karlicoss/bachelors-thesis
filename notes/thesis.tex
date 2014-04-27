@@ -1,0 +1,91 @@
+\documentclass[12pt, a4paper]{article}
+%Gummi|065|=)
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd}
+\usepackage[russian, english]{babel}
+\usepackage{enumerate}
+\usepackage{comment}
+\usepackage{cite}
+\usepackage{mathrsfs}
+\usepackage{fullpage}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{bm}
+\usepackage{braket}
+
+\def\res{\mathop{\operatorname{Res}}\limits}
+
+\begin{document}
+
+\section{Notations}
+
+\subsection{Green's function}
+
+\subsubsection{As the kernel of the resolvent}
+Consider the operator $L: X \to X$.
+
+\begin{itemize}
+\item Physics notation: $$R(\lambda) = \frac{1}{\lambda I - L}$$
+\item Mathematics notation: $$R(\lambda) = \frac{1}{L - \lambda I}$$
+\end{itemize} 
+
+TODO: proof that it is an integral operator
+
+$G(x, s; \lambda)$ is the kernel of $R(\lambda)$.
+
+
+\subsubsection{Green's function of the differential operator}
+Differential operator $L$, defined for distributions.
+
+Green's function at point $s$ is a solution (TODO what if there are many?) of 
+
+\begin{itemize}
+\item Physics notation: $$L_x G(x, s) = -\delta(x - s)$$
+\item Mathematics notation: $$L_x G(x, s) = \delta(x - s)$$
+\end{itemize} 
+
+That is, they differ up to sign. We use PHYSICS notation.
+
+Eigenfunction expansion: 
+
+\begin{itemize}
+\item Physics notation: $$G(x, s) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$$
+\item Mathematics notation: $$G(x, s) = \sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$$
+\end{itemize} 
+
+\section{Short intro into quantum physics}
+TODO
+
+\section{Schrodinger's equation}
+
+\subsection{Time-dependent}
+
+$$i \hbar \partial_t \Psi(x, t) = H \Psi(x, t)$$
+
+Particle in an electric (!!!) field:
+
+$$H = - \frac{\hbar^2}{2 m} \nabla^2 + V(x, t)$$
+
+TODO what about charge?
+
+\subsection{Time-independent}
+
+If $V(x, t)$ does not depend on time, we can separate the variables:
+
+$\Psi(x, t) = \psi(x) T(t)$.
+
+$$\begin{cases}
+i \hbar \partial_t T(t) = E T(t) \\
+(- \frac{\hbar^2}{2 m} \nabla^2 + V(x)) \psi(x) = E \psi(x)
+\end{cases}$$
+
+Now that we have time-independent states, we can represent any initial state $\psi_0$ (TODO: complete set of eigenstates) in its basis:
+
+$$\psi_0 = \sum\limits_\lambda A_\lambda \psi_\lambda$$
+
+$$\psi(x, t) = \sum\limits_\lambda A_\lambda \psi_\lambda(x) e^{- \frac{i}{\hbar} E_\lambda t}$$
+
+\end{document}

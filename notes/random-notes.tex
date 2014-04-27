@@ -553,9 +553,62 @@ E = \frac{\hbar^2 \pi^2}{2 m} \left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} \r
 
 Let $n = n_x$, $m = n_y$.
 
+\subsubsection{Green's function for 1D}
+$k = \sqrt{\frac{2m E}{\hbar^2}}$
+
+Dirichlet (from ex\_8370\_sol\_Y11.pdf):
+
+$$G(x, s; E) = - \frac{2m}{\hbar^2} \begin{cases}
+\frac{\sin(k(x - a)) \sin(k(s - b))}{k \sin(k(b - a))}, & x < s \\
+\frac{\sin(k(x - b)) \sin(k(s - a))}{k \sin(k(b - a))}, & x > s \\
+\end{cases}$$
+
+Neumann:
+
+$$\begin{cases}
+u_L(x) = \sin(kx) + B_1 \cos(kx), u'_L(a) = 0 \\
+u_R(x) = \sin(kx) + B_2 \cos(kx), u'_R(b) = 0
+\end{cases}$$
+
+$k \cos(ka) - k B_1 \sin (ka) = 0$, $B_1 = \frac{\cos(ka)}{\sin(ka)}$
+
+$k \cos(kb) - k B_2 \sin (kb) = 0$, $B_2 = \frac{\cos(kb)}{\sin(kb)}$
+
+$$\begin{cases}
+u_L(x) = \frac{\sin(kx) \sin (ka) + \cos(kx) \cos(ka)}{\sin(ka)}
+= \frac{1}{\sin ka} \cos k(x - a)\\
+u_R(x) = \frac{1}{\sin kb} \cos k(x - b)
+\end{cases}$$
+
+$$W(z) = \begin{vmatrix}
+0 & \frac{1}{\sin ka} \\
+-\frac{k}{\sin kb} \sin k (a - b) & whatever
+\end{vmatrix} = \frac{k \sin k (a - b)}{\sin ka \sin kb}$$
+
+\begin{align*}
+& u_L(x) u_R(s) \theta(s - x) + u_L(s) u_R(x) \theta(x - s) = \\ 
+& = \frac{\cos k (x - a)}{\sin ka} \frac{\cos k (s - b)}{\sin kb} \theta(s - x) + \frac{\cos k (s - a)}{\sin ka} \frac{\cos k (x - b)}{\sin kb} \theta(s - x) = \\
+& = \begin{cases}
+\frac{\cos k (x - a) \cos k (s - b)}{\sin ka \sin kb}, & x < s\\
+\frac{\cos k (x - b) \cos k (s - a)}{\sin ka \sin kb}, & x > s 
+\end{cases}
+\end{align*}
+
+$$G(x, s; k) = \frac{1}{k \sin k (a - b)}\begin{cases}
+\cos k (x - a) \cos k (s - b), & x < s\\
+\cos k (x - b) \cos k (s - a), & x > s 
+\end{cases}$$
+
 \subsubsection{Green's function}
 
-$$G(x, y, x_s, y_s; E) = \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E}$$
+\begin{align*}
+G(x, y, x_s, y_s; E)
+&= \sum\limits_{n, m = 0}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E} \\
+&= \sum\limits_n \sum\limits_m \frac{X_n(x) X^*_n(x_s) Y_m(y) Y_m^*(y_s)}{E^x_n + E^y_m - E} \\
+&= \sum\limits_n X_n(x) X^*_n(x_s) \sum\limits_m \frac{Y_m(y) Y_m^*(y_s)}{E^y_m - (E - E^x_n)} \\
+&= \sum\limits_n X_n(x) X^*_n(x_s) G^y(y, y_s; E - E^x_n)
+\end{align*}
+
 
 TODO investigate convergence on the boundary
 
@@ -686,7 +739,7 @@ Y_m(y) = \sqrt{\frac{2}{H}} \cos(k^y_m y) \\
 \begin{align*}
 G_W(x, y, x_s, y_s; E)
 &= \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_s) G^x(x, x_s, E - E^y_m) \\
-&= \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_s) \frac{-i}{2 k_m} e^{i k_m |x - x_s|} \\
+&= \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_s) \frac{i}{2 k_m} e^{i k_m |x - x_s|} \\
 \end{align*}
 
 $$k_m =
@@ -715,36 +768,38 @@ $x_0 = 0$, $y_0 = 0$.
 
 $k_n$ is pure real
 
-$$\psi(x, y; k) = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_0) \frac{-i}{2 k_m} e^{i k_m |x|} = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{-i}{2 k_m} e^{i k_m |x|} $$
 
-$$\psi'(x, y; k) = Y_n(y) i k_n e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{1}{2 } e^{i k_m |x|}$$
+TODO: write about vanishing at $x \to \infty$
+
+$$\psi(x, y; k) = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) Y_m^*(y_0) \frac{i}{2 k_m} e^{i k_m |x|} = Y_n(y) e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{i}{2 k_m} e^{i k_m |x|} $$
+
+$$\psi'(x, y; k) = Y_n(y) i k_n e^{i k_n x} + \alpha \sum\limits_{m = 0}^\infty Y_m(y) \sqrt{\frac{2}{H}} \frac{-1}{2 } e^{i k_m |x|}$$
 
 
 \begin{align*}
-\int\limits_{0}^H \psi \nabla \psi^* dy &=
-   \int Y_n(y) Y_n(y) (-i k_n) = -i k_n \\
-&+ \alpha^* \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{1}{2}  = \sqrt{\frac{2}{H}}\frac{1}{2} \alpha^* \\
-&+ \alpha \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{-i}{2k_n}(-i k_n) =  - \sqrt{\frac{2}{H}}\frac{1}{2} \alpha \\
-&+ |\alpha|^2 \sum \int \sqrt{\frac{2}{H}} \sqrt{\frac{2}{H}} Y_m(y) Y_m(y) \frac{-i}{4 k_m} = |\alpha|^2 \frac{2}{H} \sum \frac{-i}{4 k_m}  \\
+\int\limits_{0}^H \psi \nabla \psi^* dy &= \int Y_n(y) Y_n(y) (-i k_n) = -i k_n \\
+&+ \alpha^* \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{-1}{2}  = \sqrt{\frac{2}{H}}\frac{-1}{2} \alpha^* \\
+&+ \alpha \int Y_n(y) Y_n(y) \sqrt{\frac{2}{H}} \frac{i}{2k_n}(-i k_n) =  \sqrt{\frac{2}{H}}\frac{1}{2} \alpha \\
+&+ |\alpha|^2 \sum \int \sqrt{\frac{2}{H}} \sqrt{\frac{2}{H}} Y_m(y) Y_m(y) \frac{i}{2 k_m} \frac{-1}{2} = |\alpha|^2 \frac{2}{H} \sum \frac{-i}{4 k_m} \\
 &= % -i k_n - i \sum \frac{1}{4 k_m}
 \end{align*}
 
 \begin{align*}
 \int\limits_{0}^H \psi^* \nabla \psi dy &=
    i k_n \\
-&+ \alpha \sqrt{\frac{2}{H}} \frac{1}{2} \\
-&+ \frac{i}{2 k_n} (i k_n) = -\frac{1}{2} \sqrt{\frac{2}{H}} \alpha^* \\
-&+ |\alpha|^2 \frac{2}{H} \sum \frac{i}{4 k_m^*} \\
+&+ \alpha \sqrt{\frac{2}{H}} \frac{-1}{2} \\
+&+ \alpha^* \sqrt{\frac{2}{H}} \frac{-i}{2 k_n} (i k_n) = \sqrt{\frac{2}{H}} \alpha^* \frac{1}{2} \\
+&+ |\alpha|^2 \frac{2}{H} \sum \frac{-i}{2 k_m} \frac{-1}{2} = |\alpha|^2 \frac{2}{H} \sum \frac{i}{4 k_m} \\
 &= % i k_n + i \sum \frac{1}{4 k^*_m}
 \end{align*}
 
-$$j_{inc} = - 2 i k_n $$
+$$j_{inc} = - 2 i k_n$$
 
-$$j_{trans} = - 2 i k_n - \sqrt{\frac{2}{H}} \alpha + \sqrt{\frac{2}{H}} \alpha^* + \frac{2}{H}|\alpha|^2 \sum (\frac{-i}{4 k_m} - \frac{i}{4 k_m^*})$$
+$$j_{trans} = - 2 i k_n + \sqrt{\frac{2}{H}} \alpha - \sqrt{\frac{2}{H}} \alpha^* + \frac{2}{H}|\alpha|^2 \sum (\frac{-i}{4 k_m} - \frac{i}{4 k_m^*})$$
 
 Actually, sum over open channels, for closed channels, $k_m = i \sqrt{|E|}$, and $\frac{1}{4 i \sqrt{|E|}} + \frac{1}{4 -i \sqrt{|E|}} = 0$, so:
 
-$$j_{trans} = -2 i k_n - \sqrt{\frac{2}{H}} \alpha + \sqrt{\frac{2}{H}} \alpha^* - \frac  {2}{H}|\alpha|^2 \sum_{m = 0}^{Open} \frac{2i}{4 k_m})$$
+$$j_{trans} = -2 i k_n + \sqrt{\frac{2}{H}} \alpha - \sqrt{\frac{2}{H}} \alpha^* - \frac  {2}{H}|\alpha|^2 \sum_{m = 0}^{Open} \frac{2i}{4 k_m})$$
 
 \section{Single point-like opening}
 Opening at $x_0 = 0$, $y_0 = 0$.
@@ -797,16 +852,6 @@ $$G(x, x_s; E) = \frac{i}{2 k} \left( e^{i k |x - x_s|} - e^{i k (x + x_s)} \rig
 
 TODO that was Dirichlet :(
 
-TODO:
-Mathematics: $L_x G(x, s) = \delta(x - s)$, $G(x, s; E) = \sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$
-
-Physics: $L_x G(x, s) = -\delta(x - s)$, $G(x, s; E) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$
-
-We use PHYSICS notation, the same thing in the eigendecomposition!
-
-Green's function for differential operator, and as the kernel of the resolvent!
-
-TODO what about sign?
 
 $W(z) = \begin{vmatrix} u_L'(x; z) & u_L(x; z) \\ u_R'(x; z) & u_R(x; z)\end{vmatrix}$
 
@@ -827,6 +872,20 @@ G(x, y; z)
 &= \frac{i}{2k} [(e^{ikx} + e^{-ikx}) e^{iks} \theta(s - x) +  (e^{iks} + e^{-iks}) e^{ikx} \theta(x - s)] \\
 &= \frac{i}{2k} [(e^{ik(x + s)} + e^{ik(s - x)}) \theta(s - x) + (e^{ik(x + s)} + e^{ik (x - s)}) \theta(x - s)] \\
 &= \frac{i}{2k} [e^{ik|x - s|} + e^{ik (x + s)}]
+\end{align*}
+
+For $\Omega_L$:
+
+$u_L(x; z) = e^{-ikz}$
+
+$u_R(x; z) = e^{ikz} + e^{-ikz}$
+
+$W(z) = \begin{vmatrix} -ik & 1 \\ 0 & 2\end{vmatrix} = -2 ik$
+
+\begin{align*}
+G(x, y; z)
+&= \frac{i}{2k} [(e^{ik (s - x)} + e^{ik (-x - s)}) \theta(s - x) + (e^{ik (x - s) + e^{ik(-x - s)})}) \theta(x - s)] \\
+&= \frac{i}{2k} [e^{ik |x - s|} + e^{ik (-x - s)}]
 \end{align*}
 
 \end{document}
