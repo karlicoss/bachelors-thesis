@@ -1,3 +1,4 @@
+import itertools
 import numpy as np
 from numpy import arange
 
@@ -8,6 +9,7 @@ from matplotlib.colors import Normalize
 import scipy.constants as sc
 # import scipy.optimize as opt
 # import scipy.special
+from scattering.double_delta import DoubleDeltaCylinderScattering
 from scattering.one_point_2d import OnePointScattering
 from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
 from scattering.square_resonator_2d import ResonatorScattering
@@ -153,15 +155,13 @@ def test_resonator():
     n = 1
 
 
-    # import itertools
-    #
-    # resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
-    # plot_transmission(sp,
-    #                   10.0, 100.0, 0.01,
-    #                   maxt=1.0,
-    #                   fname="sq_transmission.png",
-    #                   info="Transmission",
-    #                   vlines=resenergies)
+    resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
+    plot_transmission(sp,
+                      10.0, 100.0, 0.1,
+                      maxt=1.0,
+                      fname="output/transmission.png",
+                      info="Transmission",
+                      vlines=resenergies)
 
     # gf1 = sp.greens_function_resonator(energy, maxn)
     # gf2 = sp.greens_function_resonator_fast(energy, maxn)
@@ -186,13 +186,13 @@ def test_resonator():
     #     print("-------")
 
 
-    for energy in arange(10.0, 100.0, 0.5):
-        res = sp.compute_scattering(n, energy)
-        plot_wavefunction(res.wf,
-                          fx, tx, dx,
-                          fy, ty, dy,
-                          fname="wavefunction{:.2f}.png".format(energy),
-                          title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    # for energy in arange(10.0, 100.0, 0.5):
+    #     res = sp.compute_scattering(n, energy)
+    #     plot_wavefunction(res.wf,
+    #                       fx, tx, dx,
+    #                       fy, ty, dy,
+    #                       fname="wavefunction{:.2f}.png".format(energy),
+    #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
 
 
 def test_cylinder(maxn):

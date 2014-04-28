@@ -1,5 +1,5 @@
 from scipy import constants as sc, constants
-from scattering.cylinder_scattering import plot_transmission
+from scattering.main import plot_transmission
 from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
 from scattering.tools import integrate_complex
 
