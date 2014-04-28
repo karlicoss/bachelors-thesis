@@ -350,7 +350,4 @@ def main():
 # test_cylinder(R, RR, uu, m, mu, maxn)
 
 
-fff = NeumannWell1D(-2.0, 1.0, 10)
-fff.test()
-
-# main()
+main()

@@ -69,6 +69,8 @@ Particle in an electric (!!!) field:
 
 $$H = - \frac{\hbar^2}{2 m} \nabla^2 + V(x, t)$$
 
+
+% https://en.wikipedia.org/wiki/Hamiltonian_(quantum_mechanics)#Charged_particle_in_an_electromagnetic_field
 TODO what about charge?
 
 \subsection{Time-independent}
@@ -87,5 +89,36 @@ Now that we have time-independent states, we can represent any initial state $\p
 $$\psi_0 = \sum\limits_\lambda A_\lambda \psi_\lambda$$
 
 $$\psi(x, t) = \sum\limits_\lambda A_\lambda \psi_\lambda(x) e^{- \frac{i}{\hbar} E_\lambda t}$$
+
+\section{Reflection coefficient and transmission coefficient}
+Reflection/transmission coefficients are quantities describing the behaviour of scattered wave (usually at infinity).
+
+Probability current for spin-0 particle.
+
+% TODO https://en.wikipedia.org/wiki/Probability_current#Spin-0_particle_in_an_electromagnetic_field
+
+$$\bm{j}(x, t) = \frac{\hbar}{2 m i} (\psi(x, t)^* \nabla \psi(x, t) - \psi(x, t) \nabla \psi^*(x, t))$$
+
+TODO: write about stationary (scattering) states and omitting time.
+
+$$T = \frac{|j_{trans}|}{|j_{inc}|}$$
+
+$$R = \frac{|j_{refl}|}{|j_{inc}|}$$
+
+These are position dependent and non-scalar values in general. Usually, geometry and symmetries of the scattering problem allows to define the asymptotic region and calculate its integral over scattering cross section, yielding a scalar value.
+
+\section{Free particle in magnetic field}
+$$H = \frac{1}{2m} (- i \hbar \nabla - q A)^2$$
+
+
+Cylindrical coordinates: $(r, \varphi, z)$.
+
+Field $B = (0, 0, B)$, vector potential $A = (0, \frac{1}{2} B r, 0)$. In this gauge, $\nabla \cdot A = 0$.
+
+$$H = \frac{1}{2m}( - \hbar^2 \nabla^2 + i q \hbar (\nabla \cdot A + A \cdot \nabla) + q^2 A \cdot A)$$
+
+$A \cdot \nabla = \frac{1}{2} B \frac{\partial \psi}{\partial \theta}$
+
+$$H = \frac{1}{2m} (- \hbar^2 \nabla^2 + i q \hbar \frac{1}{2} B \frac{\partial \psi}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2)$$
 
 \end{document}

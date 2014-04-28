@@ -23,17 +23,17 @@ class ResonatorScattering:
         self.x0 = 0.0
         self.y0 = 0.0
 
-        nw_res_x = NeumannWell1D(-self.Lx / 2, self.Lx / 2, self.maxn_params)
-        nw_res_y = NeumannWell1D(0, self.Ly, self.maxn_params)
-        nw_wire_y = NeumannWell1D(0, self.H, self.maxn_params) # TODO actually from -self.H to 0
+        self.nw_res_x = NeumannWell1D(-self.Lx / 2, self.Lx / 2, self.maxn_params)
+        self.nw_res_y = NeumannWell1D(0, self.Ly, self.maxn_params)
+        self.nw_wire_y = NeumannWell1D(0, self.H, self.maxn_params) # TODO actually from -self.H to 0
 
-        self.res_x_modes = nw_res_x.eigenfunctions
-        self.res_x_energies = nw_res_x.eigenenergies
-        self.res_y_modes = nw_res_y.eigenfunctions
-        self.res_y_energies = nw_res_y.eigenenergies
+        self.res_x_modes = self.nw_res_x.eigenfunctions
+        self.res_x_energies = self.nw_res_x.eigenenergies
+        self.res_y_modes = self.nw_res_y.eigenfunctions
+        self.res_y_energies = self.nw_res_y.eigenenergies
 
-        self.wire_y_modes = nw_wire_y.eigenfunctions
-        self.wire_y_energies = nw_wire_y.eigenenergies
+        self.wire_y_modes = self.nw_wire_y.eigenfunctions
+        self.wire_y_energies = self.nw_wire_y.eigenenergies
 
         print("Wire:")
         print(self.wire_y_energies)
@@ -57,27 +57,6 @@ class ResonatorScattering:
     def get_kks(self, energy):
         return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn_params)]
 
-    def greens_1d_neumann_well_fast(self, a, b, energy):
-        k = np.sqrt(complex(energy))
-        # stderr.write("k = {}\n".format(k))
-        coeff = 1 / (k * np.sin(k * (a - b)))
-
-        def fun(x, s):
-            if x < s:
-                return coeff * np.cos(k * (x - a)) * np.cos(k * (s - b))
-            else:
-                return coeff * np.cos(k * (x - b)) * np.cos(k * (s - a))
-
-        return fun
-
-    def greens_1d_neumann_well_slow(self, energy):
-        k = np.sqrt(complex(energy))
-        def fun(y, ys):
-            res = complex(0.0)
-            for n in range(self.maxn_params):
-                res += self.res_y_modes[n](y) * self.res_y_modes[n](ys) / (self.res_y_energies[n] - energy)
-            return res
-        return fun
 
     def greens_function_resonator_fast(self, energy, maxn):
         kks = self.get_kks(energy)  # TODO different kks for resonator and wire in general!!!
@@ -85,7 +64,7 @@ class ResonatorScattering:
         def fun(x, y, xs, ys):
             res = complex(0.0)
             for n in range(maxn):
-                gf = self.greens_1d_neumann_well_fast(0, self.Ly, kks[n] ** 2) # TODO
+                gf = self.nw_res_y.greens_function_helmholtz(kks[n] ** 2) # TODO
                 res += self.res_x_modes[n](x) * np.conj(self.res_x_modes[n](xs)) * gf(y, ys)
             return res
 

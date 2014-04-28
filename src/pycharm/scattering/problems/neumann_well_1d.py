@@ -26,7 +26,9 @@ class NeumannWell1D:
         self.left = left
         self.right = right
         self.maxn = maxn
+
         self.eigenenergies = [(sc.pi * n / width) ** 2 for n in range(self.maxn)]
+
         self.eigenfunctions = []
         for n in range(self.maxn):
             # TODO domain checking??
@@ -34,6 +36,18 @@ class NeumannWell1D:
                 self.eigenfunctions.append(lambda x: sqrt(1.0 / width))
             else:
                 self.eigenfunctions.append(lambda x, n=n: sqrt(2.0 / width) * cos(sc.pi * n / width * (x - self.left)))
+
+    # TODO test
+    def greens_function_helmholtz(self, energy):
+        k = np.sqrt(complex(energy))
+        coeff = 1 / (k * np.sin(k * (self.left - self.right)))
+        def fun(x, xs):
+            if x < xs:
+                return coeff * np.cos(k * (x - self.left)) * np.cos(k * (xs - self.right))
+            else:
+                return coeff * np.cos(k * (x - self.right)) * np.cos(k * (xs - self.left))
+
+        return fun
 
     def test(self):
         """
