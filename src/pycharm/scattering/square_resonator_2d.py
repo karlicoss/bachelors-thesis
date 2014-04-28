@@ -4,41 +4,36 @@ from numpy import complex256 as complex
 from numpy import float128 as real
 
 from scipy import constants as sc
+from scattering.problems.neumann_well_1d import NeumannWell1D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
 
 class ResonatorScattering:
-    def __init__(self, H, Lx, Ly, delta, maxn_params, maxn_wf=None):
+    def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn_params: int, maxn_wavefunction: int = None):
         self.H = H
         self.Lx = Lx
         self.Ly = Ly
 
         self.delta = delta
         self.maxn_params = maxn_params
-        if maxn_wf is None:
-            maxn_wf = maxn_params
-        self.maxn_wf = maxn_wf
+        if maxn_wavefunction is None:
+            maxn_wavefunction = maxn_params
+        self.maxn_wf = maxn_wavefunction
 
         self.x0 = 0.0
         self.y0 = 0.0
 
+        nw_res_x = NeumannWell1D(-self.Lx / 2, self.Lx / 2, self.maxn_params)
+        nw_res_y = NeumannWell1D(0, self.Ly, self.maxn_params)
+        nw_wire_y = NeumannWell1D(0, self.H, self.maxn_params) # TODO actually from -self.H to 0
 
-        def well_energy(width, n):
-            return (sc.pi * n / width) ** 2
+        self.res_x_modes = nw_res_x.eigenfunctions
+        self.res_x_energies = nw_res_x.eigenenergies
+        self.res_y_modes = nw_res_y.eigenfunctions
+        self.res_y_energies = nw_res_y.eigenenergies
 
-        def well_function(width, shift, n):
-            if n == 0:
-                return lambda x: sqrt(1.0 / width)
-            else:
-                return lambda x: sqrt(2.0 / width) * np.cos(sc.pi * n / width * (x + shift))
-
-        self.res_x_modes = [well_function(self.Lx, self.Lx / 2, n) for n in range(self.maxn_params)]
-        self.res_x_energies = [well_energy(self.Lx, n) for n in range(self.maxn_params)]
-        self.res_y_modes = [well_function(self.Ly, 0, m) for m in range(self.maxn_params)]
-        self.res_y_energies = [well_energy(self.Ly, m) for m in range(self.maxn_params)]
-
-        self.wire_y_modes = [well_function(self.H, 0, m) for m in range(self.maxn_params)]
-        self.wire_y_energies = [well_energy(self.H, m) for m in range(self.maxn_params)]
+        self.wire_y_modes = nw_wire_y.eigenfunctions
+        self.wire_y_energies = nw_wire_y.eigenenergies
 
         print("Wire:")
         print(self.wire_y_energies)
