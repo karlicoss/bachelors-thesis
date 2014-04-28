@@ -36,6 +36,9 @@ def integrate_complex(f, a: real, b: real, **kwargs):
     imag_integrand = scipy.integrate.quad(lambda x: sp.imag(f(x)), a, b, **kwargs)
     return real_integrand[0] + I * imag_integrand[0], real_integrand[1] + I * imag_integrand[1]
 
+def inner_product_L2(f, g, a: real, b: real):
+    return integrate_complex(lambda x: f(x) * np.conj(g(x)), a, b)[0].real
+
 # TODO
 jn_zeros = lambda x, y: scipy.special.jn_zeros(x, int(y))
 jn = lambda x, y: scipy.special.jn(x, float(y))

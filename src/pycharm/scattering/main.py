@@ -12,6 +12,7 @@ import scipy.constants as sc
 from scattering.double_delta import DoubleDeltaCylinderScattering
 from scattering.one_point_2d import OnePointScattering
 from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
+from scattering.problems.neumann_well_1d import NeumannWell1D
 from scattering.square_resonator_2d import ResonatorScattering
 
 from scattering.tools import cnorm2, integrate_complex
@@ -349,4 +350,7 @@ def main():
 # test_cylinder(R, RR, uu, m, mu, maxn)
 
 
-main()
+fff = NeumannWell1D(-2.0, 1.0, 10)
+fff.test()
+
+# main()
