@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="" />
+    <list default="true" id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/greens/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/double_delta.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dictionaries/karlicos.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/one_point_2d.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/piecewise_delta.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/racec.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/square_resonator_2d.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/pycharm.iml" afterPath="$PROJECT_DIR$/.idea/pycharm.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../notes/thesis.tex" afterPath="$PROJECT_DIR$/../../notes/thesis.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/cylinder-scattering.py" afterPath="$PROJECT_DIR$/scattering/cylinder_scattering.py" />
+    </list>
     <ignored path="pycharm.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,10 +38,85 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="cylinder-scattering.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+      <file leaf-file-name="cylinder_scattering.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="365" column="44" selection-start="11936" selection-end="11936" vertical-scroll-proportion="-0.50395256" vertical-offset="5730" max-vertical-offset="14475">
+            <state line="105" column="0" selection-start="2961" selection-end="2961" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5355">
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="square_resonator_2d.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="24" selection-start="274" selection-end="274" vertical-scroll-proportion="-1.2429775" vertical-offset="1035" max-vertical-offset="2790">
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="racec.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/racec.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="3" column="46" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="piecewise_delta.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/piecewise_delta.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="70" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2040">
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="one_point_2d.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/one_point_2d.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="0" selection-start="167" selection-end="167" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1470">
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="double_delta.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/double_delta.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="0" selection-start="308" selection-end="308" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3240">
+              <folding>
+                <element signature="e#0#25#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="__init__.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/__init__.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="tools.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/tools.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="14" column="40" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
               </folding>
@@ -45,7 +135,17 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/../../../../../Dropbox/study/univer/thesis/src/pycharm/cylinder-scattering.py" />
+        <option value="$PROJECT_DIR$/tools.py" />
         <option value="$PROJECT_DIR$/cylinder-scattering.py" />
+        <option value="$PROJECT_DIR$/scattering/tools.py" />
+        <option value="$PROJECT_DIR$/scattering/cylinder-scattering.py" />
+        <option value="$PROJECT_DIR$/scattering/double-delta.py" />
+        <option value="$PROJECT_DIR$/scattering/cylinder_scattering.py" />
+        <option value="$PROJECT_DIR$/scattering/square_resonator_2d.py" />
+        <option value="$PROJECT_DIR$/scattering/racec.py" />
+        <option value="$PROJECT_DIR$/scattering/one_point_2d.py" />
+        <option value="$PROJECT_DIR$/scattering/piecewise_delta.py" />
+        <option value="$PROJECT_DIR$/scattering/__init__.py" />
       </list>
     </option>
   </component>
@@ -55,7 +155,32 @@
     <option name="width" value="1616" />
     <option name="height" value="884" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>HTML</id>
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+          <State>
+            <id>XML</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyDocstringTypesInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -98,6 +223,28 @@
               <option name="myItemId" value="pycharm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scattering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scattering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="greens" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
@@ -118,15 +265,25 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/scattering/tools.py" />
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
     <property name="SearchEverywhereHistory" value="&#10;e" />
+    <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings />
     </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scattering/tools.py" />
+      <recent name="$PROJECT_DIR$/scattering" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.cylinder-scattering">
     <configuration default="false" name="cylinder-scattering" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -141,7 +298,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pycharm" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cylinder-scattering.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scattering/cylinder_scattering.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
@@ -280,6 +437,23 @@
     </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="" />
@@ -289,25 +463,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="24" width="1616" height="884" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="24" width="1616" height="884" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2533249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31841433" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3285151" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37549406" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44117647" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.44021025" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -329,7 +503,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/../../../../../Dropbox/study/univer/thesis/src/pycharm/cylinder-scattering.py</url>
-          <line>629</line>
+          <line>443</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
@@ -337,146 +511,191 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="6" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="15690">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="90">
+          <folding>
+            <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="817" column="22" selection-start="26725" selection-end="26725" vertical-scroll-proportion="0.0" vertical-offset="11942" max-vertical-offset="15510">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1146" column="19" selection-start="37968" selection-end="37968" vertical-scroll-proportion="0.0" vertical-offset="16637" max-vertical-offset="17505">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="801" column="13" selection-start="27398" selection-end="27398" vertical-scroll-proportion="0.0" vertical-offset="12075" max-vertical-offset="15855">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="864" column="30" selection-start="29190" selection-end="29190" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="15705">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="695" column="38" selection-start="23144" selection-end="23144" vertical-scroll-proportion="0.0" vertical-offset="10367" max-vertical-offset="13155">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="510" column="35" selection-start="17531" selection-end="17531" vertical-scroll-proportion="0.0" vertical-offset="7637" max-vertical-offset="13140">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="509" column="45" selection-start="17486" selection-end="17486" vertical-scroll-proportion="0.0" vertical-offset="7382" max-vertical-offset="13140">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="498" column="51" selection-start="16839" selection-end="16839" vertical-scroll-proportion="0.0" vertical-offset="6374" max-vertical-offset="12870">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="650" column="25" selection-start="21265" selection-end="21265" vertical-scroll-proportion="0.0" vertical-offset="9495" max-vertical-offset="12240">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="641" column="14" selection-start="21135" selection-end="21135" vertical-scroll-proportion="0.0" vertical-offset="9433" max-vertical-offset="12270">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="7108" max-vertical-offset="9945">
           <folding>
-            <element signature="e#0#34#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -488,11 +707,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/cylinder-scattering.py">
+    <entry file="file://$PROJECT_DIR$/scattering/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="365" column="44" selection-start="11936" selection-end="11936" vertical-scroll-proportion="-0.50395256" vertical-offset="5730" max-vertical-offset="14475">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="734">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/cylinder_scattering.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="0" selection-start="2961" selection-end="2961" vertical-scroll-proportion="0.0" vertical-offset="1320" max-vertical-offset="5355">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/double_delta.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="0" selection-start="308" selection-end="308" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3240">
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/one_point_2d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="0" selection-start="167" selection-end="167" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1470">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/piecewise_delta.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="70" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2040">
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/racec.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="46" selection-start="224" selection-end="224" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="14" column="40" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="690">
           <folding>
             <element signature="e#0#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="24" selection-start="274" selection-end="274" vertical-scroll-proportion="-1.2429775" vertical-offset="1035" max-vertical-offset="2790">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
