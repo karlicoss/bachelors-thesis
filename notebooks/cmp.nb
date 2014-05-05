@@ -1,0 +1,86 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2239,         76]
+NotebookOptionsPosition[      1827,         57]
+NotebookOutlinePosition[      2162,         72]
+CellTagsIndexPosition[      2119,         69]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"Needs", "[", "\"\<Units`\>\"", "]"}]], "Input",
+ CellChangeTimes->{{3.605852160188079*^9, 3.605852163152441*^9}, {
+  3.605852280020976*^9, 3.6058522924758797`*^9}, {3.605852382359676*^9, 
+  3.605852402079265*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"TDelta", "[", "EE_", "]"}], " ", ":=", " ", 
+  RowBox[{"1", " ", "/", " ", 
+   RowBox[{"(", 
+    RowBox[{"1", " ", "-", " ", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"mass", " ", "*", " ", "lamb"}], ")"}], " ", "/", " ", 
+      RowBox[{"(", 
+       RowBox[{"I", " ", "*", " ", 
+        RowBox[{"\[HBar]", "^", "2"}], " ", "*", " ", 
+        RowBox[{"Sqrt", "[", "EE", "]"}]}], ")"}]}]}], ")"}]}]}]], "Input",
+ CellChangeTimes->{{3.605852093098651*^9, 3.6058520948271713`*^9}, {
+  3.6058522054046993`*^9, 3.605852256106854*^9}, {3.605852293940474*^9, 
+  3.605852332001933*^9}}],
+
+Cell[BoxData[
+ RowBox[{"mass", " ", ":=", " ", 
+  RowBox[{"0.19", " ", "*", " ", "ElectronMass"}]}]], "Input",
+ CellChangeTimes->{{3.605852342413908*^9, 3.605852368019491*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["ElectronMass"], "Input",
+ CellChangeTimes->{{3.605852370820973*^9, 3.605852373084631*^9}}],
+
+Cell[BoxData["ElectronMass"], "Output",
+ CellChangeTimes->{3.6058523733864527`*^9}]
+}, Open  ]]
+},
+WindowSize->{1600, 850},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (February 7, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 237, 4, 32, "Input"],
+Cell[797, 26, 620, 15, 32, "Input"],
+Cell[1420, 43, 176, 3, 32, "Input"],
+Cell[CellGroupData[{
+Cell[1621, 50, 104, 1, 32, "Input"],
+Cell[1728, 53, 83, 1, 32, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

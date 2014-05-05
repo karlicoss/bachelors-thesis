@@ -110,15 +110,263 @@ These are position dependent and non-scalar values in general. Usually, geometry
 \section{Free particle in magnetic field}
 $$H = \frac{1}{2m} (- i \hbar \nabla - q A)^2$$
 
+Field $B = (0, 0, B)$, vector potential $A = (0, \frac{1}{2} B r, 0)$. 
 
-Cylindrical coordinates: $(r, \varphi, z)$.
-
-Field $B = (0, 0, B)$, vector potential $A = (0, \frac{1}{2} B r, 0)$. In this gauge, $\nabla \cdot A = 0$.
+\begin{comment}
 
 $$H = \frac{1}{2m}( - \hbar^2 \nabla^2 + i q \hbar (\nabla \cdot A + A \cdot \nabla) + q^2 A \cdot A)$$
 
-$A \cdot \nabla = \frac{1}{2} B \frac{\partial \psi}{\partial \theta}$
+\begin{itemize}
+\item In this gauge, $\nabla \cdot A = 0$.
+\item $A \cdot \nabla = \frac{1}{2} B \frac{\partial \cdot}{\partial \theta}$
+\item $A \cdot A = \frac{1}{4} B^2 r^2$
+\end{itemize}
 
-$$H = \frac{1}{2m} (- \hbar^2 \nabla^2 + i q \hbar \frac{1}{2} B \frac{\partial \psi}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2)$$
+$$H = \frac{1}{2m} (- \hbar^2 \nabla^2 + i q \hbar \frac{1}{2} B \frac{\partial \cdot}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2)$$
+
+$$\Delta = \nabla^2 \cdot = {1 \over r}{\partial \over \partial r}\left(r {\partial \cdot \over \partial r}\right)
++ {1 \over r^2}{\partial^2 \cdot \over \partial \theta^2}
++ {\partial^2 \cdot \over \partial z^2}$$
+
+Separate the variables:
+
+$\psi(r, \theta, z) = C(r, \theta) T(z)$
+
+$$\nabla^2 \psi = T(z) {1 \over r}{\partial \over \partial r}\left(r {\partial C \over \partial r}\right)
++ T(z) {1 \over r^2}{\partial^2 C \over \partial \theta^2}
++ C(r, \theta) {\partial^2 T \over \partial z^2}$$
+
+$$H \psi = \frac{1}{2m} \left( -\hbar^2 \nabla^2 C(r, \theta) T(z) + i q \hbar \frac{1}{2} B T(z) \frac{\partial C}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2 C(r, \theta) T(z) \right) = E \psi$$
+
+Divide all by $\psi(r, \theta, z)$:
+
+$$-\hbar^2 
+\left( 
+{1 \over r} \frac{1}{C(r, \theta)} {\partial \over \partial r} \left(r {\partial C \over \partial r}\right)
++ {1 \over r^2} \frac{1}{C(r, \theta)}{\partial^2 C \over \partial \theta^2}
++  \frac{1}{T(z)}{\partial^2 T \over \partial z^2}
+\right) 
+ + i q \hbar \frac{1}{2} B  \frac{1}{C(r, \theta)} \frac{\partial C}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2 = 2m E$$
+
+$$\begin{cases}
+- \hbar^2 \frac{1}{T(z)}{\partial^2 T \over \partial z^2} = E_z \\
+-\hbar^2 
+\left( 
+{1 \over r} \frac{1}{C(r, \theta)} {\partial \over \partial r} \left(r {\partial C \over \partial r}\right)
++ {1 \over r^2} \frac{1}{C(r, \theta)}{\partial^2 C \over \partial \theta^2}
+\right) 
+ + i q \hbar \frac{1}{2} B  \frac{1}{C(r, \theta)} \frac{\partial C}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2 = E_{r\theta} \\
+ E_{r \theta} + E_z = 2 m E
+\end{cases}$$
+
+Second separation: $C(r, \theta) = R(r) \Theta(\theta)$:
+
+$$-\hbar^2 
+\left( 
+{1 \over r} \frac{1}{R(r) \Theta(\theta)} \Theta(\theta) {\partial \over \partial r} \left(r {\partial R \over \partial r}\right)
++ {1 \over r^2} \frac{1}{R(r) \Theta(\theta)} R(r) {\partial^2 \Theta \over \partial \theta^2}
+\right) 
+ + i q \hbar \frac{1}{2} B  \frac{1}{R(r) \Theta(\theta)} R(r) \frac{\partial \Theta}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2 = E_{r\theta}$$
+
+$$\begin{cases}
+
+\end{cases}$$
+
+\end{comment}
+
+Polar coordinates:
+
+$$\renewcommand\arraystretch{1.5}
+(-i \hbar \nabla - q A) \psi =
+\begin{pmatrix}
+-i \hbar \frac{\partial \psi}{\partial r} \\
+-i \hbar \frac{1}{r} \frac{\partial \psi}{\partial \theta} - q \frac{1}{2} B r \psi  \\
+-i \hbar \frac{\partial \psi}{\partial z} 
+\end{pmatrix}
+$$
+
+$$
+(-i \hbar \nabla - qA) \cdot F =
+-i \hbar \frac{1}{r} \frac{\partial (r F_r)}{\partial r}
+-i \hbar  \frac{1}{r} \frac{\partial F_\theta}{\partial \theta} - q \frac{1}{2} B r F_\theta
+-i \hbar  \frac{\partial F_z}{\partial z}
+$$
+
+\begin{align*}
+2 m H \psi
+&= - \hbar^2 \frac{1}{r} \frac{\partial}{\partial r} \left( r \frac{\partial \psi}{\partial r}\right ) \\
+&- \hbar^2 \frac{1}{r^2} \frac{\partial^2 \psi}{\partial \theta^2} + i \hbar \frac{1}{r} q \frac{1}{2} B r \frac{\partial \psi}{\partial \theta} + q \frac{1}{2} B r i \hbar \frac{1}{r} \frac{\partial \psi}{\partial \theta} + q^2 \frac{1}{4} B^2 r^2 \psi \\
+&- \hbar^2 \frac{\partial^2 \psi}{\partial z^2} \\
+&= {\hat p_r}^2 - \frac{i \hbar}{r} {\hat p_r} \\
+&+ ({\hat p_\theta} - \frac{1}{2} q B r)^2\\
+&+ {\hat p_z}^2 \\
+\end{align*}
+
+Commutes with $p_z$ and seems to commute with $p_\lambda$.
+
+Eigenvectors of $p_z$:
+$$\psi(r, \theta, z) = \xi(r, \theta) e^{\frac{i}{\hbar} p_z z}$$
+
+Eigenvectors of $p_\lambda$:
+$$\psi(r, \theta, z) = \xi(r, z) e^{\frac{i}{\hbar} p_\lambda \theta}$$
+
+Periodicity requires $\frac{1}{\hbar} p_\lambda 2 \pi = 2 \pi k, k \in \mathbb{Z}$, therefore, $p_\lambda = \hbar k, k \in \mathbb{Z}$.
+
+$$\psi(r, \theta, z) = R(r) e^{i k \theta} e^{\frac{i}{\hbar} p_z z}$$
+
+Substitute in the equation:
+
+\begin{align*}
+2 m H \psi
+&= -\hbar^2 \left( \frac{\partial^2 \psi}{\partial r^2} + \frac{1}{r} \frac{\partial \psi}{\partial r} \right) =
+e^{...} (-\hbar^2 R''(r) -\frac{\hbar^2}{r} R'(r)) \\
+&+ (\frac{1}{r} \hbar k - \frac{1}{2} q B r)^2 \psi \\
+&+ p_z^2  \psi \\
+&= 2 m E \psi
+\end{align*}
+
+Divide everything by $e^{...}$:
+
+$$- \hbar^2 \left( \frac{\partial^2 R}{\partial r^2} + \frac{1}{r} \frac{\partial R}{\partial r} \right)
++ \left(
+(\frac{1}{r} \hbar k - \frac{1}{2} q B r)^2
++ p^2_z
+- 2 m E
+\right)
+R(r) = 0$$
+
+Divide by $-\hbar^2$:
+
+$$\frac{\partial^2 R}{\partial r^2} + \frac{1}{r} \frac{\partial R}{\partial r}
+- \frac{1}{\hbar^2}
+\left(
+(\frac{1}{r} \hbar k - \frac{1}{2} q B r)^2
++ p^2_z
+- 2 m E
+\right)
+R(r) = 0$$
+
+Use substitution: $R(r) = \frac{U(r)}{\sqrt{r}}$
+
+$$\left(
+\frac{1}{\sqrt r} \frac{\partial^2 U}{\partial r^2}
++ \frac{1}{4 r^{5/2}} U(r) \right)
+- \frac{1}{\hbar^2}
+\left(
+(\frac{1}{r} \hbar k - \frac{1}{2} q B r)^2
++ p^2_z
+- 2 m E
+\right)
+\frac{U(r)}{\sqrt{r}} = 0$$
+
+Multiply all by $\sqrt{r}$:
+
+$$\frac{\partial^2 U}{\partial r^2}
++ \frac{1}{4 r^2} U(r)
++ \left(
+- \frac{1}{\hbar^2} (\frac{1}{r} \hbar k - \frac{1}{2} q B r)^2
++ \frac{2 m E - p_z^2}{\hbar^2}
+\right)
+U(r) = 0$$
+
+
+If $B = 0$, reduces to 
+
+$$\frac{\partial^2 U}{\partial r^2}
++ \left(
+\frac{1}{4 r^2}
+- \frac{k^2}{r^2}
++ \frac{2 m E - p_z^2}{\hbar^2}
+\right)
+U(r) = 0$$
+
+With solution:
+
+$$U(r) = c_1 \sqrt{r} J_k\left(\frac{\sqrt{\text{EE}} r}{\hbar}\right)+c_2 \sqrt{r} Y_k\left(\frac{\sqrt{\text{EE}} r}{\hbar}\right)$$
+
+\begin{itemize}
+\item $J_k$: Bessel's function of first kind
+\item $Y_k$: Bessel's function of second kind, singularity at origin
+\end{itemize}
+
+Looks kinda correct.
+
+
+
+% https://en.wikipedia.org/wiki/Quantum_harmonic_oscillator#N-dimensional_harmonic_oscillator
+
+\begin{comment}
+Multiply all by $r^2$:
+
+$$\left(
+- \hbar^2 \left( r^2 \frac{\partial^2 R}{\partial r^2} + r \frac{\partial R}{\partial r} \right)
++ \hbar^2 k^2
++ \frac{1}{4} q^2 B^2 r^4
++ r^2 (p^2_z
+- 2 m E
+- q B \hbar k)
+\right) R(r) = 0$$
+\end{comment}
+
+\begin{comment}
+
+\subsubsection{Another gauge}
+$$
+A = \begin{pmatrix}
+- B r \theta \\
+0 \\
+0
+\end{pmatrix}
+$$
+
+$$\renewcommand\arraystretch{1.5}
+(-i \hbar \nabla - q A) \psi =
+\begin{pmatrix}
+-i \hbar \frac{\partial \psi}{\partial r} + q B r \theta \psi \\
+-i \hbar \frac{1}{r} \frac{\partial \psi}{\partial \theta}\\
+-i \hbar \frac{\partial \psi}{\partial z}
+\end{pmatrix}
+$$
+
+
+\begin{align*}
+2 m H \psi
+&= - \hbar^2 \frac{1}{r} \frac{\partial}{\partial r} \left( r \frac{\partial \psi}{\partial r}\right ) \\
+&- \hbar^2 \frac{1}{r^2} \frac{\partial^2 \psi}{\partial \theta^2} \\
+&- \hbar^2 \frac{\partial^2 \psi}{\partial z^2}
+\end{align*}
+
+Apparenly, this gauge is not nice one :(
+
+\end{comment}
+
+\subsection{Notes}
+\subsubsection{Cylindrical coordinates}
+$$\bm{r} = (r, \theta, z)$$
+
+
+$$\hat {p_r} = - i \hbar \frac{\partial}{\partial r}$$
+
+$$\hat{p_\theta} = - i \hbar \frac{1}{r} \frac{\partial}{\partial \theta}$$
+
+$$\hat{p_z} = - i \hbar \frac{\partial}{\partial z}$$
+
+$$\renewcommand\arraystretch{1.5}
+\nabla f = 
+\begin{pmatrix}
+\frac{\partial f}{\partial r} \\
+\frac{1}{r} \frac{\partial f}{\partial \theta}  \\
+\frac{\partial f}{\partial z} 
+\end{pmatrix}
+$$
+
+
+$$
+\nabla \cdot F =
+\frac{1}{r} \frac{\partial (r F_r)}{\partial r}
++ \frac{1}{r} \frac{\partial F_\theta}{\partial \theta}
++ \frac{\partial F_z}{\partial z}
+$$
+
 
 \end{document}
