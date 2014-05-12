@@ -7,6 +7,7 @@
       <excludeFolder url="file://$MODULE_DIR$/old2" />
       <excludeFolder url="file://$MODULE_DIR$/output" />
       <excludeFolder url="file://$MODULE_DIR$/racec" />
+      <excludeFolder url="file://$MODULE_DIR$/scattering/output" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

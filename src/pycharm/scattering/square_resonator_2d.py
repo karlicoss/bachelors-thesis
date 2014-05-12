@@ -3,8 +3,8 @@ from numpy import sqrt, exp
 from numpy import complex256 as complex
 from numpy import float128 as real
 
-from scipy import constants as sc
 from scattering.problems.neumann_well_1d import NeumannWell1D
+from scattering.problems.neumann_well_2d import NeumannWell2D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
 
@@ -23,8 +23,11 @@ class ResonatorScattering:
         self.x0 = 0.0
         self.y0 = 0.0
 
-        self.nw_res_x = NeumannWell1D(-self.Lx / 2, self.Lx / 2, self.maxn_params)
-        self.nw_res_y = NeumannWell1D(0, self.Ly, self.maxn_params)
+        self.nw_res = NeumannWell2D(-self.Lx / 2, self.Lx / 2, 0, self.Ly, self.maxn_params)
+
+        self.nw_res_x = self.nw_res.wellX # NeumannWell1D(-self.Lx / 2, self.Lx / 2, self.maxn_params)
+        self.nw_res_y = self.nw_res.wellY # NeumannWell1D(0, self.Ly, self.maxn_params)
+
         self.nw_wire_y = NeumannWell1D(0, self.H, self.maxn_params) # TODO actually from -self.H to 0
 
         self.res_x_modes = self.nw_res_x.eigenfunctions
@@ -42,33 +45,11 @@ class ResonatorScattering:
         print("Resy:")
         print(self.res_y_energies)
 
-    def greens_function_resonator(self, energy, maxn):
-        def fun(x, y, xs, ys):
-            res = complex(0.0)
-            for n in range(maxn):
-                for m in range(maxn):
-                    res += self.res_x_modes[n](x) * self.res_y_modes[m](y) * \
-                           np.conj(self.res_x_modes[n](xs) * self.res_y_modes[m](ys)) / \
-                           (self.res_x_energies[n] + self.res_y_energies[m] - energy)
-            return res
-
-        return fun
-
     def get_kks(self, energy):
         return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn_params)]
 
-
-    def greens_function_resonator_fast(self, energy, maxn):
-        kks = self.get_kks(energy)  # TODO different kks for resonator and wire in general!!!
-
-        def fun(x, y, xs, ys):
-            res = complex(0.0)
-            for n in range(maxn):
-                gf = self.nw_res_y.greens_function_helmholtz(kks[n] ** 2) # TODO
-                res += self.res_x_modes[n](x) * np.conj(self.res_x_modes[n](xs)) * gf(y, ys)
-            return res
-
-        return fun
+    def greens_function_resonator(self, energy, maxn):
+        return self.nw_res.greens_function_helmholtz(energy, maxn=maxn)
 
     def greens_function_wire(self, energy, maxn):
         kks = self.get_kks(energy)
@@ -101,11 +82,11 @@ class ResonatorScattering:
 
         greens_wire = self.greens_function_wire(energy, self.maxn_params)
         greens_wire0 = self.greens_function_wire(e0, self.maxn_params)
-        greens_resonator = self.greens_function_resonator_fast(energy, self.maxn_params)
-        greens_resonator0 = self.greens_function_resonator_fast(e0, self.maxn_params)
+        greens_resonator = self.greens_function_resonator(energy, self.maxn_params)
+        greens_resonator0 = self.greens_function_resonator(e0, self.maxn_params)
 
         greens_wire_wf = self.greens_function_wire(energy, self.maxn_wf)
-        greens_resonator_wf = self.greens_function_resonator_fast(energy, self.maxn_wf)
+        greens_resonator_wf = self.greens_function_resonator(energy, self.maxn_wf)
 
         # ???
         AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)

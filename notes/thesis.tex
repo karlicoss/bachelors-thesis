@@ -13,14 +13,39 @@
 \usepackage{tabularx}
 \usepackage{graphicx}
 \usepackage{indentfirst}
-\usepackage{bm}
-\usepackage{braket}
+\usepackage{bm} % \bm for bold math in formulas
+% \usepackage{braket} % \bra and \ket commands
+\usepackage{physics}
 
-\def\res{\mathop{\operatorname{Res}}\limits}
+\newcommand{\hilb}[1]{\mathcal{H}_{#1}}
+\newcommand{\cconj}[1]{\overline{#1}}
 
 \begin{document}
 
 \section{Notations}
+
+\subsection{Complex inner product}
+There is some ambiguity in defining antilinearity property of the inner product in vector space $V$ over the field $\mathbb{C}$ of complex numbers:
+
+\begin{itemize}
+\item Physics: \textbf{anti}linear in the \textit{first} argument, linear in the \textit{second} argument:
+\[
+\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = \cconj{a} \ip{x}{z} + \cconj{b} \ip{y}{z}
+\]
+\[
+\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{x}{ay + bz} = a \ip{x}{y} + b \ip{x}{y}
+\]
+\item Mathematics: linear in the \textit{first} argument, \textbf{anti}linear in the \textit{second} argument:
+\[
+\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = a \ip{x}{z} + b \ip{y}{z}
+\]
+\[
+\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{x}{ay + bz} = \cconj{a} \ip{x}{y} + \cconj{b} \ip{x}{y}
+\]
+\end{itemize}
+
+We stick to the PHYSICS definition. For instance, that means that inner product in $L^2(a, b)$ is defined as $\ip{f}{g} = \int\limits_a^b \cconj{f(x)} g(x) dx$.
+
 
 \subsection{Green's function}
 
@@ -47,14 +72,14 @@ Green's function at point $s$ is a solution (TODO what if there are many?) of
 \item Mathematics notation: $$L_x G(x, s) = \delta(x - s)$$
 \end{itemize} 
 
-That is, they differ up to sign. We use PHYSICS notation.
-
-Eigenfunction expansion: 
+That is, they differ up to sign. In particular, from the notation follows that eigenfunction expansion is defined as: 
 
 \begin{itemize}
 \item Physics notation: $$G(x, s) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$$
 \item Mathematics notation: $$G(x, s) = \sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}$$
 \end{itemize} 
+
+We use PHYSICS notation. 
 
 \section{Short intro into quantum physics}
 TODO
@@ -63,11 +88,11 @@ TODO
 
 \subsection{Time-dependent}
 
-$$i \hbar \partial_t \Psi(x, t) = H \Psi(x, t)$$
+$$i \hbar \pdv{\Psi(x, t)}{t} = H \Psi(x, t)$$
 
 Particle in an electric (!!!) field:
 
-$$H = - \frac{\hbar^2}{2 m} \nabla^2 + V(x, t)$$
+$$H = - \frac{\hbar^2}{2 m} \laplacian + V(x, t)$$
 
 
 % https://en.wikipedia.org/wiki/Hamiltonian_(quantum_mechanics)#Charged_particle_in_an_electromagnetic_field
@@ -80,8 +105,8 @@ If $V(x, t)$ does not depend on time, we can separate the variables:
 $\Psi(x, t) = \psi(x) T(t)$.
 
 $$\begin{cases}
-i \hbar \partial_t T(t) = E T(t) \\
-(- \frac{\hbar^2}{2 m} \nabla^2 + V(x)) \psi(x) = E \psi(x)
+i \hbar \pdv{T(t)}{t} = E T(t) \\
+(- \frac{\hbar^2}{2 m} \laplacian + V(x)) \psi(x) = E \psi(x)
 \end{cases}$$
 
 Now that we have time-independent states, we can represent any initial state $\psi_0$ (TODO: complete set of eigenstates) in its basis:
@@ -97,7 +122,7 @@ Probability current for spin-0 particle.
 
 % TODO https://en.wikipedia.org/wiki/Probability_current#Spin-0_particle_in_an_electromagnetic_field
 
-$$\bm{j}(x, t) = \frac{\hbar}{2 m i} (\psi(x, t)^* \nabla \psi(x, t) - \psi(x, t) \nabla \psi^*(x, t))$$
+$$\bm{j}(x, t) = \frac{\hbar}{2 m i} (\psi(x, t)^* \grad \psi(x, t) - \psi(x, t) \grad \psi^*(x, t))$$
 
 TODO: write about stationary (scattering) states and omitting time.
 
@@ -108,7 +133,7 @@ $$R = \frac{|j_{refl}|}{|j_{inc}|}$$
 These are position dependent and non-scalar values in general. Usually, geometry and symmetries of the scattering problem allows to define the asymptotic region and calculate its integral over scattering cross section, yielding a scalar value.
 
 \section{Free particle in magnetic field}
-$$H = \frac{1}{2m} (- i \hbar \nabla - q A)^2$$
+$$H = \frac{1}{2m} (- i \hbar \grad - q A)^2$$
 
 Field $B = (0, 0, B)$, vector potential $A = (0, \frac{1}{2} B r, 0)$. 
 
@@ -340,32 +365,182 @@ Apparenly, this gauge is not nice one :(
 
 \end{comment}
 
-\subsection{Notes}
-\subsubsection{Cylindrical coordinates}
-$$\bm{r} = (r, \theta, z)$$
+\section{Point interactions}
+Let $H_0$ be an unbounded s.a. operator with the resolvent $R_0(z) = (H_0 - z I)^{-1}$ in a Hilbert space $\hilb{0}$. We introduce a scale of partial inner product spaces:
+
+\[ \dots \subseteq \hilb{m} \subseteq \dots \subseteq \hilb{1} \subseteq \hilb{0} \subseteq \hilb{-1} \subseteq \dots \subseteq \hilb{-m} \subseteq \dots \]
+
+Where $\hilb{k}$ is the set
+
+\[
+\{\bra{\phi} R_0^k(z_0) \mid \bra{\phi} \in \hilb{0}\}
+\]
+, where $z_0$ is any complex number from the resolvent set $\rho(H_0)$ (the scale is independent of its choice).
+
+The following fact is extremely useful (and in fact the motivation for scale choice): If $\ket{\psi} \in \hilb{k}$, then: $H_0 \ket{\psi} \in \hilb{k + 1}$.
+
+Proof:
+
+\begin{enumerate}
+\item Since $\ket{\psi} \in \hilb{k}$, we have $\bra{\psi} \in \hilb{k}$,
+\item Since $\bra{\psi} \in \hilb{-k}$, for some $\bra{\phi} \in \hilb{0}$, $\bra{\psi} = \bra{\phi} R_0^{-k}$
+\item $H_0 \ket{\psi}$ is dual to $\bra{\psi} H_0^{\dagger} = \bra{\psi} H_0$
+\item $\bra{\psi} H_0 = \bra{\phi} R_0^{-k} H_0 = \bra{\phi} R_0^{-k - 1} \frac{1}{H_0 - \lambda I} H_0 = (\bra{\phi} + \lambda \bra{\phi} R_0) R_0^{-k - 1}\in \hilb{-k - 1}$, since the element $\bra{\phi} + \lambda \bra{\phi} R_0 \in \hilb{0}$
+\item By the duality, we have $H_0 \ket\psi \in \hilb{k + 1}$
+\end{enumerate}
 
 
-$$\hat {p_r} = - i \hbar \frac{\partial}{\partial r}$$
 
-$$\hat{p_\theta} = - i \hbar \frac{1}{r} \frac{\partial}{\partial \theta}$$
+Note that due to the choice of the operator defining the scale (the resolvent operator), if some function $f \in \hilb{k}$, we have $H_0 f \in \hilb{k - 1}$. Thus, the action of the differential operator is a right shift on the scale.
 
-$$\hat{p_z} = - i \hbar \frac{\partial}{\partial z}$$
+Note that in some sense, the more space to the left of the scale, the better functions in this space behave in the sense of action of differential operator:
+
+
+TODO: somewhat fucked-up, bra-ket notation is being used before defining inner product :(
+
+\begin{enumerate}
+\item $\hilb{0} = L^2(a, b)$ with the usual inner product $\ip{f}{g}_0 = \int\limits_a^b \cconj{f(x)} g(x) \dd{x}$.
+\item Let $\hilb{k} = \{ R^k_0(z_0) \phi \mid \phi \in \hilb{0} \}$.
+
+For $k > 0$, $R_0^k(z_0)$ is a bounded linear operator (by the definition of the resolvent). For any $\phi \in \hilb{0}: R_0(z_0) \phi \in \hilb{0}$, which means $\hilb{1} \subseteq \hilb{0}$ and by induction we immediately get the positive scale
+\[
+\dots \subseteq \hilb{m} \subseteq \dots \subseteq \hilb{2} \subseteq \hilb{1} \subseteq \hilb{0}
+\] 
+
+For $k < 0$, $\hilb{k}$ actually is $\{ (H_0 - z_0 I)^k \phi \mid \phi \in \hilb{0} \}$.
+For any $\phi \in \hilb{0}$, we can find such a $\psi \in \hilb{0}$, that $(H_0 - z_0 I) \psi = \phi$. Indeed, $\psi = R_0(z_0) \phi$. That means $\hilb{0} \subseteq \hilb{-1}$, and by induction, we get the negative scale
+\[
+\hilb{0} \subseteq \hilb{-1} \subseteq \hilb{-2} \subseteq \dots \subseteq \hilb{-m} \subseteq \dots
+\] 
+\item For each $k > 0$, we call the pair of spaces $\hilb{-k}, \hilb{k}$ \textit{compatible}.
+
+Define the inner product on pairs of compatible spaces: for $\psi \in \hilb{-k}$, $\varphi \in \hilb{k}$:
+\[
+\ip{\psi}{\varphi} = (def) = \ip{R_0^k(\cconj{z_0}) \psi}{R_0^{-k}(z_0)\varphi}_0
+\]
+TODO HOW TO DEFINE??? :(((
+\begin{comment}
+\begin{itemize}
+\item Axioms are kind of obvious
+\item Existence: $\psi = R_0^{-k}(z_0) \phi_1$, $\varphi = R_0^k(z_0) \phi_2$, therefore \\
+$\ip{\psi}{\varphi} = \ip{R_0^k(\cconj{z_0}) R_0^{-k}(z_0) \phi_1}{R_0^{-k}(z_0) R_0^k(z_0) \phi_2}$
+\end{itemize}
+\end{comment}
+
+% \item Let us denote the elements of $\hilb{k}$ as ket vectors, that is, $\ket{\psi} \in \hilb{k}$.
+\end{enumerate}
+
+We want to define the operator $H_0 + \ket{\psi} \lambda \bra{\psi}$ (somewhat like $\delta$ potential?).
+
+Suppose $\bra{\psi} \in \hilb{-m - 1}$, $m \ge 1$. TODO what does that mean? Why $m \ge 1$
+
+$\hilb{0}$ has to be extended with so-called generalized defect element $R_0(z) \ket{\psi}$. TODO why not $z_0$? Why ket? Isn't it from $\hilb{m + 1} \subseteq \hilb{0}$?
+
+
+\subsection{Constructing Pontryagin space}
+Construct a submanifold $\mathcal{P}_m$ of $\hilb{-m}$.
+
+\begin{enumerate}
+\item Contains the defect element $R_0(z_0) \psi$
+\item As little from $\hilb{-m} \setminus \hilb{0}$ as possible.
+\item As much from $\hilb{0}$ as possible.
+\item Inner product $\ip{}{}$ on $\mathcal{P}_m$ is an extension of the partial inner product $\ip{}{}_0$.
+\item $R_0(z_0)$ is the resolvent of an s.a. (w.r.t. to $\ip{}{}$) opeartor in $\mathcal{P}_m$
+\end{enumerate}
+
+\[
+\mathcal{P}_m = 
+\{ \varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mid \varphi_m \in \hilb{m}, c_i \in \mathbb{C}\}
+\]
+
+, where $\psi_i = R_0^{m + i + 1}(z_0) \psi$, that is, $\psi_i \in \hilb{i}$.
+
+Define inner product:
+
+\[
+\ip{\psi}{\psi'} =
+\ip{\varphi_m}{\varphi'_m}_0 +
+\sum\limits_{i = -m}^{m - 1} \cconj{c_i} \ip{\psi_i}{\varphi'_m}_0 +
+\sum\limits_{j = -m}^{m - 1} c'_j \ip{\varphi_m}{\psi_j}_0 +
+\sum\limits_{i = -m}^{m - 1} \sum\limits_{j = -m}^{m - 1} \cconj{c_i} c_j' g_{ij}
+\]
+
+We have freedom in the choice of $g_{ij} \ip{\psi_i}{\psi_j} |_{ij}$. There are some constraints, though:
+
+\begin{itemize}
+\item $g_{ij}$ should be a Hermetian matrix to retain the conjugate symmetry
+\item Some of the elements are already defined by the partial inner product: if $i + j \ge 0$, $\ip{f \in \hilb{i}}{g \in \hilb{j}}$ is properly defined.
+\item TODO weird resolvent costraint: $\mel{f}{R_0(z_0)}{g} = \cconj{\mel{g}{R_0(\cconj{z_0})}{f}}$, which means
+\[
+g_{i + 1, j} - g_{i, j + 1} = (z_0 - \cconj{z_0}) g_{i + 1, j + 1}
+\]
+\end{itemize}
+
+TODO still some ambiguity?
+
+Next, define 
+\[
+\Pi_m = \{f = (\phi_f, \vb{p_f}, \vb{n_f}) \mid \phi_f \in \hilb{0}, \vb{p_f}, \vb{n_f} \in \mathbb{C}^m \}
+\]
+with indefinite inner product:
+\[
+\ip{f}{g} =
+\ip{\phi_f}{\phi_g}_0 +
+\cconj{\vb{p_f}} \vdot \vb{n_g} +
+\cconj{\vb{n_f}} \vdot \vb{p_g} + 
+\cconj{\vb{n_f}} \vdot \vb{g_{ij}} \vdot \vb{n_g}
+\]
+
+TODO why positive parts are not interacting?
+
+Norm topology: product topology of $\hilb{0} \oplus \mathbb{C}^m \oplus \mathbb{C}^m$. TODO so what?
+
+We identify $\vb{g_{ij}}$ with that of $\mathcal{P}_m$. Then $\mathcal{P}_m$ is a pre-Pontryagin space with topological completion $\Pi_m$. TODO whaaaat?
+
+Embedding of $\mathcal{P}_m$ in $\Pi_m$:
+
+\[
+\varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mapsto
+\left(
+\varphi_m + \sum\limits_{i = 0}^{m - 1} c_i \psi_i,
+\left[ \ip{\psi_i}{\varphi_m}_0 + \sum\limits_{j = 0}^{m - 1} c_j g_{ij} \right]_{i = -1}^{-m},
+\left[ c_i \right]_{i = -1}^{-m}
+\right)
+\]
+
+Then restrict the mapping to the submanifold $\mathcal{P}'_m$ of $\mathcal{P}_m$, which is composed of elements $\varphi_m + \sum\limits_{i = - m}^{-1} c_i \psi_i$. $\mathcal{P}'_m$ is topologically dense in $\Pi_m$ because:
+
+\begin{itemize}
+\item $\hilb{m}$ is dense in $\hilb{0}$ (okay)
+\item the functionals corresponding to $\psi_i$ for $i \le -1$ are unbounded (TODO so what?)
+\end{itemize}
+
+\section{Notes}
+\subsection{Cylindrical coordinates}
+$$\vb{r} = (r, \theta, z)$$. 
+
+
+$$\hat {p_r} = - i \hbar \pdv{r}$$
+
+$$\hat{p_\theta} = - i \hbar \frac{1}{r} \pdv{\theta}$$
+
+$$\hat{p_z} = - i \hbar \pdv{z}$$
 
 $$\renewcommand\arraystretch{1.5}
-\nabla f = 
+\gradient f = 
 \begin{pmatrix}
-\frac{\partial f}{\partial r} \\
-\frac{1}{r} \frac{\partial f}{\partial \theta}  \\
-\frac{\partial f}{\partial z} 
+\pdv{f}{r} \\
+\frac{1}{r} \pdv{f}{\theta}  \\
+\pdv{f}{z} 
 \end{pmatrix}
 $$
 
 
 $$
-\nabla \cdot F =
-\frac{1}{r} \frac{\partial (r F_r)}{\partial r}
-+ \frac{1}{r} \frac{\partial F_\theta}{\partial \theta}
-+ \frac{\partial F_z}{\partial z}
+\divergence F =
+\frac{1}{r} \pdv{(r F_r)}{r}
++ \frac{1}{r} \pdv{F_\theta}{\theta}
++ \pdv{F_z}{z}
 $$
 
 

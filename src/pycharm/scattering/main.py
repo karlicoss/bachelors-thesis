@@ -75,6 +75,7 @@ def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", titl
     if title is not None:
         ax.set_title(title)
 
+
     # xticks = arange(fx, tx, sc.nano)
     # xlabels = ["{:.1f}".format(t / sc.nano) for t in xticks]
     xticks = arange(fx, tx, 1.0)
@@ -101,7 +102,6 @@ def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", titl
     # rr = arange(fy, ty, 0.01 * sc.nano)
     # ww = list(map(lambda r: pf(0, r), rr))
     # bx.plot(rr, ww)
-
     fig.savefig(fname)
     plt.close(fig)
 
@@ -136,13 +136,15 @@ def test_onepoint():
                       info="Transmission")
 
 
+jobs = []
+
 def test_resonator():
     Lx = 1.0
     Ly = 1.0
     H = 1.0
     delta = 0.001
-    maxn = 100  # TODO
-    maxn_wf = 10
+    maxn = 1000  # TODO
+    maxn_wf = 100
     sp = ResonatorScattering(H, Lx, Ly, delta, maxn, maxn_wf)
 
     fx = -5.0
@@ -164,36 +166,16 @@ def test_resonator():
                       info="Transmission",
                       vlines=resenergies)
 
-    # gf1 = sp.greens_function_resonator(energy, maxn)
-    # gf2 = sp.greens_function_resonator_fast(energy, maxn)
-    #
-    #
-    # print(gf2(0.0, 0.0, Lx / 2, 0.0) / gf1(0.0, 0.0, Lx / 2, 0.0))
-    # for x in np.arange(-Lx / 2, Lx / 2, 0.1):
-    #     for y in np.arange(0, Ly, 0.1):
-    #         print(gf1(x, y, 0.0, 0.0))
-    #         print(gf2(x, y, 0.0, 0.0))
-    #         print(gf2(x, y, 0.0, 0.0) / gf1(x, y, 0.0, 0.0))
-    #         print("------")
-
-    # gff = sp.greens_1d_neumann_well_fast(0, Ly, energy)
-    # gfs = sp.greens_1d_neumann_well_slow(energy)
-    #
-
-    # for y in np.arange(0, Ly, 0.1):
-    #     print(gff(y, 0.0))
-    #     print(gfs(y, 0.0))
-    #     print(gff(y, 0.0) / gfs(y, 0.0))
-    #     print("-------")
-
-
-    # for energy in arange(10.0, 100.0, 0.5):
+    # def fff(energy):
     #     res = sp.compute_scattering(n, energy)
     #     plot_wavefunction(res.wf,
     #                       fx, tx, dx,
     #                       fy, ty, dy,
-    #                       fname="wavefunction{:.2f}.png".format(energy),
+    #                       fname="output/wavefunction{:.2f}.png".format(energy),
     #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    #
+    # for energy in arange(10.0, 20.0, 0.05):
+    #     fff(energy)
 
 
 def test_cylinder(maxn):
@@ -332,7 +314,6 @@ def test_slit():
     n = 1
     energy = 0.676999 * sc.eV
     plot_wavefunction(dcs, n, energy)
-
 
 def main():
     # test_onepoint()
