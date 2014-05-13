@@ -31,11 +31,8 @@
 %\usepackage[nottoc,notbib]{tocbibind}
 \usepackage[pdftex]{graphicx}
 \graphicspath{{pic/}}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{amsthm}
-\usepackage{amsfonts}
-\usepackage{amsxtra}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,amscd,amsxtra}
+\usepackage{physics}
 \usepackage{sty/dbl12}
 %\usepackage{srcltx}
 \usepackage{epsfig}
@@ -86,6 +83,9 @@
 \renewcommand{\proof}{\\\textbf{Доказательство.}~}
 \renewcommand{\lstlistingname}{Листинг}
  
+\input{macros/macros.tex}
+
+
 % Default settings for code listings
 \lstset{frame=tb,
   language=Scala,
