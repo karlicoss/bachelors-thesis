@@ -1,41 +1,158 @@
 \chapter{Описание реализованного подхода}
 \label{chapter2}
 
-Работаем в пространстве $\bbR^3$. Исходный гамильтониан: $H_0 = -\laplacian$ в $L_2(\bbR^3, \dd x)$.
+\section{Формула Крейна}
+\[
+R_\lambda(z) = R_0(z) - R_0(z) \ket{\psi} \Gamma^{-1}(z, \lambda) \bra{\psi} R_0(z)
+\]
 
-Возьмем в качестве точечного взаимодействия функционал $\bra{\vb{0}} = \delta(\vb{0})$.
+\[
+\Gamma(z, \lambda) = \frac{1}{\lambda} + \frac{1}{2}(z - z_0) \bra{\psi} R_0(z) R_0(z_0) \ket{\psi} + \frac{1}{2}(z - \cconj{z_0}) \bra{\psi} R_0(z) R_0(\cconj{z_0}) \ket{\psi}
+\]
 
-Далее удобно будет перейти в импульсное представление $\psi(\vb{p})$. В нем дельта-функция Дирака имеет постоянное значение (TODO указать конкретное), гамильтониан $H_0 = \hat{p}^2$, соответственно, $R_0(z_0) = \frac{1}{p^2 - z_0}$. На шкале дельта-функция первый раз встречается в пространстве $\hilb{1}$:
+\section{2D}
+% Пусть $\frac{\hbar^2}{2 \mu} = 1$
+
+$\psi(x_1, x_2) = \delta'(x_1) \delta(x_2)$
+
+$\Psi(p_1, p_2) = \mcF(\psi(x_1, x_2)) = \frac{1}{2 \pi \hbar} i p_1$
+
+Заметим, что так как в импульсном представлени резольвента — оператор умножения, то ее применение коммутирует с символами функций, и можно получить:
+
+\begin{align*}
+\ip{f}{g}_0
+&= \ip{R_0^k(\cconj{z_0}) f}{R_0^{-k}(z_0) g} \\
+&= \int\limits_{\bbR^2} \cconj{R_0^k(\cconj{z_0}) f(\vb{p})} R_0^{-k}(z_0) g(\vb{p}) \dd[2]{\vb{p}} \\
+&= \int\limits_{\bbR^2} f(\vb{p}) g(\vb{p}) \dd[2]{\vb{p}} \\
+&= \ip{f}{g}
+\end{align*}
+
+$\psi \notin \hilb{0}$, $L^2$-норма $\psi$ бесконечна
+
+$\psi \notin \hilb{-1}$, $L^2$-норма $Z_0 \psi$ бесконечна
+
+$\psi \in \hilb{-2}$, $L^2$-норма $Z_0^2 \psi$ конечна
+
+Получаем предпонтрягинское пространство $\mcP_{-1}$, состоящее из функций вида TODO нормализацию пофиксить:
+
+\[
+f(\vb{p}) = f_\phi(\vb{p}) + f_0 \frac{1}{(\frac{p^2}{2 \mu} - i)^2} \Psi(\vb{p}) + f_{-1} \frac{1}{\frac{p^2}{2 \mu} - i} \Psi(\vb{p})
+\]
+
+Скалярное произведение:
+
+\begin{align*}
+\ip{f}{g}
+&= \ip{f_\phi}{g_\phi} \\
+&+ \sum\limits_{i = -1}^0 \ip{f_i \psi_i}{g_\phi}_0 + \sum\limits_{j = -1}^0 \ip{f_\phi}{g_j \psi_j}_0 \\
+&+ \sum\limits_{i = -1}^0 \sum \limits_{j = -1}^0 \cconj{f_i} G_{i,j} g_j 
+\end{align*}
 
 \begin{itemize}
-\item $\delta_x(\vb{p}) \notin \hilb{0}$, так как $\int\limits_{\bbR^5} 1 \cdot 1 \cdot \dd \vb{x} = \infty$
-\item $\delta_x(\vb{p}) R_0(z_0) \in L^2(\bbR^5)$, так как $\int\limits_{\bbR^5} \cconj{R_0(z_0)} R_0(z_0) \dd \vb{x} = \sqrt{2} \pi^2$
+\item $G_{0, 0} = \ip{\psi_0}{\psi_0} = \frac{\mu^2}{4 \pi \hbar^2}$
+\item $G_{0, -1} = \cconj{G_{-1, 0}} = \frac{\mu^2 (2 i + \pi)}{8 \pi \hbar^2}$. TODO и с какого? функция не в $\hilb{1}$ же???
+\item $G_{-1, -1}$ — свободный (вещественный) параметр
 \end{itemize}
 
+Свободный параметр $G_{-1, -1}$ определим так, чтобы оно было «конечной» частью расходящегося скалярного произведения $\ip{\psi_{-1}}{\psi_{-1}}_0$, следующим образом:
 
-\section{Условие Дирихле}
+Перейдем в полярные координаты $(p, \varphi)$
+
+Рассмотрим интеграл в скалярном произведении $\ip{\cdot}{\cdot}_0$, на области с $p < N$. Для этого удобнее будет перейти в полярные координаты:
+
+\begin{align*}
+p_1 &\to p \cos \varphi \\
+\dd[2]{\vb{p}} &\to p \dd{p} \dd{\varphi}
+\end{align*}
+
+\[
+\int\limits_{\varphi = 0}^{2 \pi} \int\limits_{p = 0}^N
+\cconj{\left(
+\frac{1}{\frac{p^2}{2 \mu} + i} \frac{1}{\frac{p^2}{2 \mu} - i} \frac{1}{2 \pi \hbar} i p \cos \varphi
+\right)}
+\left(
+\frac{1}{2 \pi \hbar} i p \cos \varphi
+\right)
+p \dd{p} \dd{\varphi}
+=
+\frac{\mu^2}{4 \pi \hbar^2} \log(1 + \frac{N^4}{4 \mu^2})
+\]
+
+TODO ссылка на Березина
+
+Предел $\frac{1}{\log(N) \cdot} = \frac{\mu^2}{\pi \hbar^2}$.
+
+Ну в общем, отнормированный интеграл:
+
+\[
+-\frac{\mu^2 \log (2 \mu)}{2 \pi  \hbar ^2}
+\]
+
+Ну ок.
+
+TODO подставить в формулу Крейна и найти полюса резольвенты
+
+Найдем $\Gamma^{-1}(z, \lambda)$. Заметим, что $R_0(z) \psi$ в общем случае не лежит в подпространстве, соответствующему $\psi_1$, поэтому надо выделить его коэффициенты $f_0, f_1$ и функцию $f_\phi$:
+
+% Далее в нотации используется, что резольвента -- оператор умножения.
+
+Далее будет полезно следущее тождество:
+
+$R(z) = \frac{1}{H - z} = \frac{1}{H - z_0} + \frac{z - z_0}{(H - z)(H - z_0)} = \frac{1}{H - z_0} + \frac{z - z_0}{(H - z_0)^2} + \frac{(z - z_0)^2}{(H - z_0)^2 (H - z)}$
+
+Используя тождество, получим компоненты элемента $R_0(z) \psi$ в пространстве $\mcP_1$:
+
+\begin{itemize}
+\item $f_{-1} = 1$
+\item $f_0 = z - i$
+\item $f_\phi = \frac{(z - i)^2}{(\frac{p^2}{2 \mu} - i)^2 (\frac{p^2}{2 \mu} - z)} \frac{1}{2 \pi \hbar} i p_1$
+\end{itemize}
+
+% Разложим резольвенту в пространстве $\mcP_1$
+
+% $R_0(z) \psi = \frac{1}{\frac{p^2}{2 \mu} - z} \frac{1}{2 \pi \hbar} i p_1 = f_\varphi + f_0 \frac{1}{\left(\frac{p^2}{2 \mu} - z_0 \right)^2} \psi + f_{-1} \frac{1}{\frac{p^2}{2 \mu} - z_0} \psi$
+
+Замыкание $\mcP_1$ дает нам понтрягинское пространство $\Pi_1$
+
+
+\section{3D}
+Рассмотрим уравнение Шредингера в двух областях $\Omega_1$ и $\Omega_2$ с условиями Дирихле на границе, общей границей $\partial \Gamma_{12}$, и точечным проколом $\vb{a_{12}} \in \partial \Gamma_{12}$. TODO картиночку
+
+Типичный пример такой задачи — резонатор Гельмгольца TODO
+
+TODO как физически реализуемо?
+
 TODO написать, что функции Грина не нужны, нужны производные по нормали по источнику
 
 TODO написать, что производные функции Грина имеют неинтегрируемую особенность
 
+Далее необходимо выполнить расширение пространства отдельно в каждой области $\Omega_1, \Omega_2$, а потом «сшить» решения с некоторым граничным условием в окрестности точечного прокола $\vb{a_{12}}$. Далее, выберем систему координат так, чтобы точечный прокол оказался 
+
+Работаем в пространстве $\bbR^3$. Исходный гамильтониан: $H_0 = \frac{\hat{p}^2}{2 \mu}$ в $L_2(\bbR^3, \dd x)$.
+
+% H_0 = - \frac{\hbar^2}{2 \mu } \laplacian
+
 $\psi = \pdv{n_s} \delta(\vb{r})$.
+
+Спектром оператора является $\bbR$, соответственно, резольвентное множество — $\{ c \mid \Im c \ne 0 \}$. В качестве $z_0$ возьмем, например, $i$, (напомним, что его выбор не влияет на структуру шкалы).
+
 
 Рисунок 2. Нормаль направлена по координате $x_1$, $\psi = \delta'(x_1) \delta(x_2) \delta(x_3)$. Перейдем в импульсное представление:
 
-В импульсном представлении гамильтониан $H_0 = \hat{p}^2$, соответственно, $R_0(z_0) = \frac{1}{p^2 - z_0}$.
+В импульсном представлении гамильтониан $H_0 = \frac{p^2}{2 \mu}$, соответственно, $R_0(z_0) = \frac{1}{p^2 - z_0}$ TODO fix.
 
 Переведем функционал $\psi$ импульсное предсавление:
 
 TODO: $\hbar$
 \begin{align*}
 \Psi(p_1, p_2, p_3)
-&= \mathcal{F}(x_1, x_2, x_3) \\
-&= \frac{1}{\sqrt{2 \pi}} \int\limits_{x_1} \frac{1}{\sqrt{2 \pi}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi}} \int\limits_{x_3} \psi(x_1, x_2, x_3) e^{-i \vb{x} \vdot \vb{p}} \\
-&= \frac{1}{\sqrt{2 \pi}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \frac{1}{\sqrt{2 \pi}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi}} \int\limits_{x_3} \delta(x_2) \delta(x_3) e^{-i x_2 p_2} e^{-i x_3 p_3} \\
-&= \frac{1}{\sqrt{2 \pi}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \mathcal{F}(\delta(x_2) \delta(x_3)) \\
-&= \frac{1}{2 \pi} \mathcal{F}(\delta'(x_1)) \\
-&= \frac{1}{2 \pi} i p_1 \mathcal{F}(\delta(x_1)) \\
-&= \left(\frac{1}{\sqrt{2 \pi}}\right)^3 i p_1
+&= \mathcal{F}(\psi(x_1, x_2, x_3)) \\
+&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_3} \psi(x_1, x_2, x_3) e^{-i \vb{x} \vdot \vb{p}} \\
+&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_3} \delta(x_2) \delta(x_3) e^{-i x_2 p_2} e^{-i x_3 p_3} \\
+&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \mathcal{F}(\delta(x_2) \delta(x_3)) \\
+&= \frac{1}{2 \pi \hbar} \mathcal{F}(\delta'(x_1)) \\
+&= \frac{1}{2 \pi \hbar} i p_1 \mathcal{F}(\delta(x_1)) \\
+&= \left(\frac{1}{\sqrt{2 \pi \hbar}}\right)^3 i p_1
 \end{align*}
 
 \begin{itemize}
@@ -59,6 +176,9 @@ f(\vb{p}) = f_\phi(\vb{p}) + f_0 \frac{1}{(p^2 - i)^2} + f_{-1} \frac{1}{p^2 - i
 
 \begin{itemize}
 \item $G_{0, 0}$ точно определено, так как $0 + 0 \ge 0$
-\item $G_{0, -1} = \cconj{G_{-1, 0}} = ?$ — конечное
+\item $G_{0, -1} = \cconj{G_{-1, 0}} = ?$ — можно определить, так как можно показать, что $\psi_0 \in \hilb{1}$, а значит, скалярное произведение конечное
 \item $G_{-1, -1}$ — свободный параметр
 \end{itemize}
+
+TODO пока мутно, как определять свободный параметр. Пусть определили.
+

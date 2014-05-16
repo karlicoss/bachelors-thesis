@@ -1,0 +1,106 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      2778,         97]
+NotebookOptionsPosition[      2366,         77]
+NotebookOutlinePosition[      2701,         92]
+CellTagsIndexPosition[      2658,         89]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Integrate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Sin", "[", "x", "]"}], 
+    RowBox[{"Apply", "[", 
+     RowBox[{
+      RowBox[{"D", "[", 
+       RowBox[{
+        RowBox[{"DiracDelta", "[", "x", "]"}], ",", " ", "x"}], "]"}], ",", 
+      " ", "x"}], "]"}]}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", " ", 
+     RowBox[{"-", "10"}], ",", " ", "10"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.60905850158078*^9, 3.609058598131097*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"-", "20"}], " ", 
+   RowBox[{"Cos", "[", "10", "]"}]}], "+", 
+  RowBox[{"2", " ", 
+   RowBox[{"Sin", "[", "10", "]"}]}]}]], "Output",
+ CellChangeTimes->{
+  3.6090585231275587`*^9, {3.60905856942527*^9, 3.609058598653133*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"FourierTransform", "[", 
+  RowBox[{
+   RowBox[{"DiracDelta", "[", "x", "]"}], ",", "x", ",", "p", ",", " ", 
+   RowBox[{"FourierParameters", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"0", ",", " ", 
+      FractionBox["1", "\[HBar]"]}], "}"}]}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.609059073059317*^9, 3.6090591023215322`*^9}, {
+  3.6090591491686487`*^9, 3.609059181071844*^9}, {3.609059239424184*^9, 
+  3.60905928284569*^9}, {3.609059455925531*^9, 3.6090595377177153`*^9}, {
+  3.609059573012018*^9, 3.609059575470652*^9}, {3.6090596138173933`*^9, 
+  3.609059614467472*^9}}],
+
+Cell[BoxData[
+ FractionBox["1", 
+  RowBox[{
+   SqrtBox[
+    RowBox[{"2", " ", "\[Pi]"}]], " ", 
+   SqrtBox[
+    RowBox[{"Abs", "[", "\[HBar]", "]"}]]}]]], "Output",
+ CellChangeTimes->{{3.609059157323676*^9, 3.6090591819392843`*^9}, 
+   3.609059240459545*^9, 3.60905949607449*^9, 3.609059576077551*^9, 
+   3.609060506757907*^9, {3.6090607734560127`*^9, 3.609060792631488*^9}}]
+}, Open  ]]
+},
+WindowSize->{1584, 842},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Linux x86 (64-bit) (February 7, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 478, 14, 32, "Input"],
+Cell[1060, 38, 272, 8, 32, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1369, 51, 603, 12, 56, "Input"],
+Cell[1975, 65, 375, 9, 96, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
