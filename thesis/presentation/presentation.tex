@@ -11,6 +11,10 @@
 \usepackage{beamerthemesplit}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \usetheme{Boadilla}
+\setbeamertemplate{caption}[numbered]
+
+% \usepackage[pdftex]{graphicx}
+\graphicspath{ {pic/} }
 
 \input{macros/macros.tex}
 
@@ -30,27 +34,26 @@
 % https://answers.yahoo.com/question/index?qid=20101122011450AAjpPHn
 % http://www.reddit.com/r/askscience/comments/17uuvi/what_is_the_absolute_limit_for_transistor_sizes/
 \begin{easylist}[itemize]
+# Почти все полупроводники, использующиеся на данный момент для интегральных схем — полевые транзисторы (MOSFET)
 # Необходимость уменьшать размеры полупроводниковых приборов
 ## производительность (конечная скорость распространения сигнала + скорость переключения состояния)
 ## тепловыделение (меньшее напряжение затвора)
 ## более эффективное использование полупроводниковой пластины (более плотная упакова)
 # Текущие технологии позволяют изготавливать полупроводниковые транзисторы размером порядка 20 нм.
 # На размерах около 10 нм проявляется туннелирование через затвор (ток утечки) и между транзисторами
-# Необходимо учитывать туннельные эффекты
-# \dots или же использовать их непосредственно для создания нелинейных микроэлектронных приборов
+# Необходимо учитывать квантовые (в частности, туннельные) эффекты
 \end{easylist}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Использование квантовых точек для получения нелинейных эффектов}
 \begin{easylist}[itemize]
+# \dots или же использовать квантовые эффекты непосредственно для создания нелинейных микроэлектронных приборов
 # Добавление дефектов/резонаторов в структуру волновода позволяет получить резонансные эффекты
 # Квантовые точки: типичный размер 2-10 нм
-## Квантовые точки — «контроллируемые дефекты»
+## Квантовые точки — очень высокоточные «контроллируемые дефекты»
 \end{easylist}
 \end{frame}
-
-% TODO картинка с коэффициентом прохождения
 
 \begin{frame}[fragile]
 \frametitle{Использование квантовых точек для получения нелинейных эффектов (продолжение)}
@@ -58,6 +61,38 @@
 # Коэффициент прохождения непосредственно влияет на электрическую проводимость: $G(E) = G_0 \sum\limits_n T_n(E)$
 # Регулируя параметры квантовой точки в окрестности резонанса, можно получать нелинейный эффект
 \end{easylist}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Использование квантовых точек для получения нелинейных эффектов (продолжение)}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{resonator.png}
+\caption{Модель волновода с резонатором Гельмгольца}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Использование квантовых точек для получения нелинейных эффектов (продолжение)}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{transmission-dependency-resonator.png}
+\caption{}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Использование квантовых точек для получения нелинейных эффектов (продолжение)}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{low-transmission.png}
+\caption{Волновая функция в резонансной точке}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Использование квантовых точек для получения нелинейных эффектов (продолжение)}
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{high-transmission.png}
+\caption{Волновая функция в отдалении от резонансной точки}
+\end{figure}
 \end{frame}
 
 
@@ -110,8 +145,8 @@
 \begin{easylist}[itemize]
 # $\dom{\Delta} \subseteq \dom{\Delta^*}$
 # Вместо расширения домена исходного оператора можно сужать домен сопряженного: $\dom{\Delta} \subseteq \dom{\Delta_E} = \dom{\Delta_E^*} \subseteq \dom{\Delta^*}$
-# $\dom{\Delta^*} = \{ \}$ \todo{TODO}
-# Условие самосопряженности — зануление формы $J(f, g) = \ip{\Delta^* f}{g} - \ip{f}{\Delta^* g}$
+% # $\dom{\Delta^*} = \{ \}$ \todo{TODO}
+# Условие самосопряженности — зануление формы: $\forall f, g \in \dom{\Delta_E}: J(f, g) = \ip{\Delta^* f}{g} - \ip{f}{\Delta^* g}$
 \end{easylist}
 \end{frame}
 
