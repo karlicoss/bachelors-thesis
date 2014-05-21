@@ -11,7 +11,93 @@ R_\lambda(z) = R_0(z) - R_0(z) \ket{\psi} \Gamma^{-1}(z, \lambda) \bra{\psi} R_0
 \]
 
 \section{2D}
+Выберем начало координат в точке, в которой находится отверстие, то есть, $x_s = 0, y_s = 0$.
+
+\subsection{Резонатор}
+Резонатор длины $L_x$, высоты $L_y$.
+
+Уравнение Шредингера с условием Дирихле на границе
+\begin{align*}
+- \frac{1}{2}\laplacian \psi(x, y) &= E \psi(x, y) \\
+\eval{\psi}_{\partial \Omega_w}{} &= 0
+\end{align*}
+, допускает разделение переменных в области $\Omega_W$. Разделив переменные, получим решения:
+
+\[
+\begin{cases}
+E_{n,m} = E_n^x + E_m^y \\
+\psi_{n, m}(x, y) = \psi_n(x) \psi_m(y) \\
+k_n^x = \frac{\pi n}{L_x}, n = 1 \dots \infty \\
+k_m^y = \frac{\pi m}{L_y}, m = 1 \dots \infty \\
+E_n^x = \frac{1}{2} (k_n^x)^2 \\
+E_m^y = \frac{1}{2} (k_m^y)^2 \\
+\psi_n(x) = \sqrt{\frac{2}{L_x}} \sin(k_n^x (x + \frac{L_x}{2})) \\
+\psi_m(y) = \sqrt{\frac{2}{L_y}} \sin(k_m^y y) \\
+\end{cases}
+\]
+
+Функция Грина для одномерной потенциальной ямы $[a; b]$ имеет замкнутый вид:
+% (from ex\_8370\_sol\_Y11.pdf):
+
+$$G_{1D}(x, s; E) = - 2 \begin{cases}
+\frac{\sin(k(x - a)) \sin(k(s - b))}{k \sin(k(b - a))}, & x < s \\
+\frac{\sin(k(x - b)) \sin(k(s - a))}{k \sin(k(b - a))}, & x > s \\
+\end{cases}$$
+
+Можно использовать этот замкнутый вид, чтобы упростить функцию Грина для резонатора:
+
+\begin{align*}
+G_W(x, y, x_s, y_s; E)
+&= \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E} \\
+&= \sum\limits_n \sum\limits_m \frac{\psi_n(x) \psi_n^*(x_s) \psi_m(y) \psi_m^*(y_s)}{E^x_n + E^y_m - E} \\
+&= \sum\limits_n \psi_n(x) \psi_n^*(x_s) \sum\limits_m \frac{\psi_m(y) \psi_m^*(y_s)}{E^y_m - (E - E^x_n)} \\
+&= \sum\limits_n \psi_n(x) \psi^*_n(x_s) G_{1D}(y, y_s; E - E^x_n)
+\end{align*}
+
+Дефектный элемент $D(x, y)$ — производная функции Грина по нормали к границе в точке отверстия, то есть:
+
+\begin{align*}
+& D(x, y) = \eval{\pdv{G_W(x, y, x_s, y_s; E)}{y}}_{x_s = \frac{L_x}{2}, y_s = 0} \\
+&= \sum\limits_{n = 1}^\infty
+\sqrt{\frac{2}{L_x}} \sin(k_n^x (x + \frac{L_x}{2}))
+\sqrt{\frac{2}{L_x}} \sin(k_n^x (x_s + \frac{L_x}{2}))
+\eval{\pdv{G_{1D}(y, y_s; E - E^x_n)}{y_s}}_{y_s = 0} \\
+&= \frac{2}{L_x} \sum\limits_{n = 1}^\infty
+\sin(\frac{\pi n}{L_x} x + \frac{\pi}{2} n)
+\sin(\frac{\pi}{2} n)
+\eval{\pdv{G_{1D}(y, y_s; E - E^x_n)}{y_s}}_{y_s = 0} \\
+&= \frac{2}{L_x} \sum\limits_{n = 1, n += 2}^\infty
+\cos(\frac{\pi n}{L_x} x)
+\eval{\pdv{G_{1D}(y, y_s; E - E^x_n)}{y_s}}_{y_s = 0}
+\end{align*}
+
+Дефектный элемент не лежит в $L^2(\Omega_R)$:
+
+\begin{align*}
+& \int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \int\limits_{y = 0}^{L_y} D(x, y)^2 \\
+& = \frac{2}{L_x} \frac{2}{L_x} \frac{2}{L_y} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
+\int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \cos^2(\frac{\pi n}{L_x} x) \int\limits_{y = 0}^{L_y}
+\left( \sum\limits_{m = 1}^\infty \frac{\sin(\frac{\pi m}{L_y}y) \frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2 \\
+& = \frac{2}{L_x} \frac{2}{L_x} \frac{2}{L_y} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
+\int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \cos^2(\frac{\pi n}{L_x} x)
+\sum\limits_{m = 1}^\infty \left( \frac{\frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2 \int\limits_{y = 0}^{L_y} \sin^2(\frac{\pi m}{L_y}y) \\
+& = \frac{2}{L_x} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
+\sum\limits_{m = 1}^\infty \left( \frac{\frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2
+\end{align*}
+
+ 
+
+
+
+
 Хотим сделать что-то, похожее на результат \cite{popov_zero_width_slit}, но для условий Дирихле.
+
+
+
+
+
+
+
 
 
 Функция Грина для 2D: $G_0(\vb{x}) = \frac{i}{4} H_0^{(1)}(k |\vb{x}|)$
