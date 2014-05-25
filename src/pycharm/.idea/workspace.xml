@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="Green's function for Neumann well">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/problems/neumann_well_2d.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/old-experiments/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/helmholtz.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/old-experiments/main-old.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/test.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scattering/main.py" afterPath="$PROJECT_DIR$/scattering/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scattering/problems/neumann_well_1d.py" afterPath="$PROJECT_DIR$/scattering/problems/neumann_well_1d.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/pycharm.iml" afterPath="$PROJECT_DIR$/.idea/pycharm.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scattering/square_resonator_2d.py" afterPath="$PROJECT_DIR$/scattering/square_resonator_2d.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" afterPath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pycharm.iws" />
@@ -30,48 +35,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scattering/main.py">
+      <file leaf-file-name="helmholtz.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="145" column="15" selection-start="4005" selection-end="4005" vertical-scroll-proportion="0.0" vertical-offset="2175" max-vertical-offset="5085">
+            <state line="246" column="30" selection-start="8294" selection-end="8294" vertical-scroll-proportion="7.5858126" vertical-offset="375" max-vertical-offset="5040">
               <folding>
-                <element signature="e#0#16#0" expanded="true" />
+                <element signature="e#0#35#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="greens_1d.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
+      <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/numerical/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="square_resonator_2d.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="58" column="33" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="2115">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="neumann_well_2d.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="1125">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="neumann_well_1d.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="62" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1440">
+            <state line="4" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="450">
               <folding />
             </state>
           </provider>
@@ -106,15 +84,17 @@
         <option value="$PROJECT_DIR$/scattering/square_resonator_2d.py" />
         <option value="$PROJECT_DIR$/scattering/problems/neumann_well_1d.py" />
         <option value="$PROJECT_DIR$/scattering/problems/neumann_well_2d.py" />
+        <option value="$PROJECT_DIR$/scattering/old-experiments/main-old.py" />
         <option value="$PROJECT_DIR$/scattering/main.py" />
+        <option value="$PROJECT_DIR$/numerical/test.py" />
+        <option value="$PROJECT_DIR$/numerical/helmholtz.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
     <option name="y" value="24" />
-    <option name="width" value="1616" />
-    <option name="height" value="884" />
+    <option name="width" value="1600" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -198,10 +178,6 @@
               <option name="myItemId" value="pycharm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scattering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -213,47 +189,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="scattering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tools" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pycharm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pycharm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scattering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="problems" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pycharm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pycharm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scattering" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="greens" />
+              <option name="myItemId" value="numerical" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -279,12 +215,12 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scattering" />
       <recent name="$PROJECT_DIR$/scattering/tools" />
       <recent name="$PROJECT_DIR$/scattering/tools.py" />
-      <recent name="$PROJECT_DIR$/scattering" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.helmholtz">
     <configuration default="false" name="neumann_well_2d" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -336,6 +272,46 @@
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scattering/main.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="helmholtz" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/numerical" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/numerical/helmholtz.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/numerical" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/numerical/test.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -460,16 +436,20 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
-    <list size="3">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
       <item index="1" class="java.lang.String" itemvalue="Python.neumann_well_1d" />
       <item index="2" class="java.lang.String" itemvalue="Python.main" />
+      <item index="3" class="java.lang.String" itemvalue="Python.helmholtz" />
+      <item index="4" class="java.lang.String" itemvalue="Python.test" />
     </list>
     <recent_temporary>
-      <list size="3">
-        <item index="0" class="java.lang.String" itemvalue="Python.main" />
-        <item index="1" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
-        <item index="2" class="java.lang.String" itemvalue="Python.neumann_well_1d" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.helmholtz" />
+        <item index="1" class="java.lang.String" itemvalue="Python.test" />
+        <item index="2" class="java.lang.String" itemvalue="Python.main" />
+        <item index="3" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
+        <item index="4" class="java.lang.String" itemvalue="Python.neumann_well_1d" />
       </list>
     </recent_temporary>
   </component>
@@ -520,19 +500,39 @@
     <option name="localTasksCounter" value="6" />
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="24" width="1616" height="884" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="24" width="1600" height="876" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2533249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298292" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31800264" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3886693" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4400527" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43889618" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -540,7 +540,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32806325" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32720104" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -570,124 +570,64 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="80" column="62" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1440" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="15" selection-start="4005" selection-end="4005" vertical-scroll-proportion="0.0" vertical-offset="2175" max-vertical-offset="5085">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="144" column="9" selection-start="3981" selection-end="3981" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="5085" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="33" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="2115">
-          <folding />
-        </state>
+        <state line="51" column="70" selection-start="1920" selection-end="1920" vertical-scroll-proportion="0.0" vertical-offset="1324" max-vertical-offset="2115" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="645" max-vertical-offset="1125">
-          <folding />
-        </state>
+        <state line="43" column="71" selection-start="1271" selection-end="1271" vertical-scroll-proportion="0.0" vertical-offset="410" max-vertical-offset="1140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="62" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1440">
-          <folding />
-        </state>
+        <state line="65" column="44" selection-start="2029" selection-end="2029" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1065" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="9" selection-start="3981" selection-end="3981" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="5085">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="144" column="9" selection-start="3981" selection-end="3981" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="5085" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="70" selection-start="1920" selection-end="1920" vertical-scroll-proportion="0.0" vertical-offset="1324" max-vertical-offset="2115">
-          <folding />
-        </state>
+        <state line="51" column="70" selection-start="1920" selection-end="1920" vertical-scroll-proportion="0.0" vertical-offset="1324" max-vertical-offset="2115" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="71" selection-start="1271" selection-end="1271" vertical-scroll-proportion="0.0" vertical-offset="410" max-vertical-offset="1140">
-          <folding />
-        </state>
+        <state line="43" column="71" selection-start="1271" selection-end="1271" vertical-scroll-proportion="0.0" vertical-offset="410" max-vertical-offset="1140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="44" selection-start="2029" selection-end="2029" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1065">
-          <folding />
-        </state>
+        <state line="65" column="44" selection-start="2029" selection-end="2029" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1065" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="144" column="9" selection-start="3981" selection-end="3981" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="5085">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="70" selection-start="1920" selection-end="1920" vertical-scroll-proportion="0.0" vertical-offset="1324" max-vertical-offset="2115">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="71" selection-start="1271" selection-end="1271" vertical-scroll-proportion="0.0" vertical-offset="410" max-vertical-offset="1140">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="44" selection-start="2029" selection-end="2029" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="1065">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="6" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="15690">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="28" column="6" selection-start="567" selection-end="567" vertical-scroll-proportion="0.0" vertical-offset="331" max-vertical-offset="15690" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/tools/tools.py">
@@ -697,173 +637,97 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="817" column="22" selection-start="26725" selection-end="26725" vertical-scroll-proportion="0.0" vertical-offset="11942" max-vertical-offset="15510">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="817" column="22" selection-start="26725" selection-end="26725" vertical-scroll-proportion="0.0" vertical-offset="11942" max-vertical-offset="15510" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="848" column="0" selection-start="27312" selection-end="27478" vertical-scroll-proportion="0.0" vertical-offset="12259" max-vertical-offset="15570" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1146" column="19" selection-start="37968" selection-end="37968" vertical-scroll-proportion="0.0" vertical-offset="16637" max-vertical-offset="17505">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="1146" column="19" selection-start="37968" selection-end="37968" vertical-scroll-proportion="0.0" vertical-offset="16637" max-vertical-offset="17505" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="801" column="13" selection-start="27398" selection-end="27398" vertical-scroll-proportion="0.0" vertical-offset="12075" max-vertical-offset="15855">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="801" column="13" selection-start="27398" selection-end="27398" vertical-scroll-proportion="0.0" vertical-offset="12075" max-vertical-offset="15855" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="864" column="30" selection-start="29190" selection-end="29190" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="15705">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="864" column="30" selection-start="29190" selection-end="29190" vertical-scroll-proportion="0.0" vertical-offset="255" max-vertical-offset="15705" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="695" column="38" selection-start="23144" selection-end="23144" vertical-scroll-proportion="0.0" vertical-offset="10367" max-vertical-offset="13155">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="695" column="38" selection-start="23144" selection-end="23144" vertical-scroll-proportion="0.0" vertical-offset="10367" max-vertical-offset="13155" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="510" column="35" selection-start="17531" selection-end="17531" vertical-scroll-proportion="0.0" vertical-offset="7637" max-vertical-offset="13140">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="510" column="35" selection-start="17531" selection-end="17531" vertical-scroll-proportion="0.0" vertical-offset="7637" max-vertical-offset="13140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="509" column="45" selection-start="17486" selection-end="17486" vertical-scroll-proportion="0.0" vertical-offset="7382" max-vertical-offset="13140">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="509" column="45" selection-start="17486" selection-end="17486" vertical-scroll-proportion="0.0" vertical-offset="7382" max-vertical-offset="13140" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="498" column="51" selection-start="16839" selection-end="16839" vertical-scroll-proportion="0.0" vertical-offset="6374" max-vertical-offset="12870">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="498" column="51" selection-start="16839" selection-end="16839" vertical-scroll-proportion="0.0" vertical-offset="6374" max-vertical-offset="12870" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="707" column="27" selection-start="23865" selection-end="23865" vertical-scroll-proportion="0.0" vertical-offset="8114" max-vertical-offset="13275" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="650" column="25" selection-start="21265" selection-end="21265" vertical-scroll-proportion="0.0" vertical-offset="9495" max-vertical-offset="12240">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="650" column="25" selection-start="21265" selection-end="21265" vertical-scroll-proportion="0.0" vertical-offset="9495" max-vertical-offset="12240" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="364" column="0" selection-start="11865" selection-end="11865" vertical-scroll-proportion="0.0" vertical-offset="6673" max-vertical-offset="12210" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="641" column="14" selection-start="21135" selection-end="21135" vertical-scroll-proportion="0.0" vertical-offset="9433" max-vertical-offset="12270">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="641" column="14" selection-start="21135" selection-end="21135" vertical-scroll-proportion="0.0" vertical-offset="9433" max-vertical-offset="12270" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="6205" max-vertical-offset="9945" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="7108" max-vertical-offset="9945">
-          <folding>
-            <element signature="e#0#16#0" expanded="true" />
-          </folding>
-        </state>
+        <state line="488" column="44" selection-start="15651" selection-end="15651" vertical-scroll-proportion="0.0" vertical-offset="7108" max-vertical-offset="9945" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/double_delta.py">
@@ -911,39 +775,58 @@
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
+    <entry file="file://$PROJECT_DIR$/scattering/old-experiments/main-old.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="62" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="1320">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1005">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732">
-          <folding />
-        </state>
+        <state line="333" column="6" selection-start="9354" selection-end="9354" vertical-scroll-proportion="9.603659" vertical-offset="270" max-vertical-offset="5085" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/square_resonator_2d.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="33" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1995">
-          <folding />
-        </state>
+        <state line="58" column="33" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="1995" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1005" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="45" selection-start="907" selection-end="907" vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="1320" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="145" column="15" selection-start="4005" selection-end="4005" vertical-scroll-proportion="0.0" vertical-offset="2175" max-vertical-offset="5085">
+        <state line="91" column="34" selection-start="2599" selection-end="2608" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="3390" />
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.3/dist-packages/scipy/sparse/coo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="258" column="0" selection-start="9212" selection-end="9212" vertical-scroll-proportion="0.9497717" vertical-offset="3454" max-vertical-offset="6510" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numerical/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python3.3/dist-packages/scipy/sparse/linalg/dsolve/linsolve.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="142" column="0" selection-start="4690" selection-end="4690" vertical-scroll-proportion="0.3325688" vertical-offset="1850" max-vertical-offset="5445" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="246" column="30" selection-start="8294" selection-end="8294" vertical-scroll-proportion="7.5858126" vertical-offset="375" max-vertical-offset="5040">
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

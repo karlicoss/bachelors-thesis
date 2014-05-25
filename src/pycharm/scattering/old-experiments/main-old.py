@@ -9,7 +9,10 @@ from matplotlib.colors import Normalize
 import scipy.constants as sc
 # import scipy.optimize as opt
 # import scipy.special
+from scattering.double_delta import DoubleDeltaCylinderScattering
 from scattering.one_point_2d import OnePointScattering
+from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
+from scattering.problems.neumann_well_1d import NeumannWell1D
 from scattering.square_resonator_2d import ResonatorScattering
 
 from scattering.tools import cnorm2, integrate_complex
@@ -132,6 +135,9 @@ def test_onepoint():
                       fname="op_transmission.png",
                       info="Transmission")
 
+
+jobs = []
+
 def test_resonator():
     Lx = 1.0
     Ly = 1.0
@@ -172,58 +178,157 @@ def test_resonator():
     #     fff(energy)
 
 
-def test_resonator_sizes():
-    H = 1.0
-    delta = 0.001
-    maxn = 1000  # TODO
-    maxn_wf = 100
+def test_cylinder(maxn):
+    RR = 5.0 * sc.nano
+    R = RR
+    uu = -0.4 * sc.nano * sc.eV
+    m = 0
+    mu = 0.19 * sc.m_e  # mass
 
-    left = 1.0
-    right = 6.0
-    step = 0.001
+    intf = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), 0, R)[0]
+    dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
+
+    print("Transversal mode energies:")
+    print([en / sc.eV for en in dcs.phi_energies])
+
+    print(dcs.compute_scattering_full(0.5 * sc.eV))
+    # plot_transmission(dcs,
+    #                   0.0 * sc.eV, 1.0 * sc.eV, 0.01 * sc.eV,
+    #                   maxt=3.0)
+    # energy = 0.2179999 * sc.eV
+    # energy = 0.244 * sc.eV
+    # n = 1
+    # plot_wavefunction(dcs, n, energy)
 
 
-    xs = arange(left, right, step)
-    ys = []
-    for dD in arange(left, right, step):
-        energy = (5 / H) ** 2
-        Lx = 2 * H
-        Ly = H * dD
-        sp = ResonatorScattering(H, Lx, Ly, delta, maxn, maxn_wf)
-        ys.append(sp.compute_scattering_full(energy))
+# plot_transmission(dcs, 0.0 * sc.eV, 1.0 * sc.eV, 0.001 * sc.eV)
 
-    fname = "output/transmissionxxx.png"
-    fig = plt.figure(figsize=(15, 10), dpi=500)
-    ax = fig.add_subplot(111)  # , aspect = 'equal'
+#######
+# n = 1
+# for ee in arange(0.05, 1.0, 0.01):
+# 	print("Plotting for energy = {:.2f} eV".format(ee))
+# 	energy = ee * sc.eV
+# 	plot_wavefunction(n, energy, "{:.2f}".format(ee))
+# #######
 
-    # xticks = arange(left, right, 0.1 * sc.eV)
-    # xlabels = ["{:.1f}".format(t / sc.eV) for t in xticks]
-    ax.set_xlim(left, right)
-    # ax.set_xticks(xticks)
-    # ax.set_xticklabels(xlabels)
-    ax.set_xlabel("Ly/H")
+def test_double_delta_slits():
+    RR = 5.0 * sc.nano
+    # R = 5.0 * sc.nano
+    swidth = 0.0000 * sc.nano
 
-    # yticks = arange(0.0, maxt, 1.0)
-    # ylabels = ["{:.1f}".format(t) for t in yticks]
-    ax.set_ylim(0.0, 1.0)
-    # ax.set_yticks(yticks)
-    # ax.set_yticklabels(ylabels)
-    ax.set_ylabel("T")
+    u1 = 10000.0 * sc.nano * sc.eV
+    a = -4.0 * sc.nano
+    intf1 = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), swidth, RR)[0]
 
-    ax.set_title("Dependency of transmission over the resonator height")
+    u2 = 10000.0 * sc.nano * sc.eV
+    b = 4.0 * sc.nano
+    intf2 = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), swidth, RR)[0]
 
-    cax = ax.plot(xs, ys)
+    m = 0
+    mu = 0.19 * sc.m_e  # mass
+    maxn = 10
 
-    fig.savefig(fname)
-    plt.close(fig)
+    dcs = DoubleDeltaCylinderScattering(mu, RR, u1, u2, a, b, intf1, intf2, m, maxn)
+    print("Transversal mode energies:")
+    print([en / sc.eV for en in dcs.phi_energies])
 
+    # f = 0.81 * sc.eV
+    # t = 0.83 * sc.eV
+    # step = 0.0001 * sc.eV
+    # plot_transmission(dcs, f, t, step)
+
+
+    n = 1
+    d = 8 * sc.nano
+    dz = 0.1 * sc.nano
+    dr = 0.1 * sc.nano
+    energy = 0.0773102 * sc.eV
+    plot_wavefunction(dcs, n, energy, -d, d, dz, dr,
+                      title="u1 = {:.2f} nm * eV (at a = {:.2f}) nm\nu2 = {:.2f} nm * eV (at b = {:.2f})\nslit width = {:.2f} nm".format(
+                          u1 / sc.nano / sc.eV,
+                          a / sc.nano,
+                          u2 / sc.nano / sc.eV,
+                          b / sc.nano,
+                          swidth / sc.nano))
+
+
+# for energy in arange(0.0773099 * sc.eV, 0.077311 * sc.eV, 0.0000001 * sc.eV):
+# 	print("Energy = {:.7f} eV".format(energy / sc.eV))
+# 	plot_wavefunction(dcs, n, energy, -d, d, dz, dr,
+# 		info = "u1 = {:.2f} nm * eV (at a = {:.2f}) nm\nu2 = {:.2f} nm * eV (at b = {:.2f})\nslit width = {:.2f} nm".format(
+# 			u1 / sc.nano / sc.eV,
+# 			a / sc.nano,
+# 			u2 / sc.nano / sc.eV,
+# 			b / sc.nano,
+# 			swidth / sc.nano),
+# 		fname = "output/{:.2f}.png".format(energy / sc.eV))
+
+
+def test_double_delta_barrier():
+    RR = 5.0 * sc.nano
+    R = 5.0 * sc.nano
+
+    u1 = 2.0 * sc.nano * sc.eV
+    a = -4.0 * sc.nano
+    intf1 = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), 0, R)[0]
+
+    u2 = 2.0 * sc.nano * sc.eV
+    b = 4.0 * sc.nano
+    intf2 = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), 0, R)[0]
+
+    m = 0
+    mu = 0.19 * sc.m_e  # mass
+    maxn = 5
+
+    dcs = DoubleDeltaCylinderScattering(mu, RR, u1, u2, a, b, intf1, intf2, m, maxn)
+    print("Transversal mode energies:")
+    print([en / sc.eV for en in dcs.phi_energies])
+
+    plot_transmission(dcs, 0.0 * sc.eV, 1.0 * sc.eV, 0.00005 * sc.eV)
+
+
+# n = 1
+# # energy = 0.05968299 * sc.eV # resonance 11
+# # energy = 0.09960 * sc.eV # resonance 12
+# d = 8 * sc.nano
+# dz = 0.1 * sc.nano
+# dr = 0.1 * sc.nano
+# plot_wavefunction(dcs, n, energy, -d, d, dz, dr)
+
+def test_slit():
+    R = 2.0 * sc.nano
+    RR = 3.0 * sc.nano
+    uu = -0.1 * sc.nano * sc.eV
+    mu = 0.19 * sc.m_e
+    m = 0
+    maxn = 0
+
+    intf = lambda f, g: integrate_complex(lambda r: r * f(r) * g(r), R, RR)[0]
+    dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
+
+    print("Transversal mode energies:")
+    print([en / sc.eV for en in dcs.phi_energies])
+
+    # plot_transmission(dcs, 0.0 * sc.eV, 1.0 * sc.eV, 0.001 * sc.eV)
+
+    n = 1
+    energy = 0.676999 * sc.eV
+    plot_wavefunction(dcs, n, energy)
 
 def main():
     # test_onepoint()
-    # test_resonator()
-    test_resonator_sizes()
+    test_resonator()
+    # test_racec(5)
+    # test_cylinder(1)
+    # test_double_delta_slits()
 
-
+# R = 1.0 * sc.nano
+# RR = 5.0 * sc.nano
+# uu = -0.4 * sc.nano * sc.eV
+# m = 0
+# mu = 0.19 * sc.m_e # mass
+# maxn = 5
+# test_cylinder(R, RR, uu, m, mu, maxn)
 
 
 main()
