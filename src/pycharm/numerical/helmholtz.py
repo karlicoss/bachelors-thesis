@@ -6,6 +6,8 @@ from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg.dsolve.linsolve import spsolve
 
 
+I = np.complex(1j)
+
 class Helmholtz:
     def __init__(self):
         # self.H =
@@ -13,9 +15,30 @@ class Helmholtz:
         # self.right = L
         pass
 
+class CellType(object):
+    DIRICHLET=0
+    DOMAIN=1
+    RADIATING_FROM_RIGHT=2
+    RADIATING_FROM_LEFT=3
+    NOTHING=4
+
+class Domain(object):
+    def __init__(self, cells, data, dx, dy):
+        self.cells = cells
+        self.data = data
+        # one computational cell is of size dx x dy
+        self.L = len(self.cells)
+        self.H = len(self.cells[0])
+        self.mapping = [[None for _ in range(self.H)] for _ in range(self.L)]
+        self.variables = 0
+        for x in range(self.L):
+            for y in range(self.H):
+                if self.cells[x][y] == CellType.DOMAIN:
+                    self.mapping[x][y] = self.variables
+                    self.variables += 1
+
 
 class Tube:
-    # [-L, L] x [0; H]
     def __init__(self, width, height, dx, dy):
         self.width = width
         self.height = height
@@ -23,261 +46,121 @@ class Tube:
         self.dy = dy
         self.L = int(self.width // self.dx)
         self.H = int(self.height // self.dy)
+        self.inc_mode = 1
 
+        for i in range(1, 6):
+            print("Mode {}: {}".format(i, (np.pi * i / self.height) ** 2))
 
-    def solve_sparse(self, energy):
-        def convert(x, y):
-            return x * self.H + y
+    def prepare_domain(self, energy):
+        self.kks = [np.sqrt(np.complex(energy - (np.pi * i / self.height) ** 2)) for i in range(6)]
 
-        def iconvert(i):
-            return (i // self.H, i % self.H)
-
-
-        kk = np.sqrt(energy - (np.pi / self.height) ** 2)
-        print("kk = {}".format(kk))
-
-        dim = self.L * self.H
-
-        # A = np.zeros((dim, dim), dtype=np.complex)
-        Ad = defaultdict(np.complex)
-        b = np.zeros(dim, dtype=np.complex)
-        # nabla^2 psi(x, y) + energy psi(x, y) = 0
-        # 1 / dx^2 (psi_{x-1,y} + psi_{x+1,y} + psi_{x,y-1} + psi_{x,y+1}) + (energy - 4 / dx^2) psi(x, y) = 0
+        cells = [[CellType.NOTHING for _ in range(self.H)] for _ in range(self.L)]
+        data = [[None for _ in range(self.H)] for _ in range(self.L)]
         for x in range(self.L):
-            for y in range(self.H):
-                i = convert(x, y)
-                Ad[(i, i)] = energy - 2 / self.dx ** 2 - 2 / self.dy ** 2
-                for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                    nx = x + dx
-                    ny = y + dy
-                    if nx == -1:
-                        # Arbitrary non-zero boundary condition?
-                        val = np.sin(np.pi * ny / self.H)
-                        b[i] -= val
-                    elif nx == self.L:
-                        val = np.sin(np.pi * ny / self.H) * np.exp(1j * kk * 1.022 * self.width)
-                        b[i] -= val
-                    elif ny == -1:
-                        # Dirichlet
-                        pass
-                    elif ny == self.H:
-                        # Dirichlet
-                        pass
-                    else:
-                        inb = convert(nx, ny)
-                        if dy != 0:
-                            Ad[(i, inb)] += 1 / self.dy ** 2
-                        else:  # dx != 0
-                            Ad[(i, inb)] += 1 / self.dx ** 2
-        row = [i for (i, _) in Ad.keys()]
-        col = [j for (_, j) in Ad.keys()]
-        data = list(Ad.values())
-        A = csr_matrix((data, (row, col)))
-        w = spsolve(A, b)
-        wf = np.zeros((self.L, self.H), dtype=np.complex)
-        for i in range(len(w)):
-            x, y = iconvert(i)
-            wf[x, y] = w[i]
-        return wf
-
-    def solve_forward(self, transport_energy):
-        kk = np.sqrt(transport_energy)
-        full_energy = (np.pi / self.height) ** 2 + transport_energy
-        # full_energy = 0
-        print("kk = {}".format(kk))
-        print("full_energy = {}".format(full_energy))
-        wf = np.zeros((self.L, self.H), dtype=np.complex)
+            cells[x][0] = CellType.DIRICHLET
+            data[x][0] = 0.0j
+        for x in range(self.L):
+            cells[x][self.H - 1] = CellType.DIRICHLET
+            data[x][self.H - 1] = 0.0j
         for y in range(self.H):
-            wf[0, y] = min(y + 1, (self.H - 1 - y) + 1)  # np.sin(np.pi * y * self.dy / self.height)
-            wf[1, y] = min(y + 1, (self.H - 1 - y) + 1)  # wf[0, y] # * np.exp(1j * kk * self.dx)
+            cells[0][y] = CellType.RADIATING_FROM_RIGHT
+            inc = np.sin(np.pi * self.inc_mode * y / self.H)
+            incdx = np.sin(np.pi * self.inc_mode * y / self.H) * I * self.kks[self.inc_mode]
+            data[0][y] = (inc, incdx)
+        for y in range(self.H):
+            cells[self.L - 1][y] = CellType.RADIATING_FROM_LEFT
+            # data[self.L - 1][y] = 0.0
+        for x in range(1, self.L - 1):
+            for y in range(1, self.H - 1):
+                cells[x][y] = CellType.DOMAIN
 
-        def get(i, j):
-            if i == -1:
-                return 0
-            elif j == -1:
-                return 0
-            elif i == self.L:
-                raise RuntimeError("Shouldn't have happened")
-            elif j == self.H:
-                return 0
-            else:
-                return wf[i, j]
+        self.domain = Domain(cells, data, self.dx, self.dy)
 
-        # 1/dx^2(psi_(n+1)m + psi_(n-1)m - 2 psi_nm) + 1/dy^2(psi_n(m+1) + psi_n(m-1) - 2 psi_nm)  + E psi_nm = 0
-        for x in range(2, self.L):
-            for y in range(self.H):
-                # wf[x, y] = (4  - self.dd ** 2 * energy) * get(x - 1, y) - get(x - 2, y) - get(x - 1, y - 1) - get(x - 1, y + 1)
-                lhs = 0
-                lhs += 1 / self.dx ** 2 * (get(x - 2, y) - 2 * get(x - 1, y))
-                lhs += 1 / self.dy ** 2 * (get(x - 1, y + 1) + get(x - 1, y - 1) - 2 * get(x - 1, y))
-                lhs += full_energy * get(x - 1, y)
-                wf[x, y] = -lhs * self.dx ** 2
+    def solve_radiating(self, energy):
+        self.prepare_domain(energy)
+        domain = self.domain # shorthand
 
-        return wf
+        kk1 = self.kks[1]
+        print("kk1 = {}".format(kk1))
 
-    # energy is the transport energy
-    def solve_sparse2(self, transport_energy):
-        def convert(x, y):
-            if x < 0 or x >= self.L or y < 0 or y >= self.H:
-                raise RuntimeError("SHH")
-            return x * self.H + y
 
-        def iconvert(i):
-            return (i // self.H, i % self.H)
-
-        kk = np.sqrt(transport_energy)
-        print("kk = {}".format(kk))
-        full_energy = (np.pi / self.height) ** 2 + transport_energy
-        full_energy = 0
-
-        dim = self.L * self.H
-
-        # A = np.zeros((dim, dim), dtype=np.complex)
         Ad = defaultdict(np.complex)
-        b = np.zeros(dim, dtype=np.complex)
-        # nabla^2 psi(x, y) + energy psi(x, y) = 0
-        # 1 / dx^2 (psi_{x-1,y} + psi_{x+1,y} + psi_{x,y-1} + psi_{x,y+1}) + (energy - 4 / dx^2) psi(x, y) = 0
-
-        initial = np.zeros((2, self.H), dtype=np.complex)
-        for xx in range(2):
-            for y in range(self.H):
-                # initial[xx, y] = np.sin(np.pi / self.height * y * self.dy)
-                initial[xx, y] = 1
-
-
-        for x in range(0, self.L):
-            for y in range(self.H):
-                i = convert(x, y)
-                lhs = 0j
-
-                # Processing d^2/dx^2
-                Ad[(i, i)] = 1 / self.dx ** 2
-
-                if x == 0:
-                    lhs += 1 / self.dx ** 2 * (-2 * initial[-1, y])
-                else:
-                    n1 = convert(x - 1, y)
-                    Ad[(i, n1)] = 1 / self.dx ** 2 * (-2)
-
-                if x <= 1:
-                    lhs += 1 / self.dx ** 2 * initial[-2 + x, y]
-                else:
-                    n2 = convert(x - 2, y)
-                    Ad[(i, n2)] = 1 / self.dx ** 2
-
-
-                # Processing d^2/dy^2
-                Ad[(i, i)] += 1 / self.dy ** 2 * (-2)
-
-                if y == 0:
-                    # lhs += 0
-                    pass
-                else:
-                    n1 = convert(x, y - 1)
-                    Ad[(i, n1)] = 1 / self.dy ** 2
-
-                if y == self.H - 1:
-                    # lhs += 0
-                    pass
-                else:
-                    n1 = convert(x, y + 1)
-                    Ad[(i, n1)] = 1 / self.dy ** 2
-
-                # energy term
-                Ad[(i, i)] += full_energy
-
-                b[i] = -lhs
-
-
-        row = [i for (i, _) in Ad.keys()]
-        col = [j for (_, j) in Ad.keys()]
-        data = list(Ad.values())
-        A = csr_matrix((data, (row, col)), dtype=np.complex)
-        print(A.todense())
-        print(b)
-        w = spsolve(A, b)
-        wf = np.zeros((self.L, self.H), dtype=np.complex)
-        for i in range(len(w)):
-            x, y = iconvert(i)
-            wf[x, y] = w[i]
-        return wf
-
-    # energy is the transport energy
-    def solve_robin(self, transport_energy):
-        def convert(x, y):
-            if x < 0 or x >= self.L or y < 0 or y >= self.H:
-                raise RuntimeError("SHH")
-            return x * self.H + y
-
-        def iconvert(i):
-            return (i // self.H, i % self.H)
-
-        kk = np.sqrt(transport_energy)
-        print("kk = {}".format(kk))
-        full_energy = (np.pi / self.height) ** 2 + transport_energy
-        # full_energy = 0
-
-        dim = self.L * self.H
-
-        # A = np.zeros((dim, dim), dtype=np.complex)
-        Ad = defaultdict(np.complex)
-        b = np.zeros(dim, dtype=np.complex)
-        # nabla^2 psi(x, y) + energy psi(x, y) = 0
-        # 1 / dx^2 (psi_{x-1,y} + psi_{x+1,y} + psi_{x,y-1} + psi_{x,y+1}) + (energy - 4 / dx^2) psi(x, y) = 0
+        b = np.zeros(domain.variables, dtype=np.complex)
 
 
         def processUpper(x, y):
-            i = convert(x, y)
-            if y == self.H - 1:
-                # Dirichlet, do nothing
-                pass
-            else:
-                ni = convert(x, y + 1)
+            i = domain.mapping[x][y]
+            if domain.cells[x][y + 1] == CellType.DOMAIN:
+                ni = domain.mapping[x][y + 1]
                 Ad[(i, ni)] += 1 / self.dy ** 2
+            elif domain.cells[x][y + 1] == CellType.DIRICHLET:
+                pass # TODO works only in the case of zero BCs
+            else:
+                raise RuntimeError("SHH")
+            # TODO handle radiating BCs
 
         def processLower(x, y):
-            i = convert(x, y)
-            if y == 0:
-                # Dirichlet, do nothing
-                pass
-            else:
-                ni = convert(x, y - 1)
+            i = domain.mapping[x][y]
+            if domain.cells[x][y - 1] == CellType.DOMAIN:
+                ni = domain.mapping[x][y - 1]
                 Ad[(i, ni)] += 1 / self.dy ** 2
+            elif domain.cells[x][y - 1] == CellType.DIRICHLET:
+                pass # TODO works only in the case of zero BCs
+            else:
+                raise RuntimeError("SHH")
+            # TODO handle radiating BCs
 
         def processLeft(x, y):
-            i = convert(x, y)
-            if x == 0:
-                b[i] -= 1 / self.dx ** 2 * np.sin(np.pi / self.H * y)
-                # ri = convert(x + 1, y)
-                # Ad[(i, i)] += 1 / self.dx ** 2 * (- kk * 2 * self.dx)
-                # Ad[(i, ri)] += 1 / self.dx ** 2 * 1
-            else:
-                ni = convert(x - 1, y)
+            i = domain.mapping[x][y]
+            if domain.cells[x - 1][y] == CellType.DOMAIN:
+                ni = domain.mapping[x - 1][y]
                 Ad[(i, ni)] += 1 / self.dx ** 2
+            elif domain.cells[x - 1][y] == CellType.RADIATING_FROM_RIGHT:
+                # psi = psi_inc + R e^{-i kk1 x}
+                # (psi - psi_inc)' = -i kk1 (psi - psi_inc)
+                # (psi_{n + 1} - psi_{n - 1}) / 2 dx -psi_inc' = -i kk1 (psi_n - psi_inc)
+                # psi_{n - 1} = psi_{n + 1} + 2 dx (-psi_inc' + i kk1 psi_n - i kk1 psi_inc)
+                (inc, incdx) = domain.data[x - 1][y]
+                ri = domain.mapping[x + 1][y]
+                Ad[(i, ri)] += 1 / self.dx ** 2
+                Ad[(i, i)] += 1 / self.dx ** 2 * (2 * self.dx * I * kk1)
+                lhs = 1 / self.dx ** 2 * (2 * self.dx * (-incdx - I * kk1 * inc))
+                b[i] -= lhs
+            else:
+                raise RuntimeError("SHH")
+             # TODO handle Dirichlet BCs
 
         def processRight(x, y):
-            i = convert(x, y)
-            if x == self.L - 1:
-                li = convert(x - 1, y)
-                Ad[(i, i)] += 1 / self.dx ** 2 * (1j * kk * 2 * self.dx)
+            i = domain.mapping[x][y]
+            if domain.cells[x + 1][y] == CellType.DOMAIN:
+                ri = domain.mapping[x + 1][y]
+                Ad[(i, ri)] += 1 / self.dx ** 2
+            elif domain.cells[x + 1][y] == CellType.RADIATING_FROM_LEFT:
+                # psi = T e^{i kk1 x}
+                # psi' = i kk psi
+                # (psi_{n + 1} - psi_{n - 1}) / 2 dx = i kk psi_n
+                # psi_{n + 1} = psi_{n - 1} + 2 dx i kk psi_n
+                li = domain.mapping[x - 1][y]
+                Ad[(i, i)] += 1 / self.dx ** 2 * (2 * self.dx * I * kk1)
                 Ad[(i, li)] += 1 / self.dx ** 2 * 1
             else:
-                ni = convert(x + 1, y)
-                Ad[(i, ni)] += 1 / self.dx ** 2
+                raise RuntimeError("SHH")
+             # TODO handle Dirichlet BCs
 
         def process(x, y):
-            i = convert(x, y)
+            i = domain.mapping[x][y]
             Ad[(i, i)] += -2 / self.dx ** 2
             Ad[(i, i)] += -2 / self.dy ** 2
-            Ad[(i, i)] += full_energy
+            Ad[(i, i)] += energy
 
-        for x in range(0, self.L):
+        for x in range(self.L):
             for y in range(self.H):
-                process(x, y)
-                processLeft(x, y)
-                processRight(x, y)
-                processLower(x, y)
-                processUpper(x, y)
+                if domain.cells[x][y] == CellType.DOMAIN:
+                    process(x, y)
+                    processLeft(x, y)
+                    processRight(x, y)
+                    processLower(x, y)
+                    processUpper(x, y)
 
 
         row = [i for (i, _) in Ad.keys()]
@@ -288,26 +171,19 @@ class Tube:
         # print(b)
         w = spsolve(A, b)
         wf = np.zeros((self.L, self.H), dtype=np.complex)
-        for i in range(len(w)):
-            x, y = iconvert(i)
-            wf[x, y] = w[i]
+        for x in range(self.L):
+            for y in range(self.H):
+                if domain.cells[x][y] == CellType.DOMAIN:
+                    i = domain.mapping[x][y]
+                    wf[x][y] = w[i]
+
         return wf
 
+
     def solve(self, energy):
-        # wf = self.solve_forward(energy)
-
-        wf = self.solve_robin(energy)
-        # for i in range(10):
-        #     print(list(wf[i, :]))
-        # # for i in range(self.H):
-        # #     print(wf[2, i])
-        # # wf = wf[:7, :]
+        wf = self.solve_radiating(energy)
         pf = np.square(np.absolute(wf))
-        # # for i in range(self.L):
-        #     print(np.max(wf[i,:]))
-        # rwf = np.real(wf)
         return pf
-
 
 def main():
     width = 100
@@ -316,7 +192,7 @@ def main():
     dy = 0.1
     tube = Tube(width, height, dx, dy)
 
-    energy = 0.3
+    energy = 0.03
     pf = tube.solve(energy)
 
     pf = pf.transpose()

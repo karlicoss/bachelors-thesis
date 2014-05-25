@@ -7,6 +7,7 @@
 \usepackage{amsmath,amsfonts,amssymb,amsthm,amscd,amsxtra}
 \usepackage{physics}
 \usepackage[sharp]{easylist}
+\usepackage{comment}
 
 \usepackage{beamerthemesplit}
 \DeclareMathOperator*{\argmin}{arg\,min}
@@ -51,7 +52,7 @@
 # \dots или же использовать квантовые эффекты непосредственно для создания нелинейных микроэлектронных приборов
 # Используем резонансный эффект \todo{Определить, что это такое}
 # В окрестности резонанса линейное изменение параметров нелинейно меняет проводимость: \todo{Может, формулу какую-нибудь}
-# Коэффициент прохождения непосредственно влияет на электрическую проводимость: $G(E) = G_0 \sum\limits_n T_n(E)$ \todo{А точно такая формула?}
+# Коэффициент прохождения непосредственно влияет на электрическую проводимость: $G(E) = G_0 \sum\limits_n T_n(E)$ % \todo{А точно такая формула?}
 \end{easylist}
 \end{frame}
 
@@ -192,112 +193,114 @@
 \end{easylist}
 \end{frame}
 
+% !!!!!!!
+% \begin{comment}
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: шкалы}
-% \begin{easylist}[itemize]
-% # $H$ — самосопряженный оператор, действующий в $\hilb{0}$ со скалярным произведением $\ip{\cdot}{\cdot}_0$
-% # Резольвента: $R(z) = \frac{1}{H - z}$. Пусть $z_0 \in \rho(H)$ (произвольное), $Z_0 = R(z_0)$
-% # Положительная шкала: для $k > 0$, определим $\hilb{k} = Z_0^k \hilb{0} = \{ Z_0^k \phi \mid \phi \in \hilb{0} \}$, «хорошие» функции
-% ## $\dots \subseteq \hilb{k} \subseteq \hilb{k - 1} \subseteq \dots \subseteq \hilb{1} \subseteq \hilb{0}$
-% ## В каждом $\hilb{k}$ определим скалярное произведение: $\ip{f}{g}_k = \ip{Z_0^{-k} f}{Z_0^{-k} g}_0$
-% # Отрицательная шкала: для $k > 0$, определим $\hilb{-k}$ как пополнение пространства $\hilb{0}$ по норме $\|f \|_{-k} = \sup\limits_{u \in \hilb{k}} \frac{\ip{f}{u}_0}{\|u\|_j}$, «плохие» функции
-% ## $\hilb{0} \subseteq \hilb{-1} \subseteq \dots \subseteq \hilb{-k} \subseteq \hilb{-k - 1} \subseteq \dots $
-% \end{easylist}
-% \end{frame}
-
-
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: шкалы (продолжение)}
-% \begin{easylist}[itemize]
-% # Скалярное произведение $\ip{\cdot}{\cdot}_0: \hilb{0} \times \hilb{0} \to \bbC$ можно расширить до $\ip{\cdot}{\cdot}_E: \hilb{-k} \times \hilb{k} \to \bbC$
-% \begin{align*}
-% \ip{f}{g}_E &\eqdef \lim\limits_{n \to \infty} \ip{f_n}{u}_0 \\
-% \ip{g}{f}_E &\eqdef \cconj{\ip{f}{g}}
-% \end{align*}
-% \end{easylist}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: шкалы}
+\begin{easylist}[itemize]
+# $H$ — самосопряженный оператор, действующий в $\hilb{0}$ со скалярным произведением $\ip{\cdot}{\cdot}_0$
+# Резольвента: $R(z) = \frac{1}{H - z}$. Пусть $z_0 \in \rho(H)$ (произвольное), $Z_0 = R(z_0)$
+# Положительная шкала: для $k > 0$, определим $\hilb{k} = Z_0^k \hilb{0} = \{ Z_0^k \phi \mid \phi \in \hilb{0} \}$, «хорошие» функции
+## $\dots \subseteq \hilb{k} \subseteq \hilb{k - 1} \subseteq \dots \subseteq \hilb{1} \subseteq \hilb{0}$
+## В каждом $\hilb{k}$ определим скалярное произведение: $\ip{f}{g}_k = \ip{Z_0^{-k} f}{Z_0^{-k} g}_0$
+# Отрицательная шкала: для $k > 0$, определим $\hilb{-k}$ как пополнение пространства $\hilb{0}$ по норме $\|f \|_{-k} = \sup\limits_{u \in \hilb{k}} \frac{\ip{f}{u}_0}{\|u\|_j}$, «плохие» функции
+## $\hilb{0} \subseteq \hilb{-1} \subseteq \dots \subseteq \hilb{-k} \subseteq \hilb{-k - 1} \subseteq \dots $
+\end{easylist}
+\end{frame}
 
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: предпонтрягинское пространство}
-% \begin{easylist}[itemize]
-% # Пусть $\psi$ — «плохой» элемент не из $\hilb{0}$ (в нашем случае производная функции Грина)
-% ## $\psi \in \hilb{-m} \setminus \hilb{-m + 1}$ 
-% # Хотим получить пространство $\mcP$ такое, что:
-% ## Содержит элемент $\psi$
-% ## Содержит как можно меньше «лишних» элементов $\hilb{-m} \setminus \hilb{0}$
-% ## Содержит как можно больше элементов из $\hilb{0}$
-% ## Скалярное произведение в $\mcP$ определено на всех парах элементов и расширяет исходное
-% \end{easylist}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: шкалы (продолжение)}
+\begin{easylist}[itemize]
+# Скалярное произведение $\ip{\cdot}{\cdot}_0: \hilb{0} \times \hilb{0} \to \bbC$ можно расширить до $\ip{\cdot}{\cdot}_E: \hilb{-k} \times \hilb{k} \to \bbC$
+\begin{align*}
+\ip{f}{g}_E &\eqdef \lim\limits_{n \to \infty} \ip{f_n}{u}_0 \\
+\ip{g}{f}_E &\eqdef \cconj{\ip{f}{g}}
+\end{align*}
+\end{easylist}
+\end{frame}
 
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: предпонтрягинское пространство (продолжение)}
-% \[
-% \mathcal{P} = 
-% \{ \varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mid \varphi_m \in \hilb{m}, c_i \in \mathbb{C}\}
-% \]
-% , где $\psi_i = Z_0^{m + i} \psi$, то есть, $\psi_i \in \hilb{i}$.
-
-% \begin{align*}
-% \ip{f}{f'}_{\mcP}
-% &= \ip{\varphi_m}{\varphi'_m}_E \\
-% &+ \sum\limits_{i = -m}^{m - 1} \ip{c_i \psi_i}{\varphi'_m}_E + \sum\limits_{j = -m}^{m - 1} \ip{\varphi_m}{c_j' \psi_j}_E \\
-% &+ \sum\limits_{i = -m}^{m - 1} \sum\limits_{j = -m}^{m - 1} \cconj{c_i} g_{ij} c_j'
-% \end{align*}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: предпонтрягинское пространство}
+\begin{easylist}[itemize]
+# Пусть $\psi$ — «плохой» элемент не из $\hilb{0}$ (в нашем случае производная функции Грина)
+## $\psi \in \hilb{-m} \setminus \hilb{-m + 1}$ 
+# Хотим получить пространство $\mcP$ такое, что:
+## Содержит элемент $\psi$
+## Содержит как можно меньше «лишних» элементов $\hilb{-m} \setminus \hilb{0}$
+## Содержит как можно больше элементов из $\hilb{0}$
+## Скалярное произведение в $\mcP$ определено на всех парах элементов и расширяет исходное
+\end{easylist}
+\end{frame}
 
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: предпонтрягинское пространство (продолжение)}
-% \begin{easylist}[itemize]
-% # $g_{ij}$ — эрмитова матрица: $g_{ij} = \cconj{g_{ji}}$
-% # Некоторые из элементов $g_{ij}$ могут быть корректно определены, если $\psi_i$ и $\psi_j$ совместны, в частности, когда $i + j \ge 0$
-% # Для выполнения резольвентного тождества, необходимо $\mel{f}{R_0(z_0)}{g} = \cconj{\mel{g}{R_0(\cconj{z_0})}{f}}$, что означает
-% $g_{i + 1, j} - g_{i, j + 1} = (z_0 - \cconj{z_0}) g_{i + 1, j + 1}$
-% # Оставшиеся элементы (а это, как минимум, $g_{-m, -m}$) — свободные параметры, определяются из некоторых физических соображений (т.н. ренормализация)
-% \end{easylist}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: предпонтрягинское пространство (продолжение)}
+\[
+\mathcal{P} = 
+\{ \varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mid \varphi_m \in \hilb{m}, c_i \in \mathbb{C}\}
+\]
+, где $\psi_i = Z_0^{m + i} \psi$, то есть, $\psi_i \in \hilb{i}$.
+
+\begin{align*}
+\ip{f}{f'}_{\mcP}
+&= \ip{\varphi_m}{\varphi'_m}_E \\
+&+ \sum\limits_{i = -m}^{m - 1} \ip{c_i \psi_i}{\varphi'_m}_E + \sum\limits_{j = -m}^{m - 1} \ip{\varphi_m}{c_j' \psi_j}_E \\
+&+ \sum\limits_{i = -m}^{m - 1} \sum\limits_{j = -m}^{m - 1} \cconj{c_i} g_{ij} c_j'
+\end{align*}
+\end{frame}
 
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: понтрягинское пространство}
-% Но в $\mcP$ все еще не все элементы $\hilb{0}$!
-
-% Определим 
-% \[
-% \Pi = \{f = (\phi_f, \vb{p_f}, \vb{n_f}) \mid \phi_f \in \hilb{0}, \vb{p_f}, \vb{n_f} \in \mathbb{C}^m \}
-% \]
-% с индефинитным скалярным произведением
-% \[
-% \ip{f}{g}_\Pi =
-% \ip{\phi_f}{\phi_g}_E +
-% \cconj{\vb{p_f}} \vdot \vb{n_g} +
-% \cconj{\vb{n_f}} \vdot \vb{p_g} + 
-% \cconj{\vb{n_f}} \vdot \vb{g_{ij}} \vdot \vb{n_g}
-% \]
-
-% Вложим $\mathcal{P}$ в $\Pi$:
-% \begin{align*}
-% \varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mapsto
-% \big(
-% & \varphi_m + \sum\limits_{i = 0}^{m - 1} c_i \psi_i, \\
-% & \left[ \ip{\psi_i}{\varphi_m}_E + \sum\limits_{j = 0}^{m - 1} c_j g_{ij} \right]_{i = -1}^{-m}, \\
-% & \left[ c_i \right]_{i = -1}^{-m}  \big)
-% \end{align*}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: предпонтрягинское пространство (продолжение)}
+\begin{easylist}[itemize]
+# $g_{ij}$ — эрмитова матрица: $g_{ij} = \cconj{g_{ji}}$
+# Некоторые из элементов $g_{ij}$ могут быть корректно определены, если $\psi_i$ и $\psi_j$ совместны, в частности, когда $i + j \ge 0$
+# Для выполнения резольвентного тождества, необходимо $\mel{f}{R_0(z_0)}{g} = \cconj{\mel{g}{R_0(\cconj{z_0})}{f}}$, что означает
+$g_{i + 1, j} - g_{i, j + 1} = (z_0 - \cconj{z_0}) g_{i + 1, j + 1}$
+# Оставшиеся элементы (а это, как минимум, $g_{-m, -m}$) — свободные параметры, определяются из некоторых физических соображений (т.н. ренормализация)
+\end{easylist}
+\end{frame}
 
 
-% \begin{frame}[fragile]
-% \frametitle{Расширение пространства: понтрягинское пространство (продолжение)}
-% \begin{easylist}[itemize]
-% # Вложение — плотное, пополнением $\mcP$ будет понтрягинское пространство $\Pi$
-% # Операторы, ранее определенные на $\hilb{0}$, также замыкаются в $\Pi$
-% \end{easylist}
-% \end{frame}
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: понтрягинское пространство}
+Но в $\mcP$ все еще не все элементы $\hilb{0}$!
 
+Определим 
+\[
+\Pi = \{f = (\phi_f, \vb{p_f}, \vb{n_f}) \mid \phi_f \in \hilb{0}, \vb{p_f}, \vb{n_f} \in \mathbb{C}^m \}
+\]
+с индефинитным скалярным произведением
+\[
+\ip{f}{g}_\Pi =
+\ip{\phi_f}{\phi_g}_E +
+\cconj{\vb{p_f}} \vdot \vb{n_g} +
+\cconj{\vb{n_f}} \vdot \vb{p_g} + 
+\cconj{\vb{n_f}} \vdot \vb{g_{ij}} \vdot \vb{n_g}
+\]
+
+Вложим $\mathcal{P}$ в $\Pi$:
+\begin{align*}
+\varphi_m + \sum\limits_{i = -m}^{m - 1} c_i \psi_i \mapsto
+\big(
+& \varphi_m + \sum\limits_{i = 0}^{m - 1} c_i \psi_i, \\
+& \left[ \ip{\psi_i}{\varphi_m}_E + \sum\limits_{j = 0}^{m - 1} c_j g_{ij} \right]_{i = -1}^{-m}, \\
+& \left[ c_i \right]_{i = -1}^{-m}  \big)
+\end{align*}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Расширение пространства: понтрягинское пространство (продолжение)}
+\begin{easylist}[itemize]
+# Вложение — плотное, пополнением $\mcP$ будет понтрягинское пространство $\Pi$
+# Операторы, ранее определенные на $\hilb{0}$, также замыкаются в $\Pi$
+\end{easylist}
+\end{frame}
+% \end{comment}
 
 \begin{frame}[fragile]
 \frametitle{Расширение оператора в понтрягинском пространстве $\Pi$}

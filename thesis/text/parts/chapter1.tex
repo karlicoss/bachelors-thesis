@@ -53,7 +53,7 @@ i \hbar \pdv{t} \Psi(t) = \hat{H} \Psi(t)
 
 
 \section{Коэффициент прохождения}
-Интуитивно, коэффициент прохождения — отношение «количества» волны, прошедшей через барьер к «количеству» волны, на этот барьер падающий. «Количество» волны должно быть связяно с током вероятности, однако он является векторная величина, и функция нескольких аргументов, тогда как хотелось бы получить характерное скалярное значение. Можно заметить, что:
+Интуитивно, коэффициент прохождения — отношение «количества» волны, прошедшей через барьер к «количеству» волны, на этот барьер падающий. «Количество» волны должно быть связяно с током вероятности, однако он является векторной величиной, и функцией нескольких аргументов, тогда как хотелось бы получить характерное скалярное значение. Можно заметить, что:
 
 \begin{easylist}[itemize]
 # ток вероятности не зависит от времени для не изменяемой во времени конфигурации системы;
@@ -69,6 +69,35 @@ T = \frac{|J_{trans}|}{|J_{inc}|}
 \]
 
 \section{Фиксирование нотации}
+
+\subsection{Атомная система единиц}
+% https://en.wikipedia.org/wiki/Atomic_units
+% http://www.phys.ubbcluj.ro/~vchis/cursuri/cspm/course2.pdf
+В данной работе все расчеты ведутся в атомной системе единиц Хартри (АСЕХ, англ. Hartree atomic units). В ней нормализуются следующие константы:
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|}
+\hline
+Величина & Значение в АСЕХ & Значение в СИ \\\hline
+Приведенная постонная Планка $\hbar$ & 1 & $\approx$ \num{1.5e-34}\si{\joule\second} \\\hline
+Масса электрона $m_e$ & 1 &  $\approx$ \num{9.1e-31}\si{\kilo\meter} \\\hline
+Заряд электрона $e$   & 1 & $\approx$ \num{1.6e-19}\si{\ampere\second} \\\hline
+\end{tabular}
+\end{table}
+
+Производными единицами будут \todo{TODO}:
+
+\begin{table}[h]
+\begin{tabular}{|l|l|l|}
+\hline
+Величина & Значение в АСЕХ & Значение в СИ \\\hline
+Приведенная постонная Планка $\hbar$ & 1 & \\\hline
+Масса электрона $m_e$ & 1 &  9.1  \\\hline
+Заряд электрона $e$   & 1 & \\\hline
+\end{tabular}
+\end{table}
+
+\textbf{Далее, если не будет оговорено иное, все квантомеханические уравнения и вычисления будут приведены в АСЕХ.}
 
 \subsection{Цилиндрические координаты}
 
@@ -141,17 +170,17 @@ G(x, s) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}
 \]
 
 \subsection{Скалярное произведение}
-There is some ambiguity in defining antilinearity property of the inner product in vector space $V$ over the field $\mathbb{C}$ of complex numbers:
+В определении скалярного произведения в комплексном векторном пространсве $V$ существует следующая неоднозначность:
 
 \begin{itemize}
-\item Physics: \textbf{anti}linear in the \textit{first} argument, linear in the \textit{second} argument:
+\item В физике: \textbf{анти}линейно по \textit{первому} аргументу, линейно по \textit{второму}:
 \[
 \forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = \cconj{a} \ip{x}{z} + \cconj{b} \ip{y}{z}
 \]
 \[
 \forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{x}{ay + bz} = a \ip{x}{y} + b \ip{x}{y}
 \]
-\item Mathematics: linear in the \textit{first} argument, \textbf{anti}linear in the \textit{second} argument:
+\item В математике: линейно по \textit{первому} аргументу, \textbf{анти}линейно по \textit{второму}:
 \[
 \forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = a \ip{x}{z} + b \ip{y}{z}
 \]
@@ -160,37 +189,7 @@ There is some ambiguity in defining antilinearity property of the inner product 
 \]
 \end{itemize}
 
-We stick to the PHYSICS definition. For instance, that means that inner product in $L^2(E)$ is defined as $\ip{f}{g} = \int\limits_E \cconj{f(\vb{x})} g(\vb{x}) \dd \vb{x}$.
-
-\subsection{Атомная система единиц}
-% https://en.wikipedia.org/wiki/Atomic_units
-% http://www.phys.ubbcluj.ro/~vchis/cursuri/cspm/course2.pdf
-\todo{Хотелось бы нормализовать массу электрона, заряд электрона, постоянную Планка и единицу длины}
-
-В данной работе все расчеты ведутся в атомной системе единиц Хартри (АСЕХ). В ней нормализуются следующие константы:
-
-\begin{table}[h]
-\begin{tabular}{|l|l|l|}
-\hline
-Величина & Значение в АСЕХ & Значение в СИ \\\hline
-Приведенная постонная Планка $\hbar$ & 1 & $\approx$ \num{1.5e-34}\si{\joule\second} \\\hline
-Масса электрона $m_e$ & 1 &  $\approx$ \num{9.1e-31}\si{\kilo\meter} \\\hline
-Заряд электрона $e$   & 1 & $\approx$ \num{1.6e-19}\si{\ampere\second} \\\hline
-\end{tabular}
-\end{table}
-
-Производными единицами будут \todo{TODO}:
-
-\begin{table}[h]
-\begin{tabular}{|l|l|l|}
-\hline
-Величина & Значение в АСЕХ & Значение в СИ \\\hline
-Приведенная постонная Планка $\hbar$ & 1 & \\\hline
-Масса электрона $m_e$ & 1 &  9.1  \\\hline
-Заряд электрона $e$   & 1 & \\\hline
-\end{tabular}
-\end{table}
-
+В данной работе используется \textbf{физическая} нотация. В частности, это означает, что скалярное произведение в $L^2(E)$ определено как $\ip{f}{g} = \int\limits_E \cconj{f(\vb{x})} g(\vb{x}) \dd \vb{x}$.
 
 \section{Различные граничные условия для уравнения Шредингера}
 

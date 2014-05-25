@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="Green's function for Neumann well">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/old-experiments/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/helmholtz.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/old-experiments/main-old.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/numerical/test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/numerical/helmholtz.py" afterPath="$PROJECT_DIR$/numerical/helmholtz.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scattering/main.py" afterPath="$PROJECT_DIR$/scattering/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" afterPath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -38,7 +33,7 @@
       <file leaf-file-name="helmholtz.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="246" column="30" selection-start="8294" selection-end="8294" vertical-scroll-proportion="7.5858126" vertical-offset="375" max-vertical-offset="5040">
+            <state line="40" column="10" selection-start="1051" selection-end="1051" vertical-scroll-proportion="1.3667426" vertical-offset="0" max-vertical-offset="3180">
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
               </folding>
@@ -49,7 +44,7 @@
       <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="60" max-vertical-offset="450">
+            <state line="13" column="24" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
               <folding />
             </state>
           </provider>
@@ -92,9 +87,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
     <option name="y" value="24" />
-    <option name="width" value="1600" />
-    <option name="height" value="876" />
+    <option name="width" value="1616" />
+    <option name="height" value="884" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -521,14 +517,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1600" height="876" extended-state="7" />
+    <frame x="-8" y="24" width="1616" height="884" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2533249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298292" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3886693" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38764784" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -540,7 +536,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32720104" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32674572" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -810,21 +806,21 @@
         <state line="258" column="0" selection-start="9212" selection-end="9212" vertical-scroll-proportion="0.9497717" vertical-offset="3454" max-vertical-offset="6510" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/numerical/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="9" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python3.3/dist-packages/scipy/sparse/linalg/dsolve/linsolve.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="142" column="0" selection-start="4690" selection-end="4690" vertical-scroll-proportion="0.3325688" vertical-offset="1850" max-vertical-offset="5445" />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/numerical/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="24" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="246" column="30" selection-start="8294" selection-end="8294" vertical-scroll-proportion="7.5858126" vertical-offset="375" max-vertical-offset="5040">
+        <state line="40" column="10" selection-start="1051" selection-end="1051" vertical-scroll-proportion="1.3667426" vertical-offset="0" max-vertical-offset="3180">
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
