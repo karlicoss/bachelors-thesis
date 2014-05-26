@@ -22,13 +22,17 @@ class CellType(object):
     RADIATING_FROM_LEFT=3
     NOTHING=4
 
+# Domain defines the geometry of the problem and the types of boundary conditions
+# Same for different energies
 class Domain(object):
-    def __init__(self, cells, data, dx, dy):
-        self.cells = cells
-        self.data = data
+    def __init__(self, L, H, dx, dy, cells):
+        self.L = L
+        self.H = H
         # one computational cell is of size dx x dy
-        self.L = len(self.cells)
-        self.H = len(self.cells[0])
+        self.dx = dx
+        self.dy = dy
+        self.cells = cells
+
         self.mapping = [[None for _ in range(self.H)] for _ in range(self.L)]
         self.variables = 0
         for x in range(self.L):
@@ -38,63 +42,32 @@ class Domain(object):
                     self.variables += 1
 
 
-class Tube:
-    def __init__(self, width, height, dx, dy):
-        self.width = width
-        self.height = height
-        self.dx = dx
-        self.dy = dy
-        self.L = int(self.width // self.dx)
-        self.H = int(self.height // self.dy)
-        self.inc_mode = 1
 
-        for i in range(1, 6):
-            print("Mode {}: {}".format(i, (np.pi * i / self.height) ** 2))
 
-    def prepare_domain(self, energy):
-        self.kks = [np.sqrt(np.complex(energy - (np.pi * i / self.height) ** 2)) for i in range(6)]
+class ScatteringProblem(object):
+    def __init__(self, domain):
+        self.domain = domain
 
-        cells = [[CellType.NOTHING for _ in range(self.H)] for _ in range(self.L)]
-        data = [[None for _ in range(self.H)] for _ in range(self.L)]
-        for x in range(self.L):
-            cells[x][0] = CellType.DIRICHLET
-            data[x][0] = 0.0j
-        for x in range(self.L):
-            cells[x][self.H - 1] = CellType.DIRICHLET
-            data[x][self.H - 1] = 0.0j
-        for y in range(self.H):
-            cells[0][y] = CellType.RADIATING_FROM_RIGHT
-            inc = np.sin(np.pi * self.inc_mode * y / self.H)
-            incdx = np.sin(np.pi * self.inc_mode * y / self.H) * I * self.kks[self.inc_mode]
-            data[0][y] = (inc, incdx)
-        for y in range(self.H):
-            cells[self.L - 1][y] = CellType.RADIATING_FROM_LEFT
-            # data[self.L - 1][y] = 0.0
-        for x in range(1, self.L - 1):
-            for y in range(1, self.H - 1):
-                cells[x][y] = CellType.DOMAIN
-
-        self.domain = Domain(cells, data, self.dx, self.dy)
+    # returns an array of energy-dependent boundary conditions
+    def compute_bcs(self, energy):
+        raise NotImplementedError()
 
     def solve_radiating(self, energy):
-        self.prepare_domain(energy)
+        data = self.compute_bcs(energy)
         domain = self.domain # shorthand
-
-        kk1 = self.kks[1]
-        print("kk1 = {}".format(kk1))
-
+        dx = domain.dx
+        dy = domain.dy
 
         Ad = defaultdict(np.complex)
         b = np.zeros(domain.variables, dtype=np.complex)
-
 
         def processUpper(x, y):
             i = domain.mapping[x][y]
             if domain.cells[x][y + 1] == CellType.DOMAIN:
                 ni = domain.mapping[x][y + 1]
-                Ad[(i, ni)] += 1 / self.dy ** 2
+                Ad[(i, ni)] += 1 / dy ** 2
             elif domain.cells[x][y + 1] == CellType.DIRICHLET:
-                pass # TODO works only in the case of zero BCs
+                b[i] -= 1 / dy ** 2 * data[x][y + 1]
             else:
                 raise RuntimeError("SHH")
             # TODO handle radiating BCs
@@ -103,58 +76,62 @@ class Tube:
             i = domain.mapping[x][y]
             if domain.cells[x][y - 1] == CellType.DOMAIN:
                 ni = domain.mapping[x][y - 1]
-                Ad[(i, ni)] += 1 / self.dy ** 2
+                Ad[(i, ni)] += 1 / dy ** 2
             elif domain.cells[x][y - 1] == CellType.DIRICHLET:
-                pass # TODO works only in the case of zero BCs
+                b[i] -= 1 / dy ** 2 * data[x][y - 1]
             else:
                 raise RuntimeError("SHH")
             # TODO handle radiating BCs
 
         def processLeft(x, y):
             i = domain.mapping[x][y]
-            if domain.cells[x - 1][y] == CellType.DOMAIN:
+            ncell = domain.cells[x - 1][y]
+            if ncell == CellType.DOMAIN:
                 ni = domain.mapping[x - 1][y]
-                Ad[(i, ni)] += 1 / self.dx ** 2
-            elif domain.cells[x - 1][y] == CellType.RADIATING_FROM_RIGHT:
+                Ad[(i, ni)] += 1 / dx ** 2
+            elif ncell == CellType.RADIATING_FROM_RIGHT:
                 # psi = psi_inc + R e^{-i kk1 x}
                 # (psi - psi_inc)' = -i kk1 (psi - psi_inc)
                 # (psi_{n + 1} - psi_{n - 1}) / 2 dx -psi_inc' = -i kk1 (psi_n - psi_inc)
                 # psi_{n - 1} = psi_{n + 1} + 2 dx (-psi_inc' + i kk1 psi_n - i kk1 psi_inc)
-                (inc, incdx) = domain.data[x - 1][y]
+                (inc, incdx, kk) = data[x - 1][y]
                 ri = domain.mapping[x + 1][y]
-                Ad[(i, ri)] += 1 / self.dx ** 2
-                Ad[(i, i)] += 1 / self.dx ** 2 * (2 * self.dx * I * kk1)
-                lhs = 1 / self.dx ** 2 * (2 * self.dx * (-incdx - I * kk1 * inc))
-                b[i] -= lhs
+                Ad[(i, ri)] += 1 / dx ** 2
+                Ad[(i, i)] += 1 / dx ** 2 * (2 * dx * I * kk)
+                b[i] -= 1 / dx ** 2 * (2 * dx * (-incdx - I * kk * inc))
+            elif ncell == CellType.DIRICHLET:
+                b[i] -= 1 / dx ** 2 * data[x - 1][y]
             else:
                 raise RuntimeError("SHH")
-             # TODO handle Dirichlet BCs
 
         def processRight(x, y):
             i = domain.mapping[x][y]
-            if domain.cells[x + 1][y] == CellType.DOMAIN:
+            ncell = domain.cells[x + 1][y]
+            if ncell == CellType.DOMAIN:
                 ri = domain.mapping[x + 1][y]
-                Ad[(i, ri)] += 1 / self.dx ** 2
-            elif domain.cells[x + 1][y] == CellType.RADIATING_FROM_LEFT:
+                Ad[(i, ri)] += 1 / dx ** 2
+            elif ncell == CellType.RADIATING_FROM_LEFT:
                 # psi = T e^{i kk1 x}
                 # psi' = i kk psi
                 # (psi_{n + 1} - psi_{n - 1}) / 2 dx = i kk psi_n
                 # psi_{n + 1} = psi_{n - 1} + 2 dx i kk psi_n
+                (inc, incdx, kk) = data[x + 1][y]
                 li = domain.mapping[x - 1][y]
-                Ad[(i, i)] += 1 / self.dx ** 2 * (2 * self.dx * I * kk1)
-                Ad[(i, li)] += 1 / self.dx ** 2 * 1
+                Ad[(i, i)] += 1 / dx ** 2 * (2 * dx * I * kk)
+                Ad[(i, li)] += 1 / dx ** 2 * 1 # TODO use data
+            elif ncell == CellType.DIRICHLET:
+                b[i] -= 1 / dx ** 2 * data[x + 1][y]
             else:
                 raise RuntimeError("SHH")
-             # TODO handle Dirichlet BCs
 
         def process(x, y):
             i = domain.mapping[x][y]
-            Ad[(i, i)] += -2 / self.dx ** 2
-            Ad[(i, i)] += -2 / self.dy ** 2
+            Ad[(i, i)] += -2 / dx ** 2
+            Ad[(i, i)] += -2 / dy ** 2
             Ad[(i, i)] += energy
 
-        for x in range(self.L):
-            for y in range(self.H):
+        for x in range(domain.L):
+            for y in range(domain.H):
                 if domain.cells[x][y] == CellType.DOMAIN:
                     process(x, y)
                     processLeft(x, y)
@@ -170,9 +147,9 @@ class Tube:
         # print(A.todense())
         # print(b)
         w = spsolve(A, b)
-        wf = np.zeros((self.L, self.H), dtype=np.complex)
-        for x in range(self.L):
-            for y in range(self.H):
+        wf = np.zeros((domain.L, domain.H), dtype=np.complex)
+        for x in range(domain.L):
+            for y in range(domain.H):
                 if domain.cells[x][y] == CellType.DOMAIN:
                     i = domain.mapping[x][y]
                     wf[x][y] = w[i]
@@ -180,20 +157,81 @@ class Tube:
         return wf
 
 
-    def solve(self, energy):
+    def get_pdensity(self, energy):
         wf = self.solve_radiating(energy)
         pf = np.square(np.absolute(wf))
         return pf
 
+def get_wavevector(full_energy, width, mode):
+    return np.sqrt(np.complex(full_energy - (np.pi * mode / width) ** 2))
+
+class Tube(ScatteringProblem):
+    def __init__(self, width, height, dx, dy, inc_mode):
+        self.width = width
+        self.height = height
+        self.L = int(width // dx)
+        self.H = int(height // dy)
+        self.inc_mode = inc_mode
+
+
+        def make_domain():
+            cells = [[CellType.NOTHING for _ in range(self.H)] for _ in range(self.L)]
+            for x in range(self.L):
+                cells[x][0] = CellType.DIRICHLET
+            for x in range(self.L):
+                cells[x][self.H - 1] = CellType.DIRICHLET
+            for y in range(self.H):
+                cells[0][y] = CellType.RADIATING_FROM_RIGHT
+            for y in range(self.H):
+                cells[self.L - 1][y] = CellType.RADIATING_FROM_LEFT
+            for x in range(1, self.L - 1):
+                for y in range(1, self.H - 1):
+                    cells[x][y] = CellType.DOMAIN
+
+
+            for y in range(1, self.H // 3):
+                cells[self.L // 3][y] = CellType.DIRICHLET
+                cells[self.L // 3 + 2][y] = CellType.DIRICHLET
+
+            for y in range(2 * self.H // 3, self.H):
+                cells[self.L // 3][y] = CellType.DIRICHLET
+                cells[self.L // 3 + 2][y] = CellType.DIRICHLET
+
+            return Domain(self.L, self.H, dx, dy, cells)
+
+        domain = make_domain()
+        super().__init__(domain)
+
+    def compute_bcs(self, energy):
+        kkinc = get_wavevector(energy, self.height, self.inc_mode)
+        data = [[None for _ in range(self.H)] for _ in range(self.L)]
+        for x in range(self.L):
+            for y in range(self.H):
+                if self.domain.cells[x][y] == CellType.DIRICHLET:
+                    data[x][y] = 0.0
+
+        for y in range(self.H):
+            if self.domain.cells[0][y] == CellType.RADIATING_FROM_RIGHT:
+                inc = np.sin(np.pi * self.inc_mode * y / self.H)
+                incdx = np.sin(np.pi * self.inc_mode * y / self.H) * I * kkinc
+                data[0][y] = (inc, incdx, kkinc)
+
+        for y in range(self.H):
+            if self.domain.cells[self.L - 1][y] == CellType.RADIATING_FROM_LEFT:
+                data[self.L - 1][y] = (0.0, 0.0, kkinc)
+        return data
+
+
+
 def main():
     width = 100
     height = 20
-    dx = 0.1
-    dy = 0.1
-    tube = Tube(width, height, dx, dy)
+    dx = 0.2
+    dy = 0.2
+    tube = Tube(width, height, dx, dy, 1)
 
-    energy = 0.03
-    pf = tube.solve(energy)
+    energy = 0.08
+    pf = tube.get_pdensity(energy)
 
     pf = pf.transpose()
     import matplotlib.pyplot as plt
