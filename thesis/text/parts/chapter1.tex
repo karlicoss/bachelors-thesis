@@ -69,16 +69,23 @@ T = \frac{|J_{trans}|}{|J_{inc}|}
 \]
 
 \section{Фиксирование нотации}
+\subsection{Различные обозначения}
+
+\begin{ilist}
+# Жирным обозначаются элементы — вектора: к примеру, $\vb{x} \in \bbR^n$
+# Сопряжение комплексных чисел обозначается как $\cconj{c}$
+# Сопряжение операторов обозначается как $A^*$
+\end{ilist}
 
 \subsection{Атомная система единиц}
 % https://en.wikipedia.org/wiki/Atomic_units
 % http://www.phys.ubbcluj.ro/~vchis/cursuri/cspm/course2.pdf
-В данной работе все расчеты ведутся в атомной системе единиц Хартри (АСЕХ, англ. Hartree atomic units). В ней нормализуются следующие константы:
+В данной работе все расчеты ведутся в атомной системе единиц Хартри (англ. Hartree atomic units, далее АСЕ). В ней нормализуются следующие константы:
 
 \begin{table}[h]
 \begin{tabular}{|l|l|l|}
 \hline
-Величина & Значение в АСЕХ & Значение в СИ \\\hline
+Величина & Значение в АСЕ & Значение в СИ \\\hline
 Приведенная постонная Планка $\hbar$ & 1 & $\approx$ \num{1.5e-34}\si{\joule\second} \\\hline
 Масса электрона $m_e$ & 1 &  $\approx$ \num{9.1e-31}\si{\kilo\meter} \\\hline
 Заряд электрона $e$   & 1 & $\approx$ \num{1.6e-19}\si{\ampere\second} \\\hline
@@ -90,14 +97,14 @@ T = \frac{|J_{trans}|}{|J_{inc}|}
 \begin{table}[h]
 \begin{tabular}{|l|l|l|}
 \hline
-Величина & Значение в АСЕХ & Значение в СИ \\\hline
+Величина & Значение в АСЕ & Значение в СИ \\\hline
 Приведенная постонная Планка $\hbar$ & 1 & \\\hline
 Масса электрона $m_e$ & 1 &  9.1  \\\hline
 Заряд электрона $e$   & 1 & \\\hline
 \end{tabular}
 \end{table}
 
-\textbf{Далее, если не будет оговорено иное, все квантомеханические уравнения и вычисления будут приведены в АСЕХ.}
+\textbf{Далее, если не будет оговорено иное, все квантомеханические уравнения и вычисления будут приведены в АСЕ.}
 
 \subsection{Цилиндрические координаты}
 
@@ -130,62 +137,63 @@ $$
 
 
 \subsection{Преобразование Фурье}
-В задачах квантовой механики часто удобно и более естественно производить анализ в импульсном представлении, нежели чем в координатном. Они связаны между собой преобразованием Фурье:
+В задачах квантовой механики часто удобно и более естественно производить анализ в импульсном представлении, нежели чем в координатном. Они связаны между собой преобразованием Фурье (напоминаем, что пользуемся АСЕ, засчет чего константа $\hbar$ опускается):
 
 \subsubsection{Из координатного представления в моментное}
 Пусть имеется волновая функция $\psi: \bbR^n \to \bbC$. 
 
-$\hat{p} = -i \hbar \grad$
+$\hat{\vb{p}} = -i \grad$
 
-$H_0 = - \frac{\hbar^2}{2 \mu} \laplacian$
+$H_0 = - \frac{1}{2 \mu} \laplacian$
 
-$\Psi(\vb{p}) = \mcF(\psi(\vb{x})) = \left(\frac{1}{\sqrt{2 \pi \hbar}}\right)^n \int\limits_{\bbR^n} \psi(\vb{x}) e^{-\frac{i}{\hbar} \vb{p} \vdot \vb{x}} \dd^n \vb{x}$
-TODO
+$\Psi(\vb{p}) = \mcF(\psi(\vb{x})) = \left(\frac{1}{\sqrt{2 \pi}}\right)^n \int\limits_{\bbR^n} \psi(\vb{x}) e^{-i \vb{p} \vdot \vb{x}} \dd[n]{\vb{x}}$
 
 \subsubsection{Из импульсного представления в координатное}
 
+$\hat{\vb{x}} = i \grad_p$
+
 $H_0 = \frac{p^2}{2 \mu}$
 
-TODO
+$\psi(\vb{x}) = \mcF^{-1}(\Psi(\vb{p})) = \left(\frac{1}{\sqrt{2 \pi}}\right)^n \int\limits_{\bbR^n} \Psi(\vb{p}) e^{i \vb{p} \vdot \vb{x}} \dd[n]{\vb{p}}$
 
 \subsection{Функция Грина}
-Термин ``функция Грина'' используется в двух значениях:
+Термин «функция Грина» используется в двух значениях:
 
 \begin{itemize}
-\item как интегральное ядро резольвентного оператора: $G(x, s; \lambda)$ — ядро оператора $R(\lambda) = \frac{1}{\lambda I - L}$ \todo{а тут все правильно со знаком?}
-\item как решение дифференциального уравнения $L_x G(x, s) = -\delta(x - s)$
+\item как интегральное ядро резольвентного оператора: $G(\vb{x}, \vb{s}; \lambda)$ — ядро оператора $R(\lambda) = \frac{1}{\lambda I - L}$ \todo{а тут все правильно со знаком?}
+\item как решение дифференциального уравнения $L_x G(\vb{x}, \vb{s}) = -\delta(\vb{x} - \vb{s})$, где $\delta$ — многомерная дельта-функция Дирака.
 \end{itemize}
 
 Также в физике и математике сложилась небольшая неоднозначность в определении функции Грина:
 
 \begin{itemize}
-\item в физике: $L_x G(x, s) = -\delta(x - s)$;
-\item в математике: $L_x G(x, s) = \delta(x - s)$.
+\item в физике: $L_x G(\vb{x}, \vb{s}) = -\delta(\vb{x} - \vb{s})$;
+\item в математике: $L_x G(\vb{x}, \vb{s}) = \delta(\vb{x} - \vb{s})$.
 \end{itemize} 
 
 Мы будем использовать \textbf{физическую} нотацию в данной работе. В частности, это означает, что спектральное представление функции Грина выглядит как: 
 
 \[
-G(x, s) = -\sum\limits_n \frac{\psi_n(x) \psi_n^*(s)}{\lambda_n}
+G(\vb{x}, \vb{s}) = -\sum\limits_n \frac{\psi_n(\vb{x}) \psi_n^*(\vb{s})}{\lambda_n}
 \]
 
 \subsection{Скалярное произведение}
-В определении скалярного произведения в комплексном векторном пространсве $V$ существует следующая неоднозначность:
+В определении скалярного произведения в комплексном векторном пространстве $V$ существует следующая неоднозначность:
 
 \begin{itemize}
 \item В физике: \textbf{анти}линейно по \textit{первому} аргументу, линейно по \textit{второму}:
 \[
-\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = \cconj{a} \ip{x}{z} + \cconj{b} \ip{y}{z}
+\forall \vb{x}, \vb{y}, \vb{z} \in V: \forall a, b \in \mathbb{C}: \ip{a\vb{x} + b\vb{y}}{\vb{z}} = \cconj{a} \ip{\vb{x}}{\vb{z}} + \cconj{b} \ip{\vb{y}}{\vb{z}}
 \]
 \[
-\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{x}{ay + bz} = a \ip{x}{y} + b \ip{x}{y}
+\forall \vb{x}, \vb{y}, \vb{z} \in V: \forall a, b \in \mathbb{C}: \ip{\vb{x}}{a\vb{y} + b\vb{z}} = a \ip{\vb{x}}{\vb{y}} + b \ip{\vb{x}}{\vb{y}}
 \]
 \item В математике: линейно по \textit{первому} аргументу, \textbf{анти}линейно по \textit{второму}:
 \[
-\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{ax + by}{z} = a \ip{x}{z} + b \ip{y}{z}
+\forall \vb{x}, \vb{y}, \vb{z} \in V: \forall a, b \in \mathbb{C}: \ip{a\vb{x} + b\vb{y}}{\vb{z}} = a \ip{\vb{x}}{\vb{z}} + b \ip{\vb{y}}{\vb{z}}
 \]
 \[
-\forall x, y, z \in V: \forall a, b \in \mathbb{C}: \ip{x}{ay + bz} = \cconj{a} \ip{x}{y} + \cconj{b} \ip{x}{y}
+\forall \vb{x}, \vb{y}, \vb{z} \in V: \forall a, b \in \mathbb{C}: \ip{\vb{x}}{a\vb{y} + b\vb{z}} = \cconj{a} \ip{\vb{x}}{\vb{y}} + \cconj{b} \ip{\vb{x}}{\vb{y}}
 \]
 \end{itemize}
 
@@ -353,11 +361,57 @@ Then restrict the mapping to the submanifold $\mathcal{P}'_m$ of $\mathcal{P}_m$
 
 Заметим, что не известно, можно ли дать какой-то физический смысл пространству $\Pi_m$, поэтому требуется дополнительный анализ, чтобы убедиться, что полученные решения имеют некий физический смысл, к примеру, анализ асимптотик решений.
 
-\section{Формула Крейна}
-\[
-R_\lambda(z) = R_0(z) - R_0(z) \ket{\psi} \Gamma^{-1}(z, \lambda) \bra{\psi} R_0(z)
-\]
+% \section{Формула Крейна}
+% \[
+% R_\lambda(z) = R_0(z) - R_0(z) \ket{\psi} \Gamma^{-1}(z, \lambda) \bra{\psi} R_0(z)
+% \]
 
+% \[
+% \Gamma(z, \lambda) = \frac{1}{\lambda} + \frac{1}{2}(z - z_0) \bra{\psi} R_0(z) R_0(z_0) \ket{\psi} + \frac{1}{2}(z - \cconj{z_0}) \bra{\psi} R_0(z) R_0(\cconj{z_0}) \ket{\psi}
+% \]
+
+\section{Решения простых квантовых систем}
+\subsection{Одномерная яма с бесконечными стенками}
+Пусть яма в $\Omega = [a, b]$, $L = b - a$, тогда:
+
+Волновые векторы: $\vb{k_n} = \frac{\pi n}{L} \vb{\hat{x}}$, $n = 1 \dots \infty$
+
+Собственные энергии: $E_n = \frac{1}{2} k_n^2$
+
+Собственные функции:
+\begin{ilist}
+# В координатном представлении: $\psi_n(x) = \sqrt{\frac{2}{L}} \sin(k_n (x - a))$
+# В импульсном представлении: $\Psi_n(p) = \sqrt{\pi L} n \left[ \frac{1 - (-1)^n e^{-i p L}}{\pi^2 n^2 - L^2 p^2} \right]$
+% http://www.users.csbsju.edu/~frioux/momentum/pib-momentum.pdf
+\end{ilist}
+
+\subsection{Двумерная яма с бесконечными стенками}
+Яма определена в $\Omega = [a_x, b_x] \times [a_y, b_y]$. Решение уравнения Шредингера допускает разделение переменных, соответственно:
+
+Волновые векторы: $k_{n, m} = \frac{\pi n}{L_x} \vb{\hat{x}} + \frac{\pi m}{L_y} \vb{\hat{y}}$
+
+Собственные энергии: $E_{n, m} = \frac{1}{2} k_{n, m}^2$
+
+Собственные функции: 
+\begin{ilist}
+# В координатном представлении: $\psi_{n, m}(x, y) = \sqrt{\frac{4}{L_x L_y}} \sin(k^x_n x) \sin(k^y_m y)$
+# В импульсном представлении:
 \[
-\Gamma(z, \lambda) = \frac{1}{\lambda} + \frac{1}{2}(z - z_0) \bra{\psi} R_0(z) R_0(z_0) \ket{\psi} + \frac{1}{2}(z - \cconj{z_0}) \bra{\psi} R_0(z) R_0(\cconj{z_0}) \ket{\psi}
+\Psi_{n, m}(p_x, p_y) = \pi \sqrt{L_x L_y} n m \left[ \frac{1 - (-1)^n e^{-i p_x L_x}}{\pi^2 n^2 - L_x^2 p_x^2} \right] \left[ \frac{1 - (-1)^m e^{-i p_y L_y}}{\pi^2 m^2 - L_y^2 p_y^2} \right]
 \]
+\end{ilist}
+
+
+
+\subsection{Одномерная свободная частица}
+$\Omega = (-\infty, \infty)$. 
+
+Волновые векторы: $\vb{k_{p}} = p \vb{\hat{x}}$, $p = -\infty \dots \infty$
+
+«Собственные энергии»: $E_p = \frac{1}{2} p^2$
+
+«Собственные функции»: $\psi_p = e^{i k_p x}$
+
+
+\subsection{Двумерный волновод}
+\todo{TODO}
