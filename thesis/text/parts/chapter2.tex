@@ -158,7 +158,69 @@ f(x, y) = f_\phi(x, y) + f_{1} (Z_0^3 \psi)(x, y) + f_{0} (Z_0^2 \psi)(x, y) + f
 
 
 
-\subsection{Резонатор}
+\subsection{Расчет дефектного элемента для резонатора}
+Дефектный элемент — производная функции Грина по нормали в точке $x_s = x_0, y_s = y_0$, то есть для резонатора совпадает с направлением производной по $y$.
+
+Функция Грина:
+
+\begin{align*}
+G(x, y, x_s, y_s; E) = N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{\sin(k_n x + \frac{\pi n}{2}) \sin(k_n x_s  + \frac{\pi n}{2}) \sin(k_m y) \sin(k_m y_s)}{k_n^2 + k_m^2 - E}
+\end{align*}
+
+\begin{align*}
+d(x, y)
+&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{\sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{E_{n, m} - E} \\
+& = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{\cos(k_n x) \sin(k_m y) k_m}{E_{n, m} - E}
+\end{align*}
+
+\begin{align*}
+\psi(x, y)
+& = H_0^* d(x, y) = - \laplacian d(x, y) \\
+& = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{(k_n^2 + k_m^2) \cos(k_n x) \sin(k_m y) k_m}{E_{n, m} - E}
+\end{align*}
+
+Рассмотрим применение резольвенты $Z_0 = R(E_0)$:
+
+\begin{align*}
+& (Z_0 \psi)(x, y) \\
+&= \int\limits_{\Omega_R} \sum\limits_{n = 1, m = 1}^\infty N_x^2 N_y^2 \frac{\sin(k_n x + \frac{\pi n}{2}) \sin(k_n x' + \frac{\pi n}{2}) \sin(k_m y) \sin(k_m y')}{k^2_n + k^2_m - E_0} \\
+& N_x^2 N_y^2 \sum\limits_{n' = 1, m' = 1}^\infty \frac{(k_{n'}^2 + k_{m'}^2) \sin(k_{n'} x' + \frac{\pi n'}{2}) \sin(\frac{\pi n'}{2}) \sin(k_{m'} y') k_{m'}}{k_{n'}^2 + k_{m'}^2 - E_D} \\
+&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0) (k_n^2 + k_m^2 - E_D)}
+\end{align*}
+
+Легко заметить, что 
+
+\begin{align*}
+(Z_0^t \psi)(x, y)
+&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0)^t (k_n^2 + k_m^2 - E_D)} \\
+&= N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{(k_n^2 + k_m^2) \cos(k_n x) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0)^t (k_n^2 + k_m^2 - E_D)}
+\end{align*}
+
+Найдем минимальное $t$, что $Z_0^t \psi \in \hilb{0}$, то есть что $Z_0^t \psi$ квадратично интегрируема на $\Omega_R$. \todo{Опускаем константы в интегрировании}
+
+\begin{align*}
+& \ip{Z_0^t \psi}{Z_0^t \psi} = \int\limits_{\Omega_R} \cconj{Z_0^t \psi(x, y))} Z_0^t \psi(x, y) \dd{x} \dd{y} \\
+&= \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2) m}{\cconj{(n^2 + m^2 - E_0)^t (n^2 + m^2 - E_D)}} \frac{(n^2 + m^2) m}{(n^2 + m^2 - E_0)^t (n^2 + m^2 - E_D)} \\
+&= \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2)^2 m^2}{((n^2 + m^2)^{2t} - |E_0|^2) ((n^2 + m^2)^{2} - |E_D|^2)} 
+\end{align*}
+
+Воспользуемся интегральным признаком сходимости и перейдем в полярные координаты:
+
+\begin{align*}
+\int\limits_{r = 0}^\infty \int\limits_{\phi = 0}^{\pi / 2} \frac{r^4 r^2 \sin^2 \phi}{(r^{4t} - |E_0|^2) (r^{4} - |E_D|^2)} r \dd{r} \dd{\phi}
+= \int\limits_{r = 0}^\infty \frac{r^7}{(r^{4t} - |E_0|^2) (r^{4} - |E_D|^2)} \dd{r}
+\end{align*}
+
+Минимальное $t$, для которого интеграл конечен, равно $2$, значит, $\psi \in \hilb{-2}$.
+
+
+% \begin{align*}
+% & D(x, y) = \mcF(d(x, y)) = \int\limits_{\Omega_R} N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{\cos(k_x x) \sin(k_m y) k_m}{E_{n, m} - E} e^{-i p_x x} e^{-i p_y y} \dd{x} \dd{y} \\
+% & = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{1}{E_{n, m} - E} k_m \int\limits_{\Omega_R} \cos(\frac{\pi n}{L_x} x) \sin(\frac{\pi m}{L_y} y) e^{-i p_x x} e^{-i p_y y} \dd{x} \dd{y} \\
+% & = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{1}{E_{n, m} - E} \frac{\pi m}{L_y} \\
+% & \frac{2 \pi  m L_x L_y e^{-i L_y p_y} \left(-(-1)^m+e^{i L_y p_y}\right) \left(\pi  n \sin \left(\frac{\pi  n}{2}\right) \cos \left(\frac{L_x p_x}{2}\right)-L_x \cos \left(\frac{\pi  n}{2}\right) p_x \sin \left(\frac{L_x p_x}{2}\right)\right)}{\left(\pi ^2 m^2-L_y^2 p_y^2\right) \left(\pi ^2 n^2-L_x^2 p_x^2\right)}
+% \end{align*}
+
 Уравнение Шредингера с условием Дирихле на границе
 \begin{align*}
 - \frac{1}{2}\laplacian \psi(x, y) &= E \psi(x, y) \\
