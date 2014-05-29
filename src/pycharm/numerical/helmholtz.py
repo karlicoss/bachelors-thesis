@@ -4,6 +4,7 @@ import numpy as np
 import scipy as sp
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg.dsolve.linsolve import spsolve
+import matplotlib.pyplot as plt
 
 
 I = np.complex(1j)
@@ -173,6 +174,10 @@ class Tube(ScatteringProblem):
         self.H = int(height // dy)
         self.inc_mode = inc_mode
 
+        ###
+        for i in range(5):
+            print("Mode {}: {}".format(i, (np.pi * i / self.height) ** 2))
+        ###
 
         def make_domain():
             cells = [[CellType.NOTHING for _ in range(self.H)] for _ in range(self.L)]
@@ -189,13 +194,15 @@ class Tube(ScatteringProblem):
                     cells[x][y] = CellType.DOMAIN
 
 
-            for y in range(1, self.H // 3):
-                cells[self.L // 3][y] = CellType.DIRICHLET
-                cells[self.L // 3 + 2][y] = CellType.DIRICHLET
+            slitsize = int(self.height / 5 // dy)
 
-            for y in range(2 * self.H // 3, self.H):
+            for y in range(1, self.H // 2 - slitsize // 2):
                 cells[self.L // 3][y] = CellType.DIRICHLET
-                cells[self.L // 3 + 2][y] = CellType.DIRICHLET
+                cells[self.L // 3 + self.H][y] = CellType.DIRICHLET
+
+            for y in range(self.H // 2 + slitsize // 2, self.H):
+                cells[self.L // 3][y] = CellType.DIRICHLET
+                cells[self.L // 3 + self.H][y] = CellType.DIRICHLET
 
             return Domain(self.L, self.H, dx, dy, cells)
 
@@ -224,21 +231,25 @@ class Tube(ScatteringProblem):
 
 
 def main():
-    width = 100
+    width = 200
     height = 20
-    dx = 0.2
-    dy = 0.2
+    dx = 0.1
+    dy = 0.1
     tube = Tube(width, height, dx, dy, 1)
 
-    energy = 0.08
-    pf = tube.get_pdensity(energy)
 
-    pf = pf.transpose()
-    import matplotlib.pyplot as plt
+    for energy in np.arange(0.01, 0.4, 0.005):
+        pf = tube.get_pdensity(energy)
 
-    plt.imshow(pf, cmap='gnuplot', origin='lower')
-    plt.colorbar()
-    plt.show()
+        pf = pf.transpose()
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, aspect='equal')
+        sax = ax.imshow(pf, cmap='gnuplot', origin='lower')
+        cbar = fig.colorbar(sax)
+        ax.set_title("Energy = {:.3f}".format(energy))
+        fig.savefig("output/energy{:.3f}.png".format(energy))
+        plt.close(fig)
 
 
 main()

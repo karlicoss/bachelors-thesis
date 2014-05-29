@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="90a10079-7b27-4975-b860-372386e8ba4c" name="Default" comment="Green's function for Neumann well">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/scattering/problems/dirichlet_well_1d.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../thesis/text/sty/scala.sty" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter2.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/chapter1.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/numerical/helmholtz.py" afterPath="$PROJECT_DIR$/numerical/helmholtz.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" afterPath="$PROJECT_DIR$/../../thesis/text/parts/intro.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" afterPath="$PROJECT_DIR$/../../thesis/presentation/presentation.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/macros/macros.tex" afterPath="$PROJECT_DIR$/../../thesis/text/macros/macros.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../thesis/text/thesis.tex" afterPath="$PROJECT_DIR$/../../thesis/text/thesis.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pycharm.iws" />
@@ -30,12 +32,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="helmholtz.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="helmholtz.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="10" selection-start="1051" selection-end="1051" vertical-scroll-proportion="1.3667426" vertical-offset="0" max-vertical-offset="3180">
+            <state line="249" column="54" selection-start="8589" selection-end="8589" vertical-scroll-proportion="0.0" vertical-offset="3160" max-vertical-offset="3915">
               <folding>
                 <element signature="e#0#35#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="neumann_well_1d.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="62" column="0" selection-start="0" selection-end="2968" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1320">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="neumann_well_2d.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dirichlet_well_1d.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/scattering/problems/dirichlet_well_1d.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="86" column="33" selection-start="2969" selection-end="2969" vertical-scroll-proportion="1.2745996" vertical-offset="733" max-vertical-offset="1395">
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,7 +75,16 @@
       <file leaf-file-name="test.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numerical/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="24" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
+            <state line="13" column="24" selection-start="195" selection-end="195" vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="450">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scattering/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="93" column="28" selection-start="2669" selection-end="2669" vertical-scroll-proportion="0.0" vertical-offset="1395" max-vertical-offset="3510">
               <folding />
             </state>
           </provider>
@@ -83,14 +123,14 @@
         <option value="$PROJECT_DIR$/scattering/main.py" />
         <option value="$PROJECT_DIR$/numerical/test.py" />
         <option value="$PROJECT_DIR$/numerical/helmholtz.py" />
+        <option value="$PROJECT_DIR$/scattering/problems/dirichlet_well_1d.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
     <option name="y" value="24" />
-    <option name="width" value="1616" />
-    <option name="height" value="884" />
+    <option name="width" value="1600" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -143,20 +183,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="pycharm">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -174,6 +200,46 @@
               <option name="myItemId" value="pycharm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scattering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scattering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="problems" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pycharm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scattering" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="greens" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -187,6 +253,20 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="numerical" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="pycharm">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -216,7 +296,7 @@
       <recent name="$PROJECT_DIR$/scattering/tools.py" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.helmholtz">
+  <component name="RunManager" selected="Python.dirichlet_well_1d">
     <configuration default="false" name="neumann_well_2d" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -230,24 +310,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pycharm" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scattering/problems/neumann_well_2d.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
-    <configuration default="false" name="neumann_well_1d" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scattering/problems" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pycharm" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scattering/problems/neumann_well_1d.py" />
       <option name="PARAMETERS" value="" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
@@ -308,6 +370,24 @@
       <RunnerSettings RunnerId="PyDebugRunner" />
       <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="dirichlet_well_1d" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scattering/problems" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pycharm" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scattering/problems/dirichlet_well_1d.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -434,18 +514,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
-      <item index="1" class="java.lang.String" itemvalue="Python.neumann_well_1d" />
-      <item index="2" class="java.lang.String" itemvalue="Python.main" />
-      <item index="3" class="java.lang.String" itemvalue="Python.helmholtz" />
-      <item index="4" class="java.lang.String" itemvalue="Python.test" />
+      <item index="1" class="java.lang.String" itemvalue="Python.main" />
+      <item index="2" class="java.lang.String" itemvalue="Python.helmholtz" />
+      <item index="3" class="java.lang.String" itemvalue="Python.test" />
+      <item index="4" class="java.lang.String" itemvalue="Python.dirichlet_well_1d" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.helmholtz" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test" />
-        <item index="2" class="java.lang.String" itemvalue="Python.main" />
-        <item index="3" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
-        <item index="4" class="java.lang.String" itemvalue="Python.neumann_well_1d" />
+        <item index="0" class="java.lang.String" itemvalue="Python.dirichlet_well_1d" />
+        <item index="1" class="java.lang.String" itemvalue="Python.helmholtz" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.main" />
+        <item index="4" class="java.lang.String" itemvalue="Python.neumann_well_2d" />
       </list>
     </recent_temporary>
   </component>
@@ -517,14 +597,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="24" width="1616" height="884" extended-state="7" />
+    <frame x="0" y="24" width="1600" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2533249" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3298292" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38764784" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3886693" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32992327" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -536,7 +616,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32674572" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.325887" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -566,11 +646,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="62" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" vertical-offset="1200" max-vertical-offset="1440" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scattering/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="144" column="9" selection-start="3981" selection-end="3981" vertical-scroll-proportion="0.0" vertical-offset="2055" max-vertical-offset="5085" />
@@ -781,26 +856,6 @@
         <state line="58" column="33" selection-start="2104" selection-end="2104" vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="1995" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="225" max-vertical-offset="1005" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="45" selection-start="907" selection-end="907" vertical-scroll-proportion="0.0" vertical-offset="525" max-vertical-offset="1320" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scattering/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="91" column="34" selection-start="2599" selection-end="2608" vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="3390" />
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python3.3/dist-packages/scipy/sparse/coo.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="258" column="0" selection-start="9212" selection-end="9212" vertical-scroll-proportion="0.9497717" vertical-offset="3454" max-vertical-offset="6510" />
@@ -818,11 +873,48 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="28" selection-start="2669" selection-end="2669" vertical-scroll-proportion="0.0" vertical-offset="1066" max-vertical-offset="3390">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/greens/greens_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="732">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/numerical/helmholtz.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="10" selection-start="1051" selection-end="1051" vertical-scroll-proportion="1.3667426" vertical-offset="0" max-vertical-offset="3180">
+        <state line="249" column="54" selection-start="8589" selection-end="8589" vertical-scroll-proportion="0.0" vertical-offset="3160" max-vertical-offset="3915">
           <folding>
             <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_2d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="31" selection-start="1276" selection-end="1276" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1005">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/problems/neumann_well_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="0" selection-start="0" selection-end="2968" vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="1320">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scattering/problems/dirichlet_well_1d.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="33" selection-start="2969" selection-end="2969" vertical-scroll-proportion="1.2745996" vertical-offset="733" max-vertical-offset="1395">
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
