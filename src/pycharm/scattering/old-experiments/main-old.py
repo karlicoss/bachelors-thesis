@@ -1,19 +1,18 @@
 import itertools
+
 import numpy as np
 from numpy import arange
-
 import matplotlib.pyplot as plt
-
 from matplotlib.colors import Normalize
-
 import scipy.constants as sc
+
+
 # import scipy.optimize as opt
 # import scipy.special
-from scattering.double_delta import DoubleDeltaCylinderScattering
-from scattering.one_point_2d import OnePointScattering
-from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
-from scattering.problems.neumann_well_1d import NeumannWell1D
-from scattering.square_resonator_2d import ResonatorScattering
+from r_matrix.double_delta import DoubleDeltaCylinderScattering
+from scattering.extensions.one_point_2d import OnePointScattering
+from r_matrix.piecewise_delta import PiecewiseDeltaCylinderScattering
+from scattering.extensions.resonator_2d_neumann import Resonator2DNeumannScattering
 
 from scattering.tools import cnorm2, integrate_complex
 
@@ -145,7 +144,7 @@ def test_resonator():
     delta = 0.001
     maxn = 1000  # TODO
     maxn_wf = 100
-    sp = ResonatorScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+    sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
 
     fx = -5.0
     tx = 6.0

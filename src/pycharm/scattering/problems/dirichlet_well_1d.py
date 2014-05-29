@@ -29,7 +29,7 @@ class DirichletWell1D:
 
         self.eigenenergies = []
         self.eigenenergies.append(None) # to make modes 1-indexed
-        self.eigenenergies.append([(sc.pi * n / width) ** 2 for n in range(1, self.maxn)])
+        self.eigenenergies.extend([(sc.pi * n / width) ** 2 for n in range(1, self.maxn)])
 
         self.eigenfunctions = []
         self.eigenfunctions.append(None) # to make modes 1-indexed
@@ -64,6 +64,7 @@ class DirichletWell1D:
                 return -np.sin(k * (x - self.a) * np.cos(k * (xs - self.b))) / np.sin(k * (self.b - self.a))
             else:
                 return -np.sin(k * (x - self.b) * np.cos(k * (xs - self.a))) / np.sin(k * (self.b - self.a))
+        return fun
 
     def test(self):
         """

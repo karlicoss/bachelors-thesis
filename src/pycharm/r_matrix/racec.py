@@ -1,7 +1,9 @@
-from scipy import constants as sc, constants
+from scipy import constants as sc
+
 from scattering.main import plot_transmission
-from scattering.piecewise_delta import PiecewiseDeltaCylinderScattering
+from r_matrix.piecewise_delta import PiecewiseDeltaCylinderScattering
 from scattering.tools import integrate_complex
+
 
 def test_racec(maxn):
     # Same radius as the host cylinder

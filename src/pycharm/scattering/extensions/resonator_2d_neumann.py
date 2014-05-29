@@ -8,7 +8,7 @@ from scattering.problems.neumann_well_2d import NeumannWell2D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
 
-class ResonatorScattering:
+class Resonator2DNeumannScattering:
     def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn_params: int, maxn_wavefunction: int = None):
         self.H = H
         self.Lx = Lx

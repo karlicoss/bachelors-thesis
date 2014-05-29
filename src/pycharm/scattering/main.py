@@ -1,18 +1,19 @@
 import itertools
+
 import numpy as np
 from numpy import arange
-
 import matplotlib.pyplot as plt
-
 from matplotlib.colors import Normalize
 
-import scipy.constants as sc
+
+
 # import scipy.optimize as opt
 # import scipy.special
-from scattering.one_point_2d import OnePointScattering
-from scattering.square_resonator_2d import ResonatorScattering
+from scattering.extensions.one_point_2d import OnePointScattering
+from scattering.extensions.resonator_2d_dirichlet import Resonator2DDirichletScattering
+from scattering.extensions.resonator_2d_neumann import Resonator2DNeumannScattering
 
-from scattering.tools import cnorm2, integrate_complex
+from scattering.tools import cnorm2
 
 
 def plot_transmission(dcs, left, right, step, maxt=None, fname="transmission.png", info=None, vlines=None):
@@ -132,6 +133,58 @@ def test_onepoint():
                       fname="op_transmission.png",
                       info="Transmission")
 
+def test_resonator_dirichlet():
+    Lx = 1.0
+    Ly = 1.0
+    H = 1.0
+    delta = 0.001
+    maxn = 20  # TODO
+    maxn_wf = 20
+    sp = Resonator2DDirichletScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+
+    fx = -5.0
+    tx = 6.0
+    dx = 0.05
+    fy = -H
+    ty = Ly
+    dy = 0.02
+
+    energy = 100.0
+    n = 1
+
+
+    # resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
+    # plot_transmission(sp,
+    #                   10.0, 100.0, 0.1,
+    #                   maxt=1.0,
+    #                   fname="output/transmission.png",
+    #                   info="Transmission",
+    #                   vlines=resenergies)
+
+    res = sp.compute_scattering(n, energy)
+    # for x in arange(-Lx / 2, Lx / 2, 0.1):
+    #     for y in arange(0, Ly, 0.1):
+    #         print(res.wf(x, y))
+
+
+
+    plot_wavefunction(res.wf,
+                          fx, tx, dx,
+                          fy, ty, dy,
+                          fname="output2/wavefunction{:.2f}.png".format(energy),
+                          title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+
+    # def fff(energy):
+    #     res = sp.compute_scattering(n, energy)
+    #     plot_wavefunction(res.wf,
+    #                       fx, tx, dx,
+    #                       fy, ty, dy,
+    #                       fname="output/wavefunction{:.2f}.png".format(energy),
+    #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    #
+    # for energy in arange(10.0, 20.0, 0.05):
+    #     fff(energy)
+
 def test_resonator():
     Lx = 1.0
     Ly = 1.0
@@ -139,7 +192,7 @@ def test_resonator():
     delta = 0.001
     maxn = 1000  # TODO
     maxn_wf = 100
-    sp = ResonatorScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+    sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
 
     fx = -5.0
     tx = 6.0
@@ -189,7 +242,7 @@ def test_resonator_sizes():
         energy = (5 / H) ** 2
         Lx = 2 * H
         Ly = H * dD
-        sp = ResonatorScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+        sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
         ys.append(sp.compute_scattering_full(energy))
 
     fname = "output/transmissionxxx.png"
@@ -221,8 +274,8 @@ def test_resonator_sizes():
 def main():
     # test_onepoint()
     # test_resonator()
-    test_resonator_sizes()
-
+    # test_resonator_sizes()
+    test_resonator_dirichlet()
 
 
 
