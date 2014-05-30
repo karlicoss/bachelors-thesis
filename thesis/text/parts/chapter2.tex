@@ -12,7 +12,55 @@ $\Omega_R$ — область резонатора, $\Omega_R = [- \frac{L_x}{2}
 
 $\Omega_W$ — область волновода, $\Omega_W = [-\infty, \infty] \times [-H, 0]$, где $H$ — высота волновода.
 
-\subsection{Построение модели с отверстием нулевой ширины}
+
+\section{Собственные функции, собственные энергии и функции Грина областей задачи}
+Далее будут необходимы \todo{блабла}
+\subsection{Резонатор}
+Уравнение Шредингера с условием Дирихле на границе
+\begin{align*}
+- \frac{1}{2}\laplacian \psi(x, y) &= E \psi(x, y) \\
+\eval{\psi}_{\Gamma_R}{} &= 0
+\end{align*}
+, допускает разделение переменных в области $\Omega_R$. Разделив переменные, получим решения:
+
+\[
+\begin{cases}
+E_{n,m} = E_n^x + E_m^y \\
+\psi_{n, m}(x, y) = \psi_n(x) \psi_m(y) \\
+k_n^x = \frac{\pi n}{L_x}, n = 1 \dots \infty \\
+k_m^y = \frac{\pi m}{L_y}, m = 1 \dots \infty \\
+E_n^x = \frac{1}{2} (k_n^x)^2 \\
+E_m^y = \frac{1}{2} (k_m^y)^2 \\
+\psi_n(x) = \sqrt{\frac{2}{L_x}} \sin(k_n^x (x + \frac{L_x}{2}))\\
+\psi_m(y) = \sqrt{\frac{2}{L_y}} \sin(k_m^y y) \\
+\end{cases}
+\]
+
+\todo{спектральное разложение функции Грина}
+
+Функция Грина для одномерной потенциальной ямы $[a; b]$ имеет замкнутый вид:
+% (from ex\_8370\_sol\_Y11.pdf):
+% тут вроде все ок со знаком и константой
+
+$$G_{1D}(x, s; E) = - 2 \begin{cases}
+\frac{\sin(k(x - a)) \sin(k(s - b))}{k \sin(k(b - a))}, & x < s \\
+\frac{\sin(k(x - b)) \sin(k(s - a))}{k \sin(k(b - a))}, & x > s \\
+\end{cases}$$
+
+Можно использовать этот замкнутый вид, чтобы упростить функцию Грина для резонатора:
+
+\begin{align*}
+G_R(x, y, x_s, y_s; E)
+&= \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E} \\
+&= \sum\limits_n \sum\limits_m \frac{\psi_n(x) \psi_n^*(x_s) \psi_m(y) \psi_m^*(y_s)}{E^x_n + E^y_m - E} \\
+&= \sum\limits_n \psi_n(x) \psi_n^*(x_s) \sum\limits_m \frac{\psi_m(y) \psi_m^*(y_s)}{E^y_m - (E - E^x_n)} \\
+&= \sum\limits_n \psi_n(x) \psi^*_n(x_s) G^y_{1D}(y, y_s; E - E^x_n)
+\end{align*}
+
+\subsection{Волновод}
+
+
+\section{Построение модели с отверстием нулевой ширины}
 Сузим оператор $H = H_R \oplus H_W$ до множества гладких функций, удовлетворяющих условию Дирихле на границах $\Gamma_R$ и $\Gamma_W$, они автоматически зануляются в точке $(x_0, y_0)$, так как она находится на границе.
 
 Однако, у данного оператора индексы дефекта $(0, 0)$, то есть он существенно самосопряжен. Рассмотрим причину этого:
@@ -32,10 +80,14 @@ f(x, y) = \sum\limits_{i = 0}^\infty c_i d^i \pdv[i]{G}{n_s} (x, y, x_0, y_0; E_
 Чтобы получить расширение, необходимо работать в более широком пространстве функций, в котором лежит первая производная функции Грина. Более того, для того, чтобы дать интерпретацию формальному условию зануления граничной формы (которое определяет возможный выбор домена расширения)
 
 \[
-J(f, g) = \ip{H^* f}{g} - \ip{f}{H^* g}
+J(f, g) = \ip{H_0^* f}{g} - \ip{f}{H_0^* g}
 \]
 
 , элементы вида $H_0^* f$ также должны лежать в расширенном пространстве, и должно быть переопределено скалярное произведение в этом пространстве.
+
+Таким образом, мы переходим от гильбертова пространства $\mcL^2(\Omega_R) \oplus \mcL^2(\Omega_W)$ со скалярным произведением $\ip{}{} = \ip{}{}_{\Omega_R} + \ip{}{}_{\Omega_W}$ к расширенному понтрягинскому пространству $\Pi$ с новым скалярным произведением $\ip{}{}_\Pi$, которое будет содержать необходимые для расчетов функции и в котором будет корректно определено скалярное произведение на них.
+
+% Гамильтониан в понтрягинском пространстве Dym 119 Albeverio 155
 
 % Домен сопряженного оператора состоит из элементов вида
 
@@ -50,112 +102,6 @@ J(f, g) = \ip{H^* f}{g} - \ip{f}{H^* g}
 % \[
 % \int\limits_\Omega (f \laplacian g - g \laplacian f) d \Omega = \oint\limits_\Gamma \left( f \pdv{g}{n} - g \pdv{f}{n} \right) d \Gamma
 % \]
-
-% Однако, возникает проблема, связанная с тем, что формула Грина применима только для гладких функций, а функции в $\dom \Delta^*$ могут иметь особенность в точке $(x_0, y_0)$.
-
-
-
-
-\subsection{Дефектные элементы}
-Пусть направление нормали к границе между областями совпадает с осью $y$, тогда: дефектный элемент $d(x, y) = \eval{\pdv{G(x, y, x_s, y_s; E_D)}{y_s}}_{x_s = x_0, y_s = y_0}$.
-
-Далее понадобится действовать на этот дефектный элемент резольвентой, рассмотрим это действие. Напомним, что резольвента — интегральное преобразование, ядро которого — функция Грина:
-
-$$(R(E) \psi)(x, y) = \int\limits_\Omega G(x', y', x, y) \psi(x', y') \dd{x'} \dd{y'}$$
-
-Подействуем резольвентой $R(E_0)$ на $d(x, y)$:
-
-\begin{align*}
-(R(E_0) d)(x, y)
-&= \int\limits_\Omega \sum\limits_{n, m} \frac{\psi^x_n(x') \psi^x_n(x) \psi^y_m(y') \psi^y_m(y)}{E^x_n + E^y_m - E_0} \sum\limits_{n, m} \frac{\psi_n^x(x') \psi_n^x(x_0) \psi_m^y(y') \pdv{\psi_m^y}{y_s} (y_0)}{E^x_n + E^y_m - E_D} \\
-&= \sum\limits_{n, m} \frac{\psi_n^x(x) \psi_n^x(x_0) \psi_m^y(y) \pdv{\psi_m^y}{y_s} (y_0)}{(E^x_n + E^y_m - E_0)(E^x_n + E^y_m - E_D)} \\
-\end{align*}
-
-Легко заметить, что 
-
-\[
-(R^t(E_0) d)(x, y)
-= \sum\limits_{n, m} \frac{\psi_n^x(x) \psi_n^x(x_0) \psi_m^y(y) \pdv{\psi_m^y}{y_s} (y_0)}{(E^x_n + E^y_m - E_0)^t(E^x_n + E^y_m - E_D)}
-\]
-
-\begin{align*}
-& (R(E_0) d)(x, y) = \int\limits_\Omega \\
-& \left(
-\sum\limits_{n = 1}^\infty
-\sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x') \sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x)
-\left(-2\frac{\sin(kk_n(y' - L_y)) \sin(kk_n y)}{kk_n \sin(kk_n L_y)}\right)
-\right) \\
-& \left(
-\sum\limits_{n = 1, n += 2}^\infty
-\sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x') \sqrt{\frac{2}{L_x}}
-\left(-2\frac{\sin(kk_n(y' - L_y))}{\sin(kk_n L_y)}\right)
-\right) = \\
-& \sum\limits_{n = 1, n += 2}^\infty
-\sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x) \sqrt{\frac{2}{L_x}}\\
-& \int\limits_y  \left(-2\frac{\sin(kk_n(y' - L_y)) \sin(kk_n y)}{kk_n \sin(kk_n L_y)}\right)
-\left(-2\frac{\sin(kk_n(y' - L_y))}{\sin(kk_n L_y)}\right) = \\
-& \sum\limits_{n = 1, n += 2}^\infty
-\sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x) \sqrt{\frac{2}{L_x}} 4 \frac{\sin(kk_n y) }{kk_n \sin^2(kk_n L_y)}\int\limits_y  \sin^2(kk_n(y' - L_y)) = \\
-& \sum\limits_{n = 1, n += 2}^\infty
-\sqrt{\frac{2}{L_x}} \cos(\frac{\pi n}{L_x} x) \sqrt{\frac{2}{L_x}} 4 \frac{\sin(kk_n y) }{kk_n \sin^2(kk_n L_y)}
-\left( \frac{1}{2} L_y - \frac{\sin(2 kk_n L_y)}{4 kk_n} \right)
-\end{align*}
-
-\subsection{Определение порядка понтрягинского пространства}
-\todo{а что, надо чтобы элемент прямой суммы был в $\Pi$?}
-
-Напомним, что нам необходимо, чтобы $\Pi$ содержало дефектный элемент $d$ и $H_0^* d$.
-
-В качестве оператора, на котором будет построена шкала, выберем резольвенту $Z_0 = R_0(z_0) = \frac{1}{H_0 - z_0 I}$, где $z_0$ — произвольный элемент резольвентного множества оператора $H_0$ (конкретный его выбор не влияет на построение шкалы).
-
-В качестве функции $\psi$, на которой будет построено предпонтрягинское пространство, возьмем $\psi = H_0^* d$.
-
-\todo{Короче, знаем, что в этом случае оно лежит в $\hilb{-2}$}.
-
-\todo{Можно ли в общем случае сказать, что в $\bbR^2$ производная функции Грина на первом элементе шкалы лежит?}
-
-Из построения шкал видно, что $d \in \hilb{-1}$.
-
-Пространство $\mcP$ состоит из:
-\[
-f(x, y) = f_\phi(x, y) + f_{1} (Z_0^3 \psi)(x, y) + f_{0} (Z_0^2 \psi)(x, y) + f_{-1} (Z_0 \psi)(x, y) + f_{-2} \psi(x, y)
-\]
-
-Далее перейдем в импульсное представление. В нем:
-
-\begin{ilist}
-# $H_0 = p^2 - E$
-# $Z_0 = \frac{1}{p^2 - z_0}$
-# $\psi(x, y) \mapsto \Psi(p_x, p_y)$
-\end{ilist}
-
-Импульсное представление удобно тем, что гамильтониан и резольвента в нем являются операторами умножения и коммутируют с применениями к ним функции.
-
-Обозначим $\Psi_{i} = Z_0^{2 + i} \Psi$, то есть $\Psi_{i} \in \hilb{i}$.
-
-Рассмотрим скалярное произведение $\ip{\Psi_i}{\Psi_j}$ в $L^2(\Omega)$:
-
-\begin{align*}
-\ip{\Psi_i}{\Psi_j} = \int\limits_\Omega \frac{1}{(p^2 - \cconj{z_0})^i} \cconj{\Psi(\vb{p})} \frac{1}{(p^2 - z_0)^j} \Psi(\vb{p}) \dd{\vb{p}}
-\end{align*}
-
-
-% Рассмотрим действие оператора на дефектный элемент:
-
-% \todo{Пока без коэффициентов вообще. Потом разберусь.}
-
-% \begin{align*}
-% & (-\laplacian - E) \pdv{G}{n} (x, y, x_0, y_0; E_0) \\
-% & = \pdv{}{n} \left((-\laplacian - E) G(x, y, x_0, y_0; E_0)\right) \\
-% & = \pdv{}{n} \left(((-\laplacian - E_0) + (E_0 - E)) G(x, y, x_0, y_0; E_0)\right) \\
-% & = \pdv{}{n} \left( - \delta(x - x_0) \delta(y - y_0) + (E_0 - E) G(x, y, x_0, y_0; E_0)\right) \\
-% & = - \pdv{}{n} \delta(x - x_0) \delta(y - y_0) + (E_0 - E) \pdv{G}{n} (x, y, x_0, y_0; E_0)
-% \end{align*}
-
-% Таким образом, необходимо, чтобы кроме исходного дефектного элемента, в расширенном пространстве $\Pi$ оказалась производная дельта-функции Дирака.
-
-
-
 
 
 \subsection{Расчет дефектного элемента для резонатора}
@@ -179,376 +125,106 @@ d(x, y)
 & = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{(k_n^2 + k_m^2) \cos(k_n x) \sin(k_m y) k_m}{E_{n, m} - E}
 \end{align*}
 
-Рассмотрим применение резольвенты $Z_0 = R(E_0)$:
+\subsection{Построение предпонтрягинского пространства}
+В качестве оператора, на котором будет построена шкала, выберем резольвенту $Z_0 = R_0(\iu S) = \frac{1}{H_0 - \iu S}$, где $S$ — произвольное ненулевое вещественное число. $\iu S$ лежит в резольвентном множестве оператора $H_0$ (его спектр — неотрицательные вещественные числа), поэтому оператор $Z_0$ корректно определен. Структура шкал не зависит от выбора $S$, поэтому пока оставим его без конкретного значения, его можно будет зафиксировать потом с учетом возможных упрощений вычислений.
+
+
+Рассмотрим применение оператора $Z_0$:
 
 \begin{align*}
 & (Z_0 \psi)(x, y) \\
-&= \int\limits_{\Omega_R} \sum\limits_{n = 1, m = 1}^\infty N_x^2 N_y^2 \frac{\sin(k_n x + \frac{\pi n}{2}) \sin(k_n x' + \frac{\pi n}{2}) \sin(k_m y) \sin(k_m y')}{k^2_n + k^2_m - E_0} \\
+&= \int\limits_{\Omega_R} \sum\limits_{n = 1, m = 1}^\infty N_x^2 N_y^2 \frac{\sin(k_n x + \frac{\pi n}{2}) \sin(k_n x' + \frac{\pi n}{2}) \sin(k_m y) \sin(k_m y')}{k^2_n + k^2_m - \iu S} \\
 & N_x^2 N_y^2 \sum\limits_{n' = 1, m' = 1}^\infty \frac{(k_{n'}^2 + k_{m'}^2) \sin(k_{n'} x' + \frac{\pi n'}{2}) \sin(\frac{\pi n'}{2}) \sin(k_{m'} y') k_{m'}}{k_{n'}^2 + k_{m'}^2 - E_D} \\
-&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0) (k_n^2 + k_m^2 - E_D)}
+&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - \iu S) (k_n^2 + k_m^2 - E_D)}
 \end{align*}
 
 Легко заметить, что 
 
 \begin{align*}
 (Z_0^t \psi)(x, y)
-&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0)^t (k_n^2 + k_m^2 - E_D)} \\
-&= N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{(k_n^2 + k_m^2) \cos(k_n x) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - E_0)^t (k_n^2 + k_m^2 - E_D)}
+&= N_x^2 N_y^2 \sum\limits_{n = 1, m = 1}^\infty \frac{(k_n^2 + k_m^2) \sin(k_n x + \frac{\pi n}{2}) \sin(\frac{\pi n}{2}) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - \iu S)^t (k_n^2 + k_m^2 - E_D)} \\
+&= N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{(k_n^2 + k_m^2) \cos(k_n x) \sin(k_m y) k_m}{(k_n^2 + k_m^2 - \iu S)^t (k_n^2 + k_m^2 - E_D)}
 \end{align*}
 
-Найдем минимальное $t$, что $Z_0^t \psi \in \hilb{0}$, то есть что $Z_0^t \psi$ квадратично интегрируема на $\Omega_R$. \todo{Опускаем константы в интегрировании}
+
+Определим порядок предпонтрягинского пространства — такое минимальное $t$, что $Z_0^t \psi \in \hilb{0}$, то есть что $Z_0^t \psi$ квадратично интегрируема на $\Omega_R$.
 
 \begin{align*}
 & \ip{Z_0^t \psi}{Z_0^t \psi} = \int\limits_{\Omega_R} \cconj{Z_0^t \psi(x, y))} Z_0^t \psi(x, y) \dd{x} \dd{y} \\
-&= \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2) m}{\cconj{(n^2 + m^2 - E_0)^t (n^2 + m^2 - E_D)}} \frac{(n^2 + m^2) m}{(n^2 + m^2 - E_0)^t (n^2 + m^2 - E_D)} \\
-&= \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2)^2 m^2}{((n^2 + m^2)^{2t} - |E_0|^2) ((n^2 + m^2)^{2} - |E_D|^2)} 
+&\propto \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2) m}{\cconj{(n^2 + m^2 - \iu S)^t (n^2 + m^2 - E_D)}} \frac{(n^2 + m^2) m}{(n^2 + m^2 - \iu S)^t (n^2 + m^2 - E_D)} \\
+&= \sum\limits_{n = 1,2, m = 1}^\infty \frac{(n^2 + m^2)^2 m^2}{((n^2 + m^2)^{2t} + S^2) ((n^2 + m^2)^{2} - |E_D|^2)} 
 \end{align*}
 
-Воспользуемся интегральным признаком сходимости и перейдем в полярные координаты:
-
+Для исследования сходимости данного ряда воспользуемся интегральным признаком сходимости и перейдем в полярные координаты:
 \begin{align*}
-\int\limits_{r = 0}^\infty \int\limits_{\phi = 0}^{\pi / 2} \frac{r^4 r^2 \sin^2 \phi}{(r^{4t} - |E_0|^2) (r^{4} - |E_D|^2)} r \dd{r} \dd{\phi}
-= \int\limits_{r = 0}^\infty \frac{r^7}{(r^{4t} - |E_0|^2) (r^{4} - |E_D|^2)} \dd{r}
+\int\limits_{r = 1}^\infty \int\limits_{\phi = 0}^{\pi / 2} \frac{r^4 r^2 \sin^2 \phi}{(r^{4t} + S^2) (r^{4} - |E_D|^2)} r \dd{r} \dd{\phi}
+= \int\limits_{r = 1}^\infty \frac{r^7}{(r^{4t} + S^2) (r^{4} - |E_D|^2)} \dd{r}
 \end{align*}
 
-Минимальное $t$, для которого интеграл конечен, равно $2$, значит, $\psi \in \hilb{-2}$.
-
-
-% \begin{align*}
-% & D(x, y) = \mcF(d(x, y)) = \int\limits_{\Omega_R} N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{\cos(k_x x) \sin(k_m y) k_m}{E_{n, m} - E} e^{-i p_x x} e^{-i p_y y} \dd{x} \dd{y} \\
-% & = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{1}{E_{n, m} - E} k_m \int\limits_{\Omega_R} \cos(\frac{\pi n}{L_x} x) \sin(\frac{\pi m}{L_y} y) e^{-i p_x x} e^{-i p_y y} \dd{x} \dd{y} \\
-% & = N_x^2 N_y^2 \sum\limits_{n = 1,2, m = 1}^\infty \frac{1}{E_{n, m} - E} \frac{\pi m}{L_y} \\
-% & \frac{2 \pi  m L_x L_y e^{-i L_y p_y} \left(-(-1)^m+e^{i L_y p_y}\right) \left(\pi  n \sin \left(\frac{\pi  n}{2}\right) \cos \left(\frac{L_x p_x}{2}\right)-L_x \cos \left(\frac{\pi  n}{2}\right) p_x \sin \left(\frac{L_x p_x}{2}\right)\right)}{\left(\pi ^2 m^2-L_y^2 p_y^2\right) \left(\pi ^2 n^2-L_x^2 p_x^2\right)}
-% \end{align*}
-
-Уравнение Шредингера с условием Дирихле на границе
-\begin{align*}
-- \frac{1}{2}\laplacian \psi(x, y) &= E \psi(x, y) \\
-\eval{\psi}_{\Gamma_R}{} &= 0
-\end{align*}
-, допускает разделение переменных в области $\Omega_R$. Разделив переменные, получим решения:
-
+Минимальное $t$, для которого интеграл конечен, равно $2$, значит, $\psi \in \hilb{-2}$. Пространство $\mcP$ состоит из:
 \[
-\begin{cases}
-E_{n,m} = E_n^x + E_m^y \\
-\psi_{n, m}(x, y) = \psi_n(x) \psi_m(y) \\
-k_n^x = \frac{\pi n}{L_x}, n = 1 \dots \infty \\
-k_m^y = \frac{\pi m}{L_y}, m = 1 \dots \infty \\
-E_n^x = \frac{1}{2} (k_n^x)^2 \\
-E_m^y = \frac{1}{2} (k_m^y)^2 \\
-\psi_n(x) = \sqrt{\frac{2}{L_x}} \sin(k_n^x (x + \frac{L_x}{2}))\\
-\psi_m(y) = \sqrt{\frac{2}{L_y}} \sin(k_m^y y) \\
-\end{cases}
+f(x, y) = f_\phi(x, y) + f_{1} (Z_0^3 \psi)(x, y) + f_{0} (Z_0^2 \psi)(x, y) + f_{-1} (Z_0 \psi)(x, y) + f_{-2} \psi(x, y)
 \]
 
-Функция Грина для одномерной потенциальной ямы $[a; b]$ имеет замкнутый вид:
-% (from ex\_8370\_sol\_Y11.pdf):
-% тут вроде все ок со знаком и константой
+Матрица $G$ для скалярного произведения:
 
-$$G_{1D}(x, s; E) = - 2 \begin{cases}
-\frac{\sin(k(x - a)) \sin(k(s - b))}{k \sin(k(b - a))}, & x < s \\
-\frac{\sin(k(x - b)) \sin(k(s - a))}{k \sin(k(b - a))}, & x > s \\
-\end{cases}$$
+\kbordermatrix{
+   & 1                        &       0 &      -1 & -2      \\
+1  & \ip{}{}_0 & \ip{}{}_0 & \ip{}{}_0 & \ip{}{}_0 \\
+0  & \ip{}{}_0 & \ip{}{}_0 & \ip{}{}_0 & G_{0, -2} \\
+-1 & \ip{}{}_0 & \ip{}{}_0 & G_{-1,-1} & G_{-1, -2} \\
+-2 & \ip{}{}_0 & G_{-2,0} & G_{-2,-1} & G_{-2,-2} \\
+}
 
-Можно использовать этот замкнутый вид, чтобы упростить функцию Грина для резонатора:
-
-\begin{align*}
-G_R(x, y, x_s, y_s; E)
-&= \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E} \\
-&= \sum\limits_n \sum\limits_m \frac{\psi_n(x) \psi_n^*(x_s) \psi_m(y) \psi_m^*(y_s)}{E^x_n + E^y_m - E} \\
-&= \sum\limits_n \psi_n(x) \psi_n^*(x_s) \sum\limits_m \frac{\psi_m(y) \psi_m^*(y_s)}{E^y_m - (E - E^x_n)} \\
-&= \sum\limits_n \psi_n(x) \psi^*_n(x_s) G^y_{1D}(y, y_s; E - E^x_n)
-\end{align*}
-
-Дефектный элемент $d(x, y)$ — производная функции Грина по нормали к границе в точке отверстия, то есть:
-
-\begin{align*}
-& d(x, y) = \eval{\pdv{G_R(x, y, x_s, y_s; E)}{y_s}}_{x_s = \frac{L_x}{2}, y_s = 0} \\
-&= \sum\limits_{n = 1}^\infty
-\sqrt{\frac{2}{L_x}} \sin(k_n^x (x + \frac{L_x}{2}))
-\sqrt{\frac{2}{L_x}} \sin(k_n^x (x_s + \frac{L_x}{2}))
-\eval{\pdv{G_{1D}(y, y_s; E - E^x_n)}{y_s}}_{y_s = 0} \\
-&= \frac{2}{L_x} \sum\limits_{n = 1}^\infty
-\sin(\frac{\pi n}{L_x} x + \frac{\pi}{2} n)
-\sin(\frac{\pi}{2} n)
-\eval{\pdv{G_{1D}(y, y_s; E - E^x_n)}{y_s}}_{y_s = 0} \\
-&= \frac{2}{L_x} \sum\limits_{n = 1, n += 2}^\infty
-\cos(\frac{\pi n}{L_x} x)
-\left(-2\frac{\sin(kk_n(y - L_y)) kk_n \cos(kk_n y_s)}{kk_n \sin(kk_n L_y)}\right) \\
-&= \frac{2}{L_x} \sum\limits_{n = 1, n += 2}^\infty
-\cos(\frac{\pi n}{L_x} x)
-\left(-2\frac{\sin(kk_n(y - L_y))}{\sin(kk_n L_y)}\right)
-\end{align*}
-
-Дефектный элемент не лежит в $L^2(\Omega_R)$:
-
-\begin{align*}
-& \int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \int\limits_{y = 0}^{L_y} D(x, y)^2 \\
-& = \frac{2}{L_x} \frac{2}{L_x} \frac{2}{L_y} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
-\int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \cos^2(\frac{\pi n}{L_x} x) \int\limits_{y = 0}^{L_y}
-\left( \sum\limits_{m = 1}^\infty \frac{\sin(\frac{\pi m}{L_y}y) \frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2 \\
-& = \frac{2}{L_x} \frac{2}{L_x} \frac{2}{L_y} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
-\int\limits_{x = -\frac{L_x}{2}}^{\frac{L_x}{2}} \cos^2(\frac{\pi n}{L_x} x)
-\sum\limits_{m = 1}^\infty \left( \frac{\frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2 \int\limits_{y = 0}^{L_y} \sin^2(\frac{\pi m}{L_y}y) \\
-& = \frac{2}{L_x} \frac{2}{L_y}  \sum\limits_{n = 1, n += 2}^\infty
-\sum\limits_{m = 1}^\infty \left( \frac{\frac{\pi m}{L_y}}{E_n^x + E_m^y - E} \right)^2
-\end{align*}
-
-Этот ряд не сходится. \todo{почему?}. Требуется расширение пространства до понтрягинского.
-
-\subsubsection{Построение понтрягинского пространства}
-Нужно построить шкалы. Построим ее на резольвентном операторе $R(E_0)$.
-
-Рассмотрим функцию $(R(E_0) d)$, воспользовавшись \todo{TODO}:
-
-\[
-(R(E_0) d)(x, y)
-= \sum\limits_{n = 1, n += 2}^\infty \sum\limits_{m = 1}^\infty \frac{\frac{2}{L_x} \cos(\frac{\pi n}{L_x} x) \frac{2}{L_y} \sin(\frac{\pi m}{L_y} y)\frac{\pi m}{L_y}}{(E^x_n + E^y_m - E_0)(E^x_n + E^y_m - E_d)} \\
-\]
-
-Этот элемент уже принадлежит $L^2(\Omega_R)$, \todo{интегральный признак?}, значит, дефектный элемент находится в $\hilb{-1}$.
-
-Обозначим $d_k(x, y) = R^{1 + k}(E_0) d$, то есть $d_k \in \hilb{k}$, в такой нотации $d_{-1} = d$.
-
-Таким образом, предпонтрягинское пространство $\mcP$ состоит из функций вида:
-
-\[
-f(x, y) = f_\phi(x, y) + f_0 (Z_0 d)(x, y) + f_{-1} d(x, y)
-\]
-
-Рассчитаем элементы матрицы $G$:
+Имеем ограничения:
 
 \begin{ilist}
-# $G_{0, 0} = $ \todo{TODO все очень плохо. Нифига аналитически не считается}
-% попробовать https://en.wikipedia.org/wiki/Barnes_zeta_function
-# $G_{0, -1} = $ \todo{TODO}
-# $G_{-1, 0} = \cconj{G_{0, -1}} = $ \todo{TODO}
-# $G_{-1, -1} = $ — свободный параметр \todo{TODO}
+# $G_{-2,0} = \cconj{G_{0, -2}}$
+# $G_{-2,-1} = \cconj{G_{-1, -2}}$
+# $\Im G_{-2,-2} = 0$
+# $\Im G_{-1,-1} = 0$
+# Ограничение на $G_{-2, 0}$ и $G_{-1, -1}$
+# Ограничение на $G_{-2, -1}$ и $G_{-1, -1}$
 \end{ilist}
 
-Дальше:
+\todo{После этого вроде как остается два параметра? Один из них относится к $G_{-2, -2}$ и вроде как не нужен, а другой подгонять?}
+
+
+Напомним, что нас будет интересовать скалярное произведение $\ip{\Delta f}{g}$. Надо вложить в понтгрягинское пространство:
 
 \begin{elist}
-# \todo{рассчитали элементы матрицы, есть скалярное произведение в $\mcP$ }
-# \todo{получили производные функции Грина в $\Pi$ — дефектные элементы}
-# \todo{сшили решения в $\Omega_W$ и $\Omega_R$ с условием нулевого потока через отверстие}
-## \todo{а чтобы сшивать, надо знать асимптотики :(}
-# \todo{посчитали поток в асимптотическом регионе и получили коэффициент прохождения}
+# $\Delta_0 d$
+
+Пользуясь тем, что по определению, $\psi = \Delta_0 d$, получаем
+\[
+\Delta_0 d \xmapsto[]{\mcP} (0, 0, 0, 0, 1) \xmapsto[]{\Pi} (0; 0, 0; 0, 1)
+\]
+# $d$
+
+Заметим:
+\begin{align*}
+& \psi_{-1} = Z_0 \psi = \frac{1}{\Delta_0 - z_0} \Delta_0 d = d + z_0 Z_0 d \in \hilb{-1} \\
+& z_0 \psi_{0} = z_0 Z_0 d + z_0^2 Z_0^2 d \in \hilb{0} \\
+& z_0^2 \psi_{1} = z_0^2 Z_0^2 d + z_0^3 Z_0^3 d \in \hilb{1} \\
+& f_\phi = z_0^3 Z_0^3 d \in \hilb{2}
+\end{align*}
+
+Поочередно вычитаем и прибавляем, получаем  $\psi_{-1} - z_0 \psi_0 + z_0^2 \psi_1 - f_\phi =  d$, соответственно:
+\[
+d \xmapsto[]{\mcP} (-z_0^3 Z_0^3 d, z_0^2, -z_0, 1, 0) \xmapsto[]{\Pi} (-z_0 Z_0 d; \left[ \ip{\psi_i}{-z_0^3 Z_0^3 d}_0 + \sum\limits_{j = 0}^1 f_j G_{i, j} \right]_{i = -1}^{-2};1, 0)
+\]
+# $u \in W_2^2$
+
+Элемент пространства $W_2^2$ находится в $\hilb{2}$ \todo{точно?}, поэтому:
+\[
+u \xmapsto[]{\mcP} (u, 0, 0, 0, 0) \xmapsto[]{\Pi} (u;\left[ \ip{\psi_i}{u}_0 \right]_{i = -1}^{-2}; 0, 0)
+\]
+# $\Delta_0 u$
+
+$\Delta_0 u \in \hilb{0}$ по определению пространства $W_2^2$. $\hilb{2}$ плотно в $\hilb{0}$, значит, существует последовательность $f_n \in \hilb{2}$: $\lim\limits_{n \to \infty} f_n = \Delta_0 u$.
+
+\[f_n \xmapsto[]{\mcP} (f_n, 0, 0, 0, 0) \xmapsto[]{\Pi} (f_n, \left[ \ip{\psi_i}{f_n}_0 \right]_{i = -1}^{-2}, 0^2) \xrightarrow[n \to \infty]{\Pi} (\Delta_0 u; \left[ \ip{\psi_i}{\Delta_0 u}_0 \right]_{i = -1}^{-2}; 0, 0)\]
+% Как это аналитически будем считать, вообще непонятно.
 \end{elist}
 
-
-Домен сопряженного оператора $\Delta^*$ состоит из элементов вида:
-
-\[
-u(x) = \begin{cases}
-a_W \pdv{G_W(x, y, x_s, y_s)}{y_s} (x_s = x_0, x_s = y_0) + b_W, & x \in \Omega_W \\
-a_R \pdv{G_R(x, y, x_s, y_s)}{y_s} (x_s = x_0, x_s = y_0) + b_R, & x \in \Omega_R \\
-\end{cases}
-\]
-
-Домен самосоряженного расширения $\Delta_E$ исходного оператора $\Delta$ — линейное подмножество, на котором зануляется граничная форма. \todo{написать про возможные расширения}
-
-\todo{использовать асимптотику производной. Не уверен, что расширение то же самое будет}
-
-Воспользуемся расширением с «нулевым потоком через отверстие»:
-
-\begin{ilist}
-# $a_W = -a_R$
-# $b_W = b_R$
-\end{ilist}
-
-\subsection{Волновод}
-
-
-
-
-
-
-
-Функция Грина для 2D: $G_0(\vb{x}) = \frac{i}{4} H_0^{(1)}(k |\vb{x}|)$
-
-
-
-% Пусть $\frac{\hbar^2}{2 \mu} = 1$
-
-$\psi(x_1, x_2) = \delta'(x_1) \delta(x_2)$
-
-Далее будет удобно перейти в импульсное представление, так как в нем гамильтониан будет оператором умножения: $H_0 = \frac{p^2}{2 \mu}$.
-
-Резольвента, соответственно, также будет оператором умножения, $R_0(z) = \frac{1}{\frac{p^2}{2 \mu} - z}$, что позволит менять ее местами с символами функций в вычислениях.
-
-Переведем функционал $\psi(x_1, x_2)$ в импульсное представление $\Psi(p_1, p_2)$:
-
-$\Psi(p_1, p_2) = \mcF(\psi(x_1, x_2)) = \frac{1}{2 \pi \hbar} i p_1$
-
-Также упрощается частичное скалярное произведение:
-
-\begin{align*}
-\ip{f}{g}_0
-&= \ip{R_0^k(\cconj{z_0}) f}{R_0^{-k}(z_0) g} \\
-&= \int\limits_{\bbR^2} \cconj{R_0^k(\cconj{z_0}) f(\vb{p})} R_0^{-k}(z_0) g(\vb{p}) \dd[2]{\vb{p}} \\
-&= \int\limits_{\bbR^2} R_0^k(z_0) R_0^{-k}(z_0) f(\vb{p}) g(\vb{p}) \dd[2]{\vb{p}} \\
-&= \int\limits_{\bbR^2} f(\vb{p}) g(\vb{p}) \dd[2]{\vb{p}} \\
-&= \ip{f}{g}
-\end{align*}
-
-$\psi \notin \hilb{0}$, $L^2$-норма $\psi$ бесконечна
-
-$\psi \notin \hilb{-1}$, $L^2$-норма $R_0(z_0) \psi$ бесконечна
-
-$\psi \in \hilb{-2}$, $L^2$-норма $R_0^2(z_0) \psi$ конечна
-
-Получаем предпонтрягинское пространство $\mcP_{-1}$, состоящее из функций вида:
-
-\[
-f(\vb{p}) = f_\phi(\vb{p}) + f_0 \frac{1}{(\frac{p^2}{2 \mu} - i)^2} \Psi(\vb{p}) + f_{-1} \frac{1}{\frac{p^2}{2 \mu} - i} \Psi(\vb{p})
-\]
-
-Скалярное произведение:
-
-\begin{align*}
-\ip{f}{g}
-&= \ip{f_\phi}{g_\phi} \\
-&+ \sum\limits_{i = -1}^0 \ip{f_i \Psi_i}{g_\phi}_0 + \sum\limits_{j = -1}^0 \ip{f_\phi}{g_j \Psi_j}_0 \\
-&+ \sum\limits_{i = -1}^0 \sum \limits_{j = -1}^0 \cconj{f_i} G_{i,j} g_j 
-\end{align*}
-
-\begin{itemize}
-\item $G_{0, 0} = \ip{\Psi_0}{\Psi_0} = \frac{\mu^2}{4 \pi \hbar^2}$
-\item $G_{0, -1} = \ip{\Psi_0}{\Psi_1} = \frac{\mu^2 (2 i + \pi)}{8 \pi \hbar^2}$
-\item $G_{-1, 0} = \cconj{G_{0, -1}}$
-\item $G_{-1, -1}$ — свободный (вещественный) параметр
-\end{itemize}
-
-Свободный параметр $G_{-1, -1}$ определим так, чтобы оно было «конечной» частью расходящегося скалярного произведения $\ip{\Psi_{-1}}{\Psi_{-1}}_0$, следующим образом:
-
-Далее будет удобно перейти в полярные координаты (так как $p^2$ встречается значительно чаще чем $p_1$ и $p_2$):
-
-\begin{align*}
-(p_1, p_2) &\to (p, \varphi) \\
-p &\to p \\
-p_1 &\to p \cos(\varphi) \\
-p_2 &\to p \sin(\varphi) \\
-\dd[2]{\vb{p}} &\to p \dd{p} \dd{\varphi}
-\end{align*}
-
-Рассмотрим интеграл в скалярном произведении $\ip{\cdot}{\cdot}_0$, на области с $p < N$:
-
-\[
-\int\limits_{\varphi = 0}^{2 \pi} \int\limits_{p = 0}^N
-\cconj{\left(
-\frac{1}{\frac{p^2}{2 \mu} + i} \frac{1}{\frac{p^2}{2 \mu} - i} \frac{1}{2 \pi \hbar} i p \cos \varphi
-\right)}
-\left(
-\frac{1}{2 \pi \hbar} i p \cos \varphi
-\right)
-p \dd{p} \dd{\varphi}
-=
-\frac{\mu^2}{4 \pi \hbar^2} \log(1 + \frac{N^4}{4 \mu^2})
-\]
-
-TODO ссылка на Березина
-
-Предел $\frac{1}{\log(N) \cdot} = \frac{\mu^2}{\pi \hbar^2}$.
-
-Ну в общем, отнормированный интеграл:
-
-\[
--\frac{\mu^2 \log (2 \mu)}{2 \pi  \hbar ^2}
-\]
-
-Ну ок.
-
-TODO подставить в формулу Крейна и найти полюса резольвенты
-
-Найдем $\Gamma^{-1}(z, \lambda)$. Заметим, что $R_0(z) \psi$ в общем случае не лежит в подпространстве, соответствующему $\psi_1$, поэтому надо выделить его коэффициенты $f_0, f_1$ и функцию $f_\phi$:
-
-% Далее в нотации используется, что резольвента -- оператор умножения.
-
-Далее будет полезно следущее тождество:
-
-$R(z) = \frac{1}{H - z} = \frac{1}{H - z_0} + \frac{z - z_0}{(H - z)(H - z_0)} = \frac{1}{H - z_0} + \frac{z - z_0}{(H - z_0)^2} + \frac{(z - z_0)^2}{(H - z_0)^2 (H - z)}$
-
-Используя тождество, получим компоненты элемента $R_0(z) \Psi$ в пространстве $\mcP_1$:
-
-\begin{itemize}
-\item $f_{-1} = 1$
-\item $f_0 = z - i$
-\item $f_\phi = R_0^2(i) R_0(z) (z - i)^2 \Psi$
-\end{itemize}
-
-% Разложим резольвенту в пространстве $\mcP_1$
-
-% $R_0(z) \psi = \frac{1}{\frac{p^2}{2 \mu} - z} \frac{1}{2 \pi \hbar} i p_1 = f_\varphi + f_0 \frac{1}{\left(\frac{p^2}{2 \mu} - z_0 \right)^2} \psi + f_{-1} \frac{1}{\frac{p^2}{2 \mu} - z_0} \psi$
-
-Замыкание $\mcP_1$ дает нам понтрягинское пространство $\Pi_1$
-
-
-\section{3D}
-Рассмотрим уравнение Шредингера в двух областях $\Omega_1$ и $\Omega_2$ с условиями Дирихле на границе, общей границей $\partial \Gamma_{12}$, и точечным проколом $\vb{a_{12}} \in \partial \Gamma_{12}$. TODO картиночку
-
-Типичный пример такой задачи — резонатор Гельмгольца TODO
-
-TODO как физически реализуемо?
-
-TODO написать, что функции Грина не нужны, нужны производные по нормали по источнику
-
-TODO написать, что производные функции Грина имеют неинтегрируемую особенность
-
-Далее необходимо выполнить расширение пространства отдельно в каждой области $\Omega_1, \Omega_2$, а потом «сшить» решения с некоторым граничным условием в окрестности точечного прокола $\vb{a_{12}}$. Далее, выберем систему координат так, чтобы точечный прокол оказался 
-
-Работаем в пространстве $\bbR^3$. Исходный гамильтониан: $H_0 = \frac{\hat{p}^2}{2 \mu}$ в $L_2(\bbR^3, \dd x)$.
-
-% H_0 = - \frac{\hbar^2}{2 \mu } \laplacian
-
-$\psi = \pdv{n} \delta(\vb{r})$.
-
-Спектром оператора является $\bbR$, соответственно, резольвентное множество — $\{ c \mid \Im c \ne 0 \}$. В качестве $z_0$ возьмем, например, $i$, (напомним, что его выбор не влияет на структуру шкалы).
-
-
-Рисунок 2. Нормаль направлена по координате $x_1$, $\psi = \delta'(x_1) \delta(x_2) \delta(x_3)$. Перейдем в импульсное представление:
-
-В импульсном представлении гамильтониан $H_0 = \frac{p^2}{2 \mu}$, соответственно, $R_0(z_0) = \frac{1}{p^2 - z_0}$ TODO fix.
-
-Переведем функционал $\psi$ импульсное предсавление:
-
-TODO: $\hbar$
-\begin{align*}
-\Psi(p_1, p_2, p_3)
-&= \mathcal{F}(\psi(x_1, x_2, x_3)) \\
-&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_3} \psi(x_1, x_2, x_3) e^{-i \vb{x} \vdot \vb{p}} \\
-&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_2} \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_3} \delta(x_2) \delta(x_3) e^{-i x_2 p_2} e^{-i x_3 p_3} \\
-&= \frac{1}{\sqrt{2 \pi \hbar}} \int\limits_{x_1} \delta'(x_1) e^{-i x_1 p_1} \mathcal{F}(\delta(x_2) \delta(x_3)) \\
-&= \frac{1}{2 \pi \hbar} \mathcal{F}(\delta'(x_1)) \\
-&= \frac{1}{2 \pi \hbar} i p_1 \mathcal{F}(\delta(x_1)) \\
-&= \left(\frac{1}{\sqrt{2 \pi \hbar}}\right)^3 i p_1
-\end{align*}
-
-\begin{itemize}
-\item $\Psi \notin \hilb{0}$ 
-\item $\Psi \notin \hilb{-1}$
-\item $\Psi \in \hilb{-2}$
-\end{itemize}
-
-
-Получаем предпонтрягинское пространство $\mcP_{-1}$, состоящее из функций вида:
-
-\[
-f(\vb{p}) = f_\phi(\vb{p}) + f_0 \frac{1}{(p^2 - i)^2} + f_{-1} \frac{1}{p^2 - i}
-\]
-
-Скалярное произведение:
-
-\[
-\ip{f}{g} = \ip{f_\phi}{g_\phi} + \dots + \cconj{f_0} G_{0,0} g_0 + \cconj{f_0} G_{0, -1} g_0 + \cconj{f_{-1}} G_{-1, 0} g_0 + \cconj{f_{-1}} G_{-1, -1} g_{-1}
-\]
-
-\begin{itemize}
-\item $G_{0, 0}$ точно определено, так как $0 + 0 \ge 0$
-\item $G_{0, -1} = \cconj{G_{-1, 0}} = ?$ — можно определить, так как можно показать, что $\psi_0 \in \hilb{1}$, а значит, скалярное произведение конечное
-\item $G_{-1, -1}$ — свободный параметр
-\end{itemize}
-
-TODO пока мутно, как определять свободный параметр. Пусть определили.
-
-\todo{А насколько маленькое может быть отверстие? Оно же в любом случае не меньше атома в диаметре?}
+% bordermatrix

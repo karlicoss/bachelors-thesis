@@ -32,12 +32,14 @@
 \usepackage[pdftex]{graphicx}
 \graphicspath{{pic/}}
 
+\usepackage{mathtools} % xmapsto
 \usepackage{comment}
 \usepackage{soul} % text striking
 \usepackage{amsmath,amsfonts,amssymb,amsthm,amscd,amsxtra}
 \usepackage{physics}
 \usepackage[sharp]{easylist}
 \usepackage{siunitx}
+\usepackage{sty/kbordermatrix}
 \sisetup{locale=US}
 
 
@@ -46,8 +48,6 @@
 \usepackage{epsfig}
 % \usepackage{verbatim}
 \usepackage{sty/rac}
-\usepackage{listings} % ???
-\usepackage{sty/scala} % ??? я
 \usepackage[singlelinecheck=false]{caption}
 
 \usepackage{xcolor, colortbl}
@@ -91,38 +91,37 @@
 %\newtheorem{introduction}[theorem]{Introduction}
 
 \renewcommand{\proof}{\\\textbf{Доказательство.}~}
-\renewcommand{\lstlistingname}{Листинг}
  
 \input{macros/macros.tex}
 
 
 % Default settings for code listings
-\lstset{frame=tb,
-  language=Scala,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{dkgreen},
-  stringstyle=\color{mauve},
-  escapeinside={\%*}{*)},
-  frame=single,
-  breaklines=true,
-  breakatwhitespace=true
-  tabsize=3
-}
+% \lstset{frame=tb,
+%   language=Scala,
+%   aboveskip=3mm,
+%   belowskip=3mm,
+%   showstringspaces=false,
+%   columns=flexible,
+%   basicstyle={\small\ttfamily},
+%   numbers=none,
+%   numberstyle=\tiny\color{gray},
+%   keywordstyle=\color{blue},
+%   commentstyle=\color{dkgreen},
+%   stringstyle=\color{mauve},
+%   escapeinside={\%*}{*)},
+%   frame=single,
+%   breaklines=true,
+%   breakatwhitespace=true
+%   tabsize=3
+% }
 
-\lstnewenvironment{snippet}[1][]%
-{
-   \noindent
-   \minipage{\linewidth} 
-   \vspace{0.5\baselineskip}
-   \lstset{basicstyle=\ttfamily\footnotesize,frame=single,#1}}
-{\endminipage}
+% \lstnewenvironment{snippet}[1][]%
+% {
+%    \noindent
+%    \minipage{\linewidth} 
+%    \vspace{0.5\baselineskip}
+%    \lstset{basicstyle=\ttfamily\footnotesize,frame=single,#1}}
+% {\endminipage}
 
 %\theoremstyle{remark}
 %\newtheorem{remark}[theorem]{Remark}
@@ -149,7 +148,7 @@
 \addbibresource{thesis.bib}
 
 \begin{document}
- \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
+ % \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
 % Begin the front matter as required by Rackham dissertation guidelines
 \initializefrontsections
 
@@ -198,7 +197,7 @@
 \input{parts/chapter2.tex}
 \input{parts/chapter3.tex}
 \input{parts/outro.tex}
-
+\input{parts/trash.tex}
 
 \printbibliography
 
