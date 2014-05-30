@@ -81,11 +81,12 @@ class NeumannWell1D:
         gfc = self.greens_function_helmholtz_at_center(energy)
         assert_almost_equal(gfc, gf((self.fromm + self.to) / 2, (self.fromm + self.to) / 2))
 
-nw = NeumannWell1D(0.0, 2.0, 100)
-nw.test2()
-energy = -100000
-k = np.sqrt(complex(energy))
-# energy = -32262374
-print(nw.greens_function_helmholtz(energy)(1.0, 1.0))
-print(1 / (2 * k) * -1 / I)
-# print(nw.greens_function_helmholtz_at_center(energy)())
+if __name__ == '__main__':
+    nw = NeumannWell1D(0.0, 2.0, 100)
+    nw.test2()
+    energy = -100000
+    k = np.sqrt(complex(energy))
+    # energy = -32262374
+    print(nw.greens_function_helmholtz(energy)(1.0, 1.0))
+    print(1 / (2 * k) * -1 / I)
+    # print(nw.greens_function_helmholtz_at_center(energy)())

@@ -27,14 +27,18 @@ class DirichletWell1D:
         self.b = b
         self.maxn = maxn
 
-        self.eigenenergies = []
-        self.eigenenergies.append(None) # to make modes 1-indexed
-        self.eigenenergies.extend([(sc.pi * n / width) ** 2 for n in range(1, self.maxn)])
+        self.wavevectors = [None]  # to make modes 1-indexed
+        self.wavevectors.extend([sc.pi * n / width for n in range(1, self.maxn)])
 
-        self.eigenfunctions = []
-        self.eigenfunctions.append(None) # to make modes 1-indexed
-        for n in range(1, self.maxn):
-            self.eigenfunctions.append(lambda x, n=n: sqrt(2.0 / width) * np.sin(sc.pi * n / width * (x - self.a)))
+        self.eigenenergies = [None]  # to make modes 1-indexed
+        self.eigenenergies.extend([kk ** 2 for kk in self.wavevectors[1:]])
+
+        self.eigenfunctions = [None]  # to make modes 1-indexed
+        self.eigenfunctions.extend([lambda x, kk=kk: sqrt(2.0 / width) * np.sin(kk * (x - self.a)) for kk in self.wavevectors[1:]])
+
+        self.deigenfunctions = [None]  # to make modes 1-indexed
+        self.deigenfunctions.extend([lambda x, kk=kk: sqrt(2.0 / width) * kk * np.cos(kk * (x - self.a)) for kk in self.wavevectors[1:]])
+
 
     # def greens_function_helmholtz_at_center(self, energy):
     #     k = np.sqrt(complex(energy))
@@ -85,5 +89,6 @@ class DirichletWell1D:
     #     gfc = self.greens_function_helmholtz_at_center(energy)
     #     assert_almost_equal(gfc, gf((self.fromm + self.to) / 2, (self.fromm + self.to) / 2))
 
-nw = DirichletWell1D(0.0, 2.0, 10)
-nw.test()
+if __name__ == '__main__':
+    nw = DirichletWell1D(0.0, 2.0, 10)
+    nw.test()

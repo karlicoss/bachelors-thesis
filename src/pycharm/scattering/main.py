@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 from numpy import arange
 import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
+from matplotlib.colors import Normalize, LogNorm
 
 
 
@@ -57,8 +57,9 @@ def plot_transmission(dcs, left, right, step, maxt=None, fname="transmission.png
 
 # TODO MODIFY PLOT_WAVEFUNCTION USAGES
 def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", title=None):
-    pf = lambda z, r: cnorm2(wf(z, r))
-    vpf = np.vectorize(pf)
+    pf = lambda x, y: cnorm2(wf(x, y))
+    pfc = lambda x, y: pf(x, y) if np.abs(x ** 2 + y ** 2) > 0.02 else 0.0 # TODO this is to exclude the singulatiry
+    vpf = np.vectorize(pfc)
 
     x, y = np.mgrid[slice(fx, tx + dx, dx), slice(fy, ty + dy, dy)]
     z = vpf(x, y)
@@ -90,7 +91,10 @@ def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", titl
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
 
-    cax = ax.pcolor(x, y, z, cmap='gnuplot', norm=Normalize(z_min, z_max))
+    # z_max = 100
+    cax = ax.pcolor(x, y, z, cmap='gnuplot') #, norm=Normalize(z_min, z_max))
+    # cax = ax.pcolor(x, y, z, cmap='gnuplot', norm=LogNorm())
+
 
     cbar = fig.colorbar(cax)
 
@@ -138,20 +142,18 @@ def test_resonator_dirichlet():
     Ly = 1.0
     H = 1.0
     delta = 0.001
-    maxn = 20  # TODO
+    maxn = 100  # TODO
     maxn_wf = 20
-    sp = Resonator2DDirichletScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+    sp = Resonator2DDirichletScattering(H, Lx, Ly, delta, maxn)
 
-    fx = -5.0
-    tx = 6.0
-    dx = 0.05
+    fx = -3.0
+    tx = 3.0
+    dx = 0.02
     fy = -H
     ty = Ly
-    dy = 0.02
+    dy = 0.01
 
-    energy = 100.0
     n = 1
-
 
     # resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
     # plot_transmission(sp,
@@ -161,18 +163,22 @@ def test_resonator_dirichlet():
     #                   info="Transmission",
     #                   vlines=resenergies)
 
-    res = sp.compute_scattering(n, energy)
-    # for x in arange(-Lx / 2, Lx / 2, 0.1):
-    #     for y in arange(0, Ly, 0.1):
-    #         print(res.wf(x, y))
+    # energy = 39.1
+    # res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
+    # plot_wavefunction(res.wf,
+    #       fx, tx, dx,
+    #       fy, ty, dy,
+    #       fname="output2/wavefunction{:.2f}.png".format(energy),
+    #       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    #
 
-
-
-    plot_wavefunction(res.wf,
-                          fx, tx, dx,
-                          fy, ty, dy,
-                          fname="output2/wavefunction{:.2f}.png".format(energy),
-                          title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    for energy in arange(80.0, 120.0, 0.1):
+        res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
+        plot_wavefunction(res.wf,
+                              fx, tx, dx,
+                              fy, ty, dy,
+                              fname="output2/wavefunction{:.2f}.png".format(energy),
+                              title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
 
     # def fff(energy):
     #     res = sp.compute_scattering(n, energy)

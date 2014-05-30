@@ -60,9 +60,9 @@ class NeumannWell2D:
         #         else:
         #             assert_almost_equal(res, 0.0)
 
-
-nw = NeumannWell2D(0.0, 2.0, 0.0, 2.0, 10000)
-print(nw.greens_function_helmholtz(20.0)(1.0, 1.0, 1.0, 1.0))
+if __name__ == '__main__':
+    nw = NeumannWell2D(0.0, 2.0, 0.0, 2.0, 10000)
+    print(nw.greens_function_helmholtz(20.0)(1.0, 1.0, 1.0, 1.0))
 
 # for maxn in range(100, 2000, 100):
 #     nw = NeumannWell2D(0.0, 2.0, 0.0, 2.0, maxn)

@@ -1,65 +1,59 @@
+from sys import stderr
 import numpy as np
 from numpy import sqrt, exp
 from numpy import complex256 as complex
 from numpy import float128 as real
+from scattering.problems.dirichlet_waveguide_2d import DirichletWaveguide2D
 from scattering.problems.dirichlet_well_2d import DirichletWell2D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
 
 class Resonator2DDirichletScattering:
-    def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn_params: int, maxn_wavefunction: int = None):
+    def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn: int):
         self.H = H
         self.Lx = Lx
         self.Ly = Ly
 
         self.delta = delta
-        self.maxn_params = maxn_params
-        if maxn_wavefunction is None:
-            maxn_wavefunction = maxn_params
-        self.maxn_wf = maxn_wavefunction
+        self.maxn = maxn
 
         self.x0 = 0.0
         self.y0 = 0.0
 
-        self.nw_res = DirichletWell2D(-self.Lx / 2, self.Lx / 2, 0, self.Ly, self.maxn_params)
+        self.resonator = DirichletWell2D(-self.Lx / 2, self.Lx / 2, 0, self.Ly, self.maxn)
 
-        self.nw_res_x = self.nw_res.wellX
-        self.nw_res_y = self.nw_res.wellY
+        self.res_x = self.resonator.wellX
+        self.res_y = self.resonator.wellY
 
-        # self.nw_wire_y = NeumannWell1D(0, self.H, self.maxn_params) # TODO actually from -self.H to 0
 
-        self.res_x_modes = self.nw_res_x.eigenfunctions
-        self.res_x_energies = self.nw_res_x.eigenenergies
-        self.res_y_modes = self.nw_res_y.eigenfunctions
-        self.res_y_energies = self.nw_res_y.eigenenergies
+        self.waveguide = DirichletWaveguide2D(-self.H, 0, self.maxn)
 
-        # self.wire_y_modes = self.nw_wire_y.eigenfunctions
-        # self.wire_y_energies = self.nw_wire_y.eigenenergies
+        self.wg_y = self.waveguide.wellY
 
-        # print("Wire:")
-        # print(self.wire_y_energies)
+        self.res_x_modes = self.res_x.eigenfunctions
+        self.res_x_energies = self.res_x.eigenenergies
+        self.res_y_modes = self.res_y.eigenfunctions
+        self.res_y_energies = self.res_y.eigenenergies
+
+        self.waveguide_y_modes = self.wg_y.eigenfunctions
+        self.wire_y_energies = self.wg_y.eigenenergies
+
+        print("Wire:")
+        print(self.wire_y_energies)
         print("Resx:")
         print(self.res_x_energies)
         print("Resy:")
         print(self.res_y_energies)
 
     def get_kks(self, energy):
-        return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn_params)]
+        return [sqrt(complex(energy - self.wire_y_energies[i])) for i in range(self.maxn)]
 
     def greens_function_resonator_dn(self, energy, maxn):
-        return self.nw_res.greens_function_helmholtz_dy(energy, maxn=maxn)
+        return self.resonator.greens_function_helmholtz_dy(energy, maxn=maxn)
 
-    def greens_function_wire(self, energy, maxn):
-        kks = self.get_kks(energy)
-
-        def fun(x, y, xs, ys):
-            res = complex(0.0)
-            for m in range(maxn):
-                res += self.wire_y_modes[m](y) * np.conj(self.wire_y_modes[m](ys)) * \
-                       I / (2 * kks[m]) * exp(I * kks[m] * np.abs(x - xs))
-            return res
-
-        return fun
+    # TODO!!!! INVERSE SIGN
+    def greens_function_wire_dn(self, energy, maxn):
+        return self.waveguide.greens_function_helmholtz_dy(energy, maxn=maxn)
 
     def compute_scattering_full(self, energy):
         res = [self.compute_scattering(1, energy)]
@@ -67,37 +61,43 @@ class Resonator2DDirichletScattering:
         # print("Energy = {} eV, T = {}".format(energy / sc.eV, T))
         return T
 
-    def compute_scattering(self, m, energy, verbose=False):
+    def compute_scattering(self, m, energy, verbose=False, maxn_wf=None):
+        if maxn_wf is None:
+            maxn_wf = self.maxn
+
         # assert (energy > self.wire_y_energies[m])
         # kks = self.get_kks(energy)
 
         # incoming wavefunction
-        # uwf = lambda x, y: self.wire_y_modes[m](y) * exp(I * kks[m] * x)
+        uwf = lambda x, y, m=m: self.waveguide_y_modes[m](y) * exp(I * self.wg_y.wavevectors[m] * x)
 
-        # gamma = 0.57721566490153286060
-        # k0 = I / self.delta * exp(-gamma)
-        # e0 = k0 ** 2
+        gamma = 0.57721566490153286060
+        k0 = I / self.delta * exp(-gamma)
+        e0 = k0 ** 2
 
-        # greens_wire = self.greens_function_wire(energy, self.maxn_params)
-        # greens_wire0 = self.greens_function_wire(e0, self.maxn_params)
-        greens_resonator_dn = self.greens_function_resonator_dn(energy, self.maxn_params)
-        # greens_resonator0 = self.greens_function_resonator(e0, self.maxn_params)
+        greens_wire_dn = self.greens_function_wire_dn(energy, self.maxn)
+        greens_wire0_dn = self.greens_function_wire_dn(e0, self.maxn)
+        greens_resonator_dn = self.greens_function_resonator_dn(energy, self.maxn)
+        greens_resonator0_dn = self.greens_function_resonator_dn(e0, self.maxn)
 
-        # greens_wire_wf = self.greens_function_wire(energy, self.maxn_wf)
-        greens_resonator_dn_wf = self.greens_function_resonator_dn(energy, self.maxn_wf)
+        greens_wire_dn_wf = self.greens_function_wire_dn(energy, maxn_wf)
+        greens_resonator_dn_wf = self.greens_function_resonator_dn(energy, maxn_wf)
 
         # ???
-        # AA = greens_wire(self.x0, self.y0, self.x0, self.y0) - greens_wire0(self.x0, self.y0, self.x0, self.y0)
-        # BB = greens_resonator(self.x0, self.y0, self.x0, self.y0) - greens_resonator0(self.x0, self.y0, self.x0,
-        #                                                                               self.y0)
+        AA = greens_wire_dn(self.x0, self.y0, self.x0, self.y0) - greens_wire0_dn(self.x0, self.y0, self.x0, self.y0)
+        BB = greens_resonator_dn(self.x0, self.y0, self.x0, self.y0) - greens_resonator0_dn(self.x0, self.y0, self.x0, self.y0)
 
-        # stderr.write("|AA| = {}, |BB| = {}\n".format(cnorm(AA), cnorm(BB)))
+        if verbose:
+            print("|AA| = {}, |BB| = {}\n".format(cnorm(AA), cnorm(BB)))
 
         # alphaW = -uwf(self.x0, self.y0) / (AA + BB)
         # alphaR = -alphaW
+        alphaW = 1.0
+        alphaR = 1.0
 
-        # if verbose:
-        #     print("aW = {}, aR = {}".format(alphaW, alphaR))
+
+        if verbose:
+            print("aW = {}, aR = {}".format(alphaW, alphaR))
         #
         # jinca = -2 * I * kks[m]
         # jtransa = -2 * I * kks[m]
@@ -119,18 +119,12 @@ class Resonator2DDirichletScattering:
             if y < -self.H:
                 return complex(0.0)
             elif y < 0:
-                return complex(0.0)
-                # return uwf(x, y) + alphaW * greens_wire_wf(x, y, self.x0, self.y0)
+                return alphaW * greens_wire_dn_wf(x, y, self.x0, self.y0) + uwf(x, y)
             elif y < self.Ly:
                 if x < -self.Lx / 2:
                     return complex(0.0)
                 elif x < self.Lx / 2:
-                    val = greens_resonator_dn_wf(x, y, self.x0, self.y0)
-                    alalal = 100.0
-                    if val > alalal:
-                        val = alalal
-                        print("AALALLALA")
-                    return val
+                    return alphaR * greens_resonator_dn_wf(x, y, self.x0, self.y0)
                 else:
                     return complex(0.0)
             else:
