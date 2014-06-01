@@ -1,8 +1,8 @@
 all:
-	latexmk -outdir=build -bibtex -pdf thesis.tex
+	latexmk -outdir=build -bibtex -shell-escape -pdf thesis.tex
 
 preview:
-	latexmk -outdir=build -bibtex -pdf -pvc thesis.tex
+	latexmk -outdir=build -bibtex -shell-escape -pdf -pvc thesis.tex
 
 
 clean:

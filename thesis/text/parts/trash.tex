@@ -373,3 +373,17 @@ $$
 + \frac{1}{r} \pdv{F_\theta}{\theta}
 + \pdv{F_z}{z}
 $$
+
+
+
+Можно использовать этот замкнутый вид, чтобы упростить функцию Грина для резонатора:
+
+\begin{align*}
+G_R(x, y, x_s, y_s; E)
+&= \sum\limits_{n, m = 1}^\infty \frac{\psi_{nm}(x, y) \psi^*_{nm}(x_s, y_s)}{E_{nm} - E} \\
+&= \sum\limits_n \sum\limits_m \frac{\psi_n(x) \psi_n^*(x_s) \psi_m(y) \psi_m^*(y_s)}{E^x_n + E^y_m - E} \\
+&= \sum\limits_n \psi_n(x) \psi_n^*(x_s) \sum\limits_m \frac{\psi_m(y) \psi_m^*(y_s)}{E^y_m - (E - E^x_n)} \\
+&= \sum\limits_n \psi_n(x) \psi^*_n(x_s) G^y_{1D}(y, y_s; E - E^x_n)
+\end{align*}
+
+\subsection{Волновод}
