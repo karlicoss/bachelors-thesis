@@ -191,7 +191,7 @@ def test_resonator_dirichlet():
     # for energy in arange(10.0, 20.0, 0.05):
     #     fff(energy)
 
-def test_resonator():
+def test_resonator_neumann():
     Lx = 1.0
     Ly = 1.0
     H = 1.0
@@ -279,9 +279,9 @@ def test_resonator_sizes():
 
 def main():
     # test_onepoint()
-    # test_resonator()
+    test_resonator_neumann()
     # test_resonator_sizes()
-    test_resonator_dirichlet()
+    # test_resonator_dirichlet()
 
 
 

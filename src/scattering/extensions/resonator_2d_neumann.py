@@ -7,6 +7,8 @@ from scattering.problems.neumann_well_1d import NeumannWell1D
 from scattering.problems.neumann_well_2d import NeumannWell2D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
+from scattering.tools.quantum import compute_prob_current_numerical
+
 
 class Resonator2DNeumannScattering:
     def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn_params: int, maxn_wavefunction: int = None):
@@ -76,6 +78,7 @@ class Resonator2DNeumannScattering:
         # incoming wavefunction
         uwf = lambda x, y: self.wire_y_modes[m](y) * exp(I * kks[m] * x)
 
+
         gamma = 0.57721566490153286060
         k0 = I / self.delta * exp(-gamma)
         e0 = k0 ** 2
@@ -132,5 +135,11 @@ class Resonator2DNeumannScattering:
             else:
                 return complex(0.0)
 
+        xleft = -10.0
+        xright = 10.0
+        jincn = compute_prob_current_numerical(uwf, xleft, -self.H, 0.0)
+        jtransn = compute_prob_current_numerical(psi, xright, -self.H, 0.0)
+        Tn = cnorm(jtransn) / cnorm(jincn)
+        print("Energy = {}, TN = {:.2f}".format(energy, Tn))
 
         return ScatteringResult(wf=psi, T=T)
