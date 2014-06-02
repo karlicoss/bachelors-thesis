@@ -331,3 +331,33 @@ def main():
 
 
 main()
+
+
+def test_onepoint():
+    H = 1.0
+    delta = 0.001
+    maxn = 10000
+    sp = OnePointScattering(H, delta, maxn)
+
+    fx = -5.0
+    tx = 6.0
+    dx = 0.05
+    fy = -H / 2
+    ty = H / 2
+    dy = 0.02
+
+    n = 0
+
+    # for energy in arange(1.0, 100.0, 1.0):
+    #     res = sp.compute_scattering(n, energy)
+    #     plot_wavefunction(res.wf,
+    #                       fx, tx, dx,
+    #                       fy, ty, dy,
+    #                       fname="one_wavefunction{:.2f}.png".format(energy),
+    #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+
+    plot_transmission(sp,
+                      0.1, 100.0, 0.1,
+                      maxt=1.0,
+                      fname="op_transmission.png",
+                      info="Transmission")

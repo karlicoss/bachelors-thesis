@@ -1,4 +1,6 @@
 import itertools
+from matplotlib.patches import Ellipse, Polygon
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 import numpy as np
 from numpy import arange
@@ -11,6 +13,7 @@ from matplotlib.colors import Normalize, LogNorm
 # import scipy.special
 from scattering.extensions.one_point_2d import OnePointScattering
 from scattering.extensions.resonator_2d_dirichlet import Resonator2DDirichletScattering
+from scattering.extensions.resonator_2d_domain import Resonator2DDomain
 from scattering.extensions.resonator_2d_neumann import Resonator2DNeumannScattering
 
 from scattering.tools import cnorm2
@@ -56,17 +59,30 @@ def plot_transmission(dcs, left, right, step, maxt=None, fname="transmission.png
 
 
 # TODO MODIFY PLOT_WAVEFUNCTION USAGES
-def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", title=None):
+# TODO probably I should separate the desctiption of the domain and the solution
+def plot_wavefunction(domain: Resonator2DDomain, wf, fx, tx, dx, dy, fname="wavefunction.png", title=None):
+    fy = -domain.H
+    ty = domain.Ly
+
+    border = (domain.H + domain.Ly) / 10 # TODO
+    fy = fy - border
+    ty = ty + border
+
     pf = lambda x, y: cnorm2(wf(x, y))
-    pfc = lambda x, y: pf(x, y) if np.abs(x ** 2 + y ** 2) > 0.02 else 0.0 # TODO this is to exclude the singulatiry
+    pfc = lambda x, y: pf(x, y) if np.abs(x ** 2 + y ** 2) > (domain.S / 2) ** 2 else 0.0 # TODO this is to exclude the singulatiry
     vpf = np.vectorize(pfc)
 
     x, y = np.mgrid[slice(fx, tx + dx, dx), slice(fy, ty + dy, dy)]
     z = vpf(x, y)
 
-    z_min, z_max = np.abs(z).min(), np.abs(z).max()
+    # z_min, z_max = np.abs(z).min(), np.abs(z).max()
 
-    fig = plt.figure(figsize=(15, 10), dpi=500)
+    # fig = plt.figure(figsize=(15, 10), dpi=500)
+    inch = 2.5
+    proportions = (ty - fy) / (tx - fx)# approx height / width
+    imgwidth = 25 / inch
+    imgheight = imgwidth * proportions
+    fig = plt.figure(figsize=(imgwidth, imgheight))
     ax = fig.add_subplot(111, aspect='equal')
 
     # ax.set_title("n = {}, E = {:.2f} eV, T = {:.2f}".format(n, energy / sc.eV, T) + (
@@ -85,62 +101,41 @@ def plot_wavefunction(wf, fx, tx, dx, fy, ty, dy, fname="wavefunction.png", titl
 
     # yticks = arange(fy, ty, sc.nano)
     # ylabels = ["{:.1f}".format(t / sc.nano) for t in yticks]
-    yticks = arange(fy, ty, 1.0)
+    yticks = arange(-domain.H, domain.Ly + border, 0.5)
     ylabels = ["{:.1f}".format(t) for t in yticks]
     ax.set_ylim(fy, ty)
     ax.set_yticks(yticks)
     ax.set_yticklabels(ylabels)
 
     # z_max = 100
-    cax = ax.pcolor(x, y, z, cmap='gnuplot') #, norm=Normalize(z_min, z_max))
-    # cax = ax.pcolor(x, y, z, cmap='gnuplot', norm=LogNorm())
+    pc = ax.pcolor(x, y, z, cmap='gnuplot') #, norm=Normalize(z_min, z_max))
 
+    def draw_wall(a, b, c, d):
+        ax.add_patch(Polygon([a, b, c, d], closed=True, fill=True, linewidth=0, hatch='//'))
 
-    cbar = fig.colorbar(cax)
+    draw_wall([fx, 0 - dy / 2], [-domain.Lx / 2, -dy / 2], [-domain.Lx / 2, domain.Ly + dy], [fx, domain.Ly + dy])
+    draw_wall([tx, 0 - dy / 2], [domain.Lx / 2 + dx, -dy / 2], [domain.Lx / 2 + dx, domain.Ly + dy], [tx, domain.Ly + dy])
+    draw_wall([fx, domain.Ly + dy], [tx, domain.Ly + dy], [tx, domain.Ly + border], [fx, domain.Ly + border])
+    draw_wall([fx, -domain.H - border], [tx, -domain.H - border], [tx, -domain.H], [fx, -domain.H])
+    draw_wall([-domain.Lx / 2, -dy / 2], [-domain.S / 2, -dy / 2], [-domain.S / 2, dy / 2], [-domain.Lx / 2, dy / 2])
+    draw_wall([domain.Lx / 2 + dx, -dy / 2], [domain.S / 2 + dx, -dy / 2], [domain.S / 2 + dx, dy / 2], [domain.Lx / 2 + dx, dy / 2])
 
-    # bx = fig.add_subplot(212)
-    # bx.set_title("Wavefunction at x = 0")
-    #
-    # rr = arange(fy, ty, 0.01 * sc.nano)
-    # ww = list(map(lambda r: pf(0, r), rr))
-    # bx.plot(rr, ww)
-    fig.savefig(fname)
+    # from http://matplotlib.org/mpl_toolkits/axes_grid/users/overview.html#axesdivider
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes("right", size="5%", pad=0.05)
+    fig.colorbar(pc, cax=cax)
+
+    fig.savefig(fname, dpi=200)
     plt.close(fig)
 
 
-def test_onepoint():
-    H = 1.0
-    delta = 0.001
-    maxn = 10000
-    sp = OnePointScattering(H, delta, maxn)
-
-    fx = -5.0
-    tx = 6.0
-    dx = 0.05
-    fy = -H / 2
-    ty = H / 2
-    dy = 0.02
-
-    n = 0
-
-    # for energy in arange(1.0, 100.0, 1.0):
-    #     res = sp.compute_scattering(n, energy)
-    #     plot_wavefunction(res.wf,
-    #                       fx, tx, dx,
-    #                       fy, ty, dy,
-    #                       fname="one_wavefunction{:.2f}.png".format(energy),
-    #                       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
-
-    plot_transmission(sp,
-                      0.1, 100.0, 0.1,
-                      maxt=1.0,
-                      fname="op_transmission.png",
-                      info="Transmission")
-
 def test_resonator_dirichlet():
-    Lx = 1.0
+    Lx = 2.0
     Ly = 1.0
     H = 1.0
+    S = 0.1
+    domain = Resonator2DDomain(H, Lx, Ly, S)
+
     delta = 0.001
     maxn = 100  # TODO
     maxn_wf = 20
@@ -148,37 +143,39 @@ def test_resonator_dirichlet():
 
     fx = -3.0
     tx = 3.0
-    dx = 0.02
+    dx = 0.05 # 0.02
     fy = -H
     ty = Ly
-    dy = 0.01
+    dy = 0.05 # 0.01
 
     n = 1
 
-    # resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
+    # resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies[1:], sp.res_y_energies[1:])]
     # plot_transmission(sp,
-    #                   10.0, 100.0, 0.1,
+    #                   38.0, 100.0, 0.1,
     #                   maxt=1.0,
     #                   fname="output/transmission.png",
     #                   info="Transmission",
     #                   vlines=resenergies)
 
-    # energy = 39.1
-    # res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
-    # plot_wavefunction(res.wf,
-    #       fx, tx, dx,
-    #       fy, ty, dy,
-    #       fname="output2/wavefunction{:.2f}.png".format(energy),
-    #       title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    energy = 40.5
+    for energy in arange(40.0, 100.0, 0.5):
+        res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
+        plot_wavefunction(domain,
+                          res.wf,
+                          fx, tx, dx,
+                          dy,
+                          fname="output2/wavefunction{:.2f}.png".format(energy),
+                          title="Probability density at energy {:.2f}, T = {:.2f}".format(energy, res.T))
     #
 
-    for energy in arange(80.0, 120.0, 0.1):
-        res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
-        plot_wavefunction(res.wf,
-                              fx, tx, dx,
-                              fy, ty, dy,
-                              fname="output2/wavefunction{:.2f}.png".format(energy),
-                              title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    # for energy in arange(80.0, 120.0, 0.1):
+    #     res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
+    #     plot_wavefunction(res.wf,
+    #                           fx, tx, dx,
+    #                           fy, ty, dy,
+    #                           fname="output2/wavefunction{:.2f}.png".format(energy),
+    #                           title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
 
     # def fff(energy):
     #     res = sp.compute_scattering(n, energy)
@@ -215,7 +212,7 @@ def test_resonator_neumann():
     plot_transmission(sp,
                       10.0, 100.0, 0.1,
                       maxt=1.0,
-                      fname="output/transmission.png",
+                      fname="output2/transmission.png",
                       info="Transmission",
                       vlines=resenergies)
 
@@ -279,9 +276,9 @@ def test_resonator_sizes():
 
 def main():
     # test_onepoint()
-    test_resonator_neumann()
+    # test_resonator_neumann()
     # test_resonator_sizes()
-    # test_resonator_dirichlet()
+    test_resonator_dirichlet()
 
 
 

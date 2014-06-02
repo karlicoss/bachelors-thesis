@@ -7,6 +7,8 @@ from scattering.problems.dirichlet_waveguide_2d import DirichletWaveguide2D
 from scattering.problems.dirichlet_well_2d import DirichletWell2D
 
 from scattering.tools import I, cnorm2, cnorm, ScatteringResult
+from scattering.tools.quantum import compute_prob_current_numerical
+
 
 class Resonator2DDirichletScattering:
     def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn: int):
@@ -98,22 +100,6 @@ class Resonator2DDirichletScattering:
 
         if verbose:
             print("aW = {}, aR = {}".format(alphaW, alphaR))
-        #
-        # jinca = -2 * I * kks[m]
-        # jtransa = -2 * I * kks[m]
-        # jtransa += sqrt(2 / self.H) * alphaW
-        # jtransa -= sqrt(2 / self.H) * np.conj(alphaW)
-        # for i in range(self.maxn_params):
-        #     if self.wire_y_energies[i] > energy:
-        #         break
-        #     if i == 0:
-        #         jtransa += 1 / self.H * cnorm2(alphaW) * -2 * I / (4 * kks[i])
-        #     else:
-        #         jtransa += 2 / self.H * cnorm2(alphaW) * -2 * I / (4 * kks[i])
-
-
-        # T = cnorm(jtransa) / cnorm(jinca)
-        # print("Energy = {}, T = {:.2f}".format(energy, T))
 
         def psi(x, y):
             if y < -self.H:
@@ -130,5 +116,11 @@ class Resonator2DDirichletScattering:
             else:
                 return complex(0.0)
 
+        xleft = -10.0
+        xright = 10.0
+        jincn = compute_prob_current_numerical(uwf, xleft, -self.H, 0.0)
+        jtransn = compute_prob_current_numerical(psi, xright, -self.H, 0.0)
+        Tn = cnorm(jtransn) / cnorm(jincn)
+        print("Energy = {}, TN = {:.2f}".format(energy, Tn))
 
-        return ScatteringResult(wf=psi, T=-1)
+        return ScatteringResult(wf=psi, T=Tn)
