@@ -387,3 +387,109 @@ G_R(x, y, x_s, y_s; E)
 \end{align*}
 
 \subsection{Волновод}
+
+
+\begin{prop}
+\[
+\dots \subseteq \hilb{k} \subseteq \hilb{k - 1} \subseteq \dots \subseteq \hilb{1} \subseteq{\hilb{0}}
+\]
+\end{prop}
+Вначале покажем, что $\hilb{1} \subseteq \hilb{0}$. Действительно, любой $\psi \in \hilb{1}$ равен $Z_0 \phi$ для некоторого $\phi \in \hilb{0}$, а так как резольвента по определению ограничена в резольвентном множестве, то получим, что $\| \psi \| = \| Z_0 \phi \| \le \|Z_0\| \|\phi\| < \infty$, что означает, что $\psi \in \hilb{0}$.
+
+Далее, покажем, что для любого $k$, $\hilb{k + 1} \subseteq \hilb{k}$. Для этого надо показать, что для любой $\psi \in \hilb{k + 1}$ (который имеет представление $\psi = R_0^{k + 1} \phi_1$), также лежит в $\hilb{k}$, то есть имеет вид $R_0^k \phi_2$ для некоторого $\phi_2 \in \hilb{0}$. Возьмем $\phi_2 = Z_0 \phi_1$:
+\begin{itemize}
+\item По ранее доказанному, он действительно лежит в $\hilb{0}$
+\item $\psi = Z_0^{k + 1} \phi_1 = Z_0^k (Z_0 \phi_1) = Z_0^k \phi_2$, то есть $\psi \in \hilb{k}$
+\end{itemize}
+
+
+\todo{TODO аваыаыва}
+
+For $k < 0$, $\hilb{k}$ actually is $\{ (H_0 - z_0 I)^k \phi \mid \phi \in \hilb{0} \}$.
+For any $\phi \in \hilb{0}$, we can find such a $\psi \in \hilb{0}$, that $(H_0 - z_0 I) \psi = \phi$. Indeed, $\psi = R_0(z_0) \phi$. That means $\hilb{0} \subseteq \hilb{-1}$, and by induction, we get the negative scale
+\[
+\hilb{0} \subseteq \hilb{-1} \subseteq \hilb{-2} \subseteq \dots \subseteq \hilb{-m} \subseteq \dots
+\] 
+
+
+
+\todo{написать тут что-то нормальное}
+Сначала продолжим на $\Pi$ резольвенту:
+\begin{align*}
+R_\Pi(z) \left( \phi; \vb{a}; \vb{b} \right) = \left( \phi'; \vb{a'}; \vb{b'} \right)
+\end{align*}
+, где:
+\begin{ilist}
+#
+\[
+\phi' = R(z) \phi + R(z) \psi_{-1} \times \sum\limits_{j = -m}^{-1} b_j (z - z_0)^{-(j + 1)}
+\]
+#
+\begin{align*}
+a'_i
+&= \sum\limits_{j = i + 1}^{-1} a_j (z - \cconj{z_0})^{(i + 1) - j} \\
+&+ (z - \cconj{z_0})^{-(i + 1)} \ip{\psi_{-1}}{R(z) \phi} \\
+&+ \ip{\psi_i}{R(z) \psi_{-1}} \sum\limits_{j = -m}^{-1} b_j (z - z_0)^{-(j + 1)}
+\end{align*}
+#
+\begin{align*}
+b'_i
+&= \sum\limits_{j = -m}^{i - 1} b_i (z - z_0)^{i - (j + 1)}
+\end{align*}
+\end{ilist}
+
+
+\todo{Кажется, надо сначала продолжить резольвенту, а из нее уже достать оператор??}
+
+Необходимо продолжить оператор $A$ на $\Pi$. Для этого сначала определим его на $\mcP$ следующим образом.
+\[
+\dom A_\mcP = \{f = f_\phi + \sum\limits_{i = -m + 1}^{m} f_i \psi_i \mid f_\phi \in \hilb{m + 1}, f_{i}\in \bbC \}
+\]
+
+Заметим, что формально:
+\[
+A \psi_i = A Z_0^{m + i} \psi = A \frac{1}{A - z_0} Z_0^{m + i - 1} \psi = (1 + z_0 Z_0) Z_0^{m + i - 1} \psi = \psi_{i - 1} + z_0 \psi_i
+\]
+
+Определим действие оператора 
+\begin{align*}
+A_\mcP \left( f_\phi + \sum\limits_{i = -m + 1}^{m} f_i \psi_i \right)
+& = A_\mcP f_\phi + \sum\limits_{i = -m + 1}^{m} f_i A_\mcP \psi_i \\
+& = A f_\phi + z_0 f_m \psi_m + \sum\limits_{i = -m + 1}^{m - 1} (f_{i + 1} + z_0 f_i) \psi_i + f_{-m + 1} \psi_{-m}
+\end{align*}
+
+Оператор $A_\Pi$ в понтрягинском пространстве определим как замыкание оператора $\mcI A_\mcP \mcI^{-1}$. \todo{и почему оно будет существовать?}
+
+Можно показать, что $\rho(A_\Pi) = \rho(A)$.
+
+
+% Заметим, что не известно, можно ли дать какой-то физический смысл пространству $\Pi_m$, поэтому требуется дополнительный анализ, чтобы убедиться, что полученные решения имеют некий физический смысл, к примеру, анализ асимптотик решений.
+
+% \section{Формула Крейна}
+% \[
+% R_\lambda(z) = R_0(z) - R_0(z) \ket{\psi} \Gamma^{-1}(z, \lambda) \bra{\psi} R_0(z)
+% \]
+
+% \[
+% \Gamma(z, \lambda) = \frac{1}{\lambda} + \frac{1}{2}(z - z_0) \bra{\psi} R_0(z) R_0(z_0) \ket{\psi} + \frac{1}{2}(z - \cconj{z_0}) \bra{\psi} R_0(z) R_0(\cconj{z_0}) \ket{\psi}
+% \]
+
+\subsection{Преобразование Фурье}
+В задачах квантовой механики часто удобно и более естественно производить анализ в импульсном представлении, нежели чем в координатном. Они связаны между собой преобразованием Фурье (напоминаем, что пользуемся АСЕ, засчет чего константа $\hbar$ опускается):
+
+\subsubsection{Из координатного представления в моментное}
+Пусть имеется волновая функция $\psi: \bbR^n \to \bbC$. 
+
+$\hat{\vb{p}} = -i \grad$
+
+$H_0 = - \frac{1}{2 \mu} \laplacian$
+
+$\Psi(\vb{p}) = \mcF(\psi(\vb{x})) = \left(\frac{1}{\sqrt{2 \pi}}\right)^n \int\limits_{\bbR^n} \psi(\vb{x}) e^{-i \vb{p} \vdot \vb{x}} \dd[n]{\vb{x}}$
+
+\subsubsection{Из импульсного представления в координатное}
+
+$\hat{\vb{x}} = i \grad_p$
+
+$H_0 = \frac{p^2}{2 \mu}$
+
+$\psi(\vb{x}) = \mcF^{-1}(\Psi(\vb{p})) = \left(\frac{1}{\sqrt{2 \pi}}\right)^n \int\limits_{\bbR^n} \Psi(\vb{p}) e^{i \vb{p} \vdot \vb{x}} \dd[n]{\vb{p}}$
