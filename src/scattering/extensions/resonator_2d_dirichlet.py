@@ -63,6 +63,22 @@ class Resonator2DDirichletScattering:
         # print("Energy = {} eV, T = {}".format(energy / sc.eV, T))
         return T
 
+    def res_weight(self, energy):
+        res = 1.0
+        for i, e in enumerate(self.resonator.eigenenergies):
+            ee = (1 + i / 20.0) * e
+            # print("Shift {}".format(e))
+            if ee > energy:
+                res *= (1 - np.exp(- (energy - ee) ** 2 * 10) * 1 / (1 + np.abs(ee - energy) ** (i / 10.0)))
+            else:
+                res *= (1 - np.exp(- np.abs(energy - ee) ** (10.0 / (i + 1)) * 10))
+            # ee = e * 1.1
+            # if energy < ee:
+            #     res += 1 / (1 + (ee - energy) ** 14) * exp(-(ee- energy) ** 4)
+            # else:
+            #     res += 1 / (1 + (ee - energy) ** 14) * exp(-(ee- energy) ** 10)
+        return res
+
     def compute_scattering(self, m, energy, verbose=False, maxn_wf=None):
         if maxn_wf is None:
             maxn_wf = self.maxn
@@ -77,25 +93,33 @@ class Resonator2DDirichletScattering:
         k0 = I / self.delta * exp(-gamma)
         e0 = k0 ** 2
 
+        # print(energy)
+        # print(e0)
+
         greens_wire_dn = self.greens_function_wire_dn(energy, self.maxn)
         greens_wire0_dn = self.greens_function_wire_dn(e0, self.maxn)
         greens_resonator_dn = self.greens_function_resonator_dn(energy, self.maxn)
+        # self.resonator.greens_function_helmholtz_dy_slow(energy, self.maxn) # self.greens_function_resonator_dn(energy, self.maxn)
         greens_resonator0_dn = self.greens_function_resonator_dn(e0, self.maxn)
+        #self.resonator.greens_function_helmholtz_dy_slow(e0, self.maxn)
 
         greens_wire_dn_wf = self.greens_function_wire_dn(energy, maxn_wf)
         greens_resonator_dn_wf = self.greens_function_resonator_dn(energy, maxn_wf)
 
+        rweight = self.res_weight(energy)
+        # print("Resonance weight = {}".format(rweight))
+
         # ???
         AA = greens_wire_dn(self.x0, self.y0, self.x0, self.y0) - greens_wire0_dn(self.x0, self.y0, self.x0, self.y0)
         BB = greens_resonator_dn(self.x0, self.y0, self.x0, self.y0) - greens_resonator0_dn(self.x0, self.y0, self.x0, self.y0)
+        # print(greens_resonator_dn(self.x0, self.y0, self.x0, self.y0))
+        # print(greens_resonator0_dn(self.x0, self.y0, self.x0, self.y0))
 
         if verbose:
             print("|AA| = {}, |BB| = {}\n".format(cnorm(AA), cnorm(BB)))
 
-        # alphaW = -uwf(self.x0, self.y0) / (AA + BB)
-        # alphaR = -alphaW
-        alphaW = 1.0
-        alphaR = 1.0
+        alphaW = (1 - rweight)
+        alphaR = -alphaW
 
 
         if verbose:
@@ -105,7 +129,7 @@ class Resonator2DDirichletScattering:
             if y < -self.H:
                 return complex(0.0)
             elif y < 0:
-                return alphaW * greens_wire_dn_wf(x, y, self.x0, self.y0) + uwf(x, y)
+                return uwf(x, y) + alphaW * greens_wire_dn_wf(x, y, self.x0, self.y0)
             elif y < self.Ly:
                 if x < -self.Lx / 2:
                     return complex(0.0)
@@ -120,7 +144,10 @@ class Resonator2DDirichletScattering:
         xright = 10.0
         jincn = compute_prob_current_numerical(uwf, xleft, -self.H, 0.0)
         jtransn = compute_prob_current_numerical(psi, xright, -self.H, 0.0)
+        # print("Jinc = {}, Jtrans = {}".format(jincn, jtransn))
         Tn = cnorm(jtransn) / cnorm(jincn)
-        print("Energy = {}, TN = {:.2f}".format(energy, Tn))
+        if verbose:
+            print("Energy = {}, TN = {:.2f}".format(energy, Tn))
 
-        return ScatteringResult(wf=psi, T=Tn)
+        print("Energy = {}, TN = {:.2f}".format(energy, rweight))
+        return ScatteringResult(wf=psi, T=rweight)

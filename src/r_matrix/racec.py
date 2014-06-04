@@ -1,6 +1,6 @@
 from scipy import constants as sc
 
-from scattering.main import plot_transmission
+from scattering.main import plot_transmission_energy
 from r_matrix.piecewise_delta import PiecewiseDeltaCylinderScattering
 from scattering.tools import integrate_complex
 
@@ -25,7 +25,7 @@ def test_racec(maxn):
                 uu = uu_ * sc.eV * (dright - dleft)
 
                 dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
-                plot_transmission(dcs,
+                plot_transmission_energy(dcs,
                                   0.0 * sc.eV, 1.0 * sc.eV, 0.001 * sc.eV,
                                   maxt=3.0,
                                   fname="racec/transmission_same{:02d}".format(cnt),
@@ -52,7 +52,7 @@ def test_racec(maxn):
                 uu = uu_ * sc.eV * (dright - dleft)
 
                 dcs = PiecewiseDeltaCylinderScattering(mu, RR, uu, intf, m, maxn)
-                plot_transmission(dcs,
+                plot_transmission_energy(dcs,
                                   0.0 * sc.eV, 1.0 * sc.eV, 0.0001 * sc.eV,
                                   maxt=3.0,
                                   fname="racec/transmission_surrounded{:02d}".format(cnt),

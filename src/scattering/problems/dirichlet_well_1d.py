@@ -59,6 +59,15 @@ class DirichletWell1D:
     #             return np.cos(k * (x - self.to)) * np.cos(k * (xs - self.fromm)) / coeff
     #     return fun
 
+    def greens_function_helmholtz(self, energy):
+        k = np.sqrt(complex(energy))
+        # TODO normalization
+        def fun(x, xs):
+            if x < xs:
+                return -np.sin(k * (x - self.a) * np.sin(k * (xs - self.b))) / (k * np.sin(k * (self.b - self.a)))
+            else:
+                return -np.sin(k * (x - self.b) * np.sin(k * (xs - self.a))) / (k * np.sin(k * (self.b - self.a)))
+        return fun
 
     def greens_function_helmholtz_dx(self, energy):
         k = np.sqrt(complex(energy))

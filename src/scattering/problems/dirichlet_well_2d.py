@@ -1,3 +1,4 @@
+from itertools import product
 from sys import stderr
 
 import scipy.constants as sc
@@ -25,20 +26,51 @@ class DirichletWell2D:
         self.wellX = DirichletWell1D(aX, bX, maxn)
         self.wellY = DirichletWell1D(aY, bY, maxn)
 
-        self.eigenenergies = None # ???
+        self.eigenenergies = sorted([ex + ey for (ex, ey) in product(self.wellX.eigenenergies[1:], self.wellY.eigenenergies[1:])]) # ???
         self.eigenfunctions = None # ???
 
     # TODO test
+    # def greens_function_helmholtz_dy(self, energy, maxn=None):
+    #     if maxn is None:
+    #         maxn = self.maxn
+    #     def fun(x, y, xs, ys):
+    #         res = complex(0.0)
+    #         for n in range(1, maxn): # NOTE 1-indexing
+    #             # stderr.write("{}: {}\n".format(n, str(energy - self.wellY.eigenenergies[n])))
+    #             gf = self.wellY.greens_function_helmholtz_dx(energy - self.wellX.eigenenergies[n])
+    #             print(gf(y, ys))
+    #             # NOTE: no conjugation, wavefunctions are real
+    #             res += self.wellX.eigenfunctions[n](x) * self.wellX.eigenfunctions[n](xs) * gf(y, ys)
+    #         return res
+    #     return fun
+
     def greens_function_helmholtz_dy(self, energy, maxn=None):
         if maxn is None:
             maxn = self.maxn
         def fun(x, y, xs, ys):
             res = complex(0.0)
-            for n in range(1, maxn): # NOTE 1-indexing
+            for m in range(1, maxn): # NOTE 1-indexing
                 # stderr.write("{}: {}\n".format(n, str(energy - self.wellY.eigenenergies[n])))
-                gf = self.wellY.greens_function_helmholtz_dx(energy - self.wellX.eigenenergies[n])
+                gf = self.wellX.greens_function_helmholtz(energy - self.wellY.eigenenergies[m])
+                # print(gf(y, ys))
                 # NOTE: no conjugation, wavefunctions are real
-                res += self.wellX.eigenfunctions[n](x) * self.wellX.eigenfunctions[n](xs) * gf(y, ys)
+                res += self.wellY.eigenfunctions[m](y) * self.wellY.deigenfunctions[m](ys) * gf(x, xs)
+            return res
+        return fun
+
+    def greens_function_helmholtz_dy_slow(self, energy, maxn=None):
+        if maxn is None:
+            maxn = self.maxn
+        def fun(x, y, xs, ys):
+            res = complex(0.0)
+            for n in range(1, maxn):
+                for m in range(1, maxn): # NOTE 1-indexing
+                    cur = self.wellX.eigenfunctions[n](x)
+                    cur *= self.wellX.eigenfunctions[n](xs)
+                    cur *= self.wellY.eigenfunctions[m](y)
+                    cur *= self.wellY.deigenfunctions[m](y)
+                    cur /= (self.wellX.eigenenergies[n] + self.wellY.eigenenergies[m] - energy)
+                    res += cur
             return res
         return fun
 
