@@ -10,7 +10,7 @@ from scattering.tools import I, cnorm2, cnorm, ScatteringResult
 from scattering.tools.quantum import compute_prob_current_numerical
 
 
-class Resonator2DNeumannScattering:
+class Resonator2DNewScattering:
     def __init__(self, H: real, Lx: real, Ly: real, delta: real, maxn_params: int, maxn_wavefunction: int = None):
         self.H = H
         self.Lx = Lx

@@ -12,7 +12,7 @@ import scipy.constants as sc
 from r_matrix.double_delta import DoubleDeltaCylinderScattering
 from scattering.extensions.one_point_2d import OnePointScattering
 from r_matrix.piecewise_delta import PiecewiseDeltaCylinderScattering
-from scattering.extensions.resonator_2d_neumann import Resonator2DNeumannScattering
+from scattering.extensions.resonator_2d_new import Resonator2DNewScattering
 
 from scattering.tools import cnorm2, integrate_complex
 
@@ -144,7 +144,7 @@ def test_resonator():
     delta = 0.001
     maxn = 1000  # TODO
     maxn_wf = 100
-    sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+    sp = Resonator2DNewScattering(H, Lx, Ly, delta, maxn, maxn_wf)
 
     fx = -5.0
     tx = 6.0

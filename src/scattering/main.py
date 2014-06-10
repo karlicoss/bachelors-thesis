@@ -16,7 +16,7 @@ from scipy.optimize import minimize
 from scattering.extensions.one_point_2d import OnePointScattering
 from scattering.extensions.resonator_2d_dirichlet import Resonator2DDirichletScattering
 from scattering.extensions.resonator_2d_domain import Resonator2DDomain
-from scattering.extensions.resonator_2d_neumann import Resonator2DNeumannScattering
+from scattering.extensions.resonator_2d_new import Resonator2DNewScattering
 
 from scattering.tools import cnorm2
 
@@ -238,7 +238,7 @@ def test_resonator_neumann():
     delta = 0.1
     maxn = 1000  # TODO
     maxn_wf = 100
-    sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+    sp = Resonator2DNewScattering(H, Lx, Ly, delta, maxn, maxn_wf)
 
     fx = -5.0
     tx = 6.0
@@ -288,7 +288,7 @@ def test_resonator_sizes():
         energy = (5 / H) ** 2
         Lx = 2 * H
         Ly = H * dD
-        sp = Resonator2DNeumannScattering(H, Lx, Ly, delta, maxn, maxn_wf)
+        sp = Resonator2DNewScattering(H, Lx, Ly, delta, maxn, maxn_wf)
         ys.append(sp.compute_scattering_full(energy))
 
     fname = "output/transmissionxxx.png"
