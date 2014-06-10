@@ -33,7 +33,7 @@
 \graphicspath{{pic/}}
 \usepackage{tikz}
 
-\usepackage{mathtools} % xmapsto
+\usepackage{mathtools} % xmapsto, \Vector
 \usepackage{comment}
 \usepackage{soul} % text striking
 \usepackage{amsmath,amsfonts,amssymb,amsthm,amscd,amsxtra}
@@ -94,27 +94,6 @@
 \renewcommand{\proof}{\\\textbf{Доказательство.}~}
  
 \input{macros/macros.tex}
-
-
-% Default settings for code listings
-% \lstset{frame=tb,
-%   language=Scala,
-%   aboveskip=3mm,
-%   belowskip=3mm,
-%   showstringspaces=false,
-%   columns=flexible,
-%   basicstyle={\small\ttfamily},
-%   numbers=none,
-%   numberstyle=\tiny\color{gray},
-%   keywordstyle=\color{blue},
-%   commentstyle=\color{dkgreen},
-%   stringstyle=\color{mauve},
-%   escapeinside={\%*}{*)},
-%   frame=single,
-%   breaklines=true,
-%   breakatwhitespace=true
-%   tabsize=3
-% }
 
 % \lstnewenvironment{snippet}[1][]%
 % {
@@ -196,9 +175,9 @@
 \input{parts/intro.tex}
 \input{parts/chapter1.tex}
 \input{parts/chapter2.tex}
-\input{parts/chapter3.tex}
+% \input{parts/chapter3.tex}
 \input{parts/outro.tex}
-% \input{parts/trash.tex}
+\input{parts/trash.tex}
 
 \printbibliography
 

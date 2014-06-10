@@ -446,21 +446,6 @@ b'_i
 \dom A_\mcP = \{f = f_\phi + \sum\limits_{i = -m + 1}^{m} f_i \psi_i \mid f_\phi \in \hilb{m + 1}, f_{i}\in \bbC \}
 \]
 
-Заметим, что формально:
-\[
-A \psi_i = A Z_0^{m + i} \psi = A \frac{1}{A - z_0} Z_0^{m + i - 1} \psi = (1 + z_0 Z_0) Z_0^{m + i - 1} \psi = \psi_{i - 1} + z_0 \psi_i
-\]
-
-Определим действие оператора 
-\begin{align*}
-A_\mcP \left( f_\phi + \sum\limits_{i = -m + 1}^{m} f_i \psi_i \right)
-& = A_\mcP f_\phi + \sum\limits_{i = -m + 1}^{m} f_i A_\mcP \psi_i \\
-& = A f_\phi + z_0 f_m \psi_m + \sum\limits_{i = -m + 1}^{m - 1} (f_{i + 1} + z_0 f_i) \psi_i + f_{-m + 1} \psi_{-m}
-\end{align*}
-
-Оператор $A_\Pi$ в понтрягинском пространстве определим как замыкание оператора $\mcI A_\mcP \mcI^{-1}$. \todo{и почему оно будет существовать?}
-
-Можно показать, что $\rho(A_\Pi) = \rho(A)$.
 
 
 % Заметим, что не известно, можно ли дать какой-то физический смысл пространству $\Pi_m$, поэтому требуется дополнительный анализ, чтобы убедиться, что полученные решения имеют некий физический смысл, к примеру, анализ асимптотик решений.
@@ -493,3 +478,139 @@ $\hat{\vb{x}} = i \grad_p$
 $H_0 = \frac{p^2}{2 \mu}$
 
 $\psi(\vb{x}) = \mcF^{-1}(\Psi(\vb{p})) = \left(\frac{1}{\sqrt{2 \pi}}\right)^n \int\limits_{\bbR^n} \Psi(\vb{p}) e^{i \vb{p} \vdot \vb{x}} \dd[n]{\vb{p}}$
+
+
+Заметим, что формально:
+\[
+A \psi_i = A Z_0^{m + i} \psi = A \frac{1}{A - z_0} Z_0^{m + i - 1} \psi = (1 + z_0 Z_0) Z_0^{m + i - 1} \psi = \psi_{i - 1} + z_0 \psi_i
+\]
+
+Напомним, что $\dom A$ — пространство $\hilb{1}$. Рассмотрим, как вкладывается в понтрягинское пространство область определения $A$:
+\[
+f + f_0 \psi_0 + \sum\limits_{i = -1}^{-m} f_i \psi_i \xmapsto[]{\Pi}
+\begin{pmatrix}
+f + f_0 \psi_0 \\
+\left[ \ip{\psi_i}{f + f_0 \psi_0} \right]_{i = -1}^{-m} \\
+\left[ f_i \right]_{i = -1}^{-m}
+\end{pmatrix}
+\]
+, где $f_{-m} = 0$.
+
+Далее рассмотрим, как вкладывается действие оператора $A$:
+\begin{align*}
+  & A(f + f_0 \psi_0 + \sum\limits_{i = -1}^{-m} f_i) \\
+= & A f + f_0 z_0 \psi_0 + f_0 \psi_{-1} + \sum\limits_{i = -1}^{-m} f_i (z_0 \psi_i + \psi_{i - 1}) \\
+= & A f + f_0 z_0 \psi_0 + \sum\limits_{i = -1}^{-m} (f_{i + 1} + z_0 f_i) \psi_i  \\
+\xmapsto[]{\Pi} &
+\begin{pmatrix}
+A f + f_0 z_0 \psi_0 \\
+\left[ \ip{\psi_i}{A f + f_0 z_0 \psi_0} \right]_{i = -1}^{-m} \\
+\left[ f_{i + 1} + z_0 f_i\right]_{i = -1}^{-m}
+\end{pmatrix}
+\end{align*}
+
+Пусть $p_i = \ip{\psi_i}{f + f_0 \psi_0}$. Рассмотрим $\ip{\psi_i}{A f + f_0 z_0 \psi_0}$:
+\begin{align*}
+\ip{\psi_i}{A f + f_0 z_0 \psi_0}
+&= \ip{\psi_i}{A (f + f_0 \psi_0) - f_0 \psi_{-1}} \\
+&= \ip{A \psi_i}{f + f_0 \psi_0} - f_0 \ip{\psi_i}{\psi_{-1}} \\
+&= \ip{z_0 \psi_i + \psi_{i - 1}}{f + f_0 \psi_0} - f_0 G_{i, -1} \\
+&= \cconj{z_0} \ip{\psi_i}{f + f_0 \psi_0} + \ip{\psi_{i - 1}}{f + f_0 \psi_0} - f_0 G_{i, -1} \\
+&= \cconj{z_0} p_{i} + p_{i - 1} - f_0 G_{i, -1}
+\end{align*}
+\todo{блин, и что делать с $p_{-m - 1}$? И вообще непонятно, почему здесь можно перекидывтаь оператор.}
+
+Таким образом, график оператора $A_\Pi$ выглядит как:
+\[
+A_\Pi = \left\{
+\begin{pmatrix}
+f + n_0 \psi_0 \\
+\left[ p_i \right]_{i = -1}^{-m} \\
+\left[ n_i \right]_{i = -1}^{-m} \\
+\end{pmatrix},
+\begin{pmatrix}
+A f + z_0 f_0 \psi_0 \\
+\left[ \cconj{z_0} p_i + p_{i - 1} - n_0 G_{i, -1} \right]_{i = -1}^{-m} \\
+\left[ z_0 n_i + n_{i + 1} \right]_{i = -1}^{-m} \\
+\end{pmatrix}
+\middle|
+f \in \hilb{1},
+n_{-m} = 0
+\right\}
+\]
+
+\begin{elist}
+Пользуясь тем, что по определению, $\psi = \Delta_0 d$, получаем
+\[
+\Delta_0 d \xmapsto[]{\mcP} (0, 0, 0, 0, 1) \xmapsto[]{\Pi} (0; 0, 0; 0, 1)
+\]
+# $d$
+
+Заметим:
+\begin{align*}
+& \psi_{-1} = Z_0 \psi = \frac{1}{\Delta_0 - z_0} \Delta_0 d = d + z_0 Z_0 d \in \hilb{-1} \\
+& z_0 \psi_{0} = z_0 Z_0 d + z_0^2 Z_0^2 d \in \hilb{0} \\
+& z_0^2 \psi_{1} = z_0^2 Z_0^2 d + z_0^3 Z_0^3 d \in \hilb{1} \\
+& f_\phi = z_0^3 Z_0^3 d \in \hilb{2}
+\end{align*}
+
+Поочередно вычитаем и прибавляем, получаем  $\psi_{-1} - z_0 \psi_0 + z_0^2 \psi_1 - f_\phi =  d$, соответственно:
+\[
+d \xmapsto[]{\mcP} (-z_0^3 Z_0^3 d, z_0^2, -z_0, 1, 0) \xmapsto[]{\Pi}
+\begin{pmatrix}
+-z_0 Z_0 d \\
+\left[ \ip{\psi_i}{-z_0^3 Z_0^3 d}_0 -z_0 G_{i, 0} + z_0^2 G_{i, 1}\right]_{i = -1}^{-2}\\
+1\\
+0
+\end{pmatrix}
+\]
+# $u \in \dom \Delta_0$
+
+Вкладывается непосредственно:
+\[
+u \xmapsto[]{\mcP} (u, 0, 0, 0, 0) \xmapsto[]{\Pi} (u;\left[ \ip{\psi_i}{u}_0 \right]_{i = -1}^{-2}; 0, 0)
+\]
+# $\Delta_0 u$, для $u \in \dom \Delta_0$
+% TODO возможно, палево
+$\Delta_0 u \in \hilb{2}$, также вкладывается непосредственно:
+\[
+\Delta_0 u \xmapsto[]{\mcP} (\Delta_0 u, 0, 0, 0, 0) \xmapsto[]{\Pi} (\Delta_0 u; \left[ \ip{\psi_i}{\Delta_0 u}_0 \right]_{i = -1}^{-2}; 0, 0)\]
+% Как это аналитически будем считать, вообще непонятно.
+\end{elist} % bordermatrix
+
+
+\[
+f \xmapsto[]{\Pi}
+\begin{pmatrix}
+- \alpha_f z_0 Z_0 d + u \\
+\left[ \ip{\psi_i}{- \alpha_f z_0^3 Z_0^3 d + u}_0 - \alpha_f z_0 G_{i, 0} + \alpha_f z_0^2 G_{i, 1} \right]_{i = -1}^{-2} \\
+\alpha_f \\
+0
+\end{pmatrix}
+\]
+
+\[
+\Delta f = \alpha_f \Delta d + \Delta u  \xmapsto[]{\Pi}
+\begin{pmatrix}
+\Delta u \\
+\left[ \ip{\psi_i}{\Delta u}_0\right]_{i = -1}^{-2} \\
+0 \\
+\alpha_f
+\end{pmatrix}
+\]
+
+\begin{align*}
+\ip{f}{\Delta g}_\Pi
+&= \ip{- \alpha_R z_0 Z_0 d + u}{\Delta v}_0 \\
+&+ \cconj{(\ip{\psi_{-2}}{- \alpha_R z_0^3 Z_0^3 d + u}_0 - \alpha_R z_0 G_{-2, 0} + \alpha_R z_0^2 G_{-2, 1})} \alpha_R \\
+&+ \cconj{\alpha_R} \ip{\psi_{-1}}{\Delta v}_0 \\
+&+ \cconj{\alpha_R} G_{-1, -2} \alpha_R
+\end{align*}
+
+\begin{align*}
+\ip{\Delta f}{g}_\Pi
+&= \ip{\Delta u}{- \alpha_R z_0 Z_0 d + v}_0 \\
+&+ \cconj{\ip{\psi_{-1}}{\Delta u}_0} \alpha_R \\
+&+ \cconj{\alpha_R} (\ip{\psi_{-2}}{- \alpha_R z_0^3 Z_0^3 d + v}_0 - \alpha_R z_0 G_{-2, 0} + \alpha_R z_0^2 G_{-2, 1})\\
+&+ \cconj{\alpha_R} G_{-2, -1} \alpha_R
+\end{align*}
