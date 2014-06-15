@@ -1,14 +1,22 @@
-using Parent.Problems
+# using Parent.Problems
 import Parent.Problems: FreeParticle, DirichletWell1D, DirichletWaveguide2D, DirichletWell2D
 import Parent.Extensions: Resonator2D
 
-fp = FreeParticle()
-dw = DirichletWell1D(1.0, 2.0, 100)
-dwg = DirichletWaveguide2D(1.0, 2.0, 100)
-dwell = DirichletWell2D(1.0, 2.0, 1.0, 2.0, 100)
+# nw = DirichletWell1D(0.0, 2.0, 10)
+# println(nw.greensFunctionHelmholtz(10.0)(0.5, 1.3))
 
-res = Resonator2D(1.0, 1.0, 1.0, 0.01, 100)
 
-println(fp.greensFunctionHelmholtz(complex(1.0))(0.5, 0.0))
+Lx = 2.0
+Ly = 1.0
+H = 1.0
+S = 0.01
+maxn = 100
 
-println("hello")
+energy = 19.77965
+mode = 1
+
+res = Resonator2D(H, Lx, Ly, S, maxn)
+
+for energy in [25.0: 0.01: 45.0]
+    res.computeMode(mode, energy, verbose = false)
+end

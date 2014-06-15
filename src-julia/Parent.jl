@@ -2,6 +2,11 @@
 # using Resonator2DM: Resonator2D
 module Parent
 
+module Tools
+    include("Tools/tools.jl")
+    include("Tools/quantum.jl")
+end
+
 module Problems
     include("Problems/FreeParticle.jl")
     include("Problems/DirichletWell1D.jl")

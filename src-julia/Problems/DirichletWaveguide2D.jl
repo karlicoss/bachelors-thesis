@@ -24,11 +24,11 @@ type DirichletWaveguide2D
         this.freeX = FreeParticle()
         this.wellY = DirichletWell1D(aY, bY, maxn)
 
-        this.greensFunctionHelmholtzDys = function (energy :: Complex{Float64})
+        this.greensFunctionHelmholtzDys = function (energy :: Float64)
             function fun(x :: Float64, y :: Float64, xs :: Float64, ys :: Float64; maxn = this.maxn)
-                res = complex(0.0)
+                res = 0.0im
                 for m = 1: maxn
-                    gf = this.freeX.greensFunctionHelmholtz(complex(energy - this.wellY.eigenenergies[m]))
+                    gf = this.freeX.greensFunctionHelmholtz(energy - this.wellY.eigenenergies[m])
                     res += this.wellY.eigenstates[m](y) * this.wellY.deigenstates[m](ys) * gf(x, xs)
                 end
                 return res

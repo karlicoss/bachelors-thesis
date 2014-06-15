@@ -1,4 +1,4 @@
-using Iterators
+import Iterators: product
 
 type DirichletWell2D
     aX :: Float64
@@ -10,12 +10,8 @@ type DirichletWell2D
     wellX :: DirichletWell1D
     wellY :: DirichletWell1D
 
-    # wavevectors :: Array{Complex{Float64}}
     eigenenergies :: Array{Float64}
-    # eigenstates :: Array{Function}
-    # deigenstates :: Array{Function}
 
-    # greensFunctionHelmholtz :: Function
     greensFunctionHelmholtzDys :: Function
 
 
@@ -30,13 +26,13 @@ type DirichletWell2D
         this.wellX = DirichletWell1D(aX, bX, maxn)
         this.wellY = DirichletWell1D(aY, bY, maxn)
 
-        this.eigenenergies = sort([ex + ey for (ex, ey) in Iterators.product(this.wellX.eigenenergies, this.wellY.eigenenergies)])
+        this.eigenenergies = sort([ex + ey for (ex, ey) in product(this.wellX.eigenenergies, this.wellY.eigenenergies)])
 
-        this.greensFunctionHelmholtzDys = function (energy :: Complex{Float64})
+        this.greensFunctionHelmholtzDys = function (energy :: Float64)
             function fun(x :: Float64, y :: Float64, xs :: Float64, ys :: Float64; maxn = this.maxn)
-                res = complex(0.0)
+                res = 0.0im
                 for m = 1: maxn
-                    gf = this.wellX.greensFunctionHelmholtz(complex(energy - this.wellY.eigenenergies[m]))
+                    gf = this.wellX.greensFunctionHelmholtz(energy - this.wellY.eigenenergies[m])
                     res += this.wellY.eigenstates[m](y) * this.wellY.deigenstates[m](ys) * gf(x, xs)
                 end
                 return res
