@@ -1,5 +1,3 @@
-module DirichletWell1DM
-
 type DirichletWell1D
     a :: Float64
     b :: Float64
@@ -50,8 +48,5 @@ type DirichletWell1D
 
         return this
     end
-
-end
-
 
 end

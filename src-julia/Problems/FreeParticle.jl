@@ -1,5 +1,3 @@
-module FreeParticleM
-
 type FreeParticle
     greensFunctionHelmholtz :: Function
 
@@ -15,6 +13,4 @@ type FreeParticle
 
         return this
     end
-end
-
 end

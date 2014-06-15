@@ -1,15 +1,13 @@
-include("Problems/FreeParticle.jl")
-using FreeParticleM: FreeParticle
-include("Problems/DirichletWell1D.jl")
-using DirichletWell1DM: DirichletWell1D
-
-include("Problems/DirichletWaveguide2D.jl")
-using DirichletWaveguide2DM: DirichletWaveguide2D
-
+using Parent.Problems
+import Parent.Problems: FreeParticle, DirichletWell1D, DirichletWaveguide2D, DirichletWell2D
+import Parent.Extensions: Resonator2D
 
 fp = FreeParticle()
 dw = DirichletWell1D(1.0, 2.0, 100)
 dwg = DirichletWaveguide2D(1.0, 2.0, 100)
+dwell = DirichletWell2D(1.0, 2.0, 1.0, 2.0, 100)
+
+res = Resonator2D(1.0, 1.0, 1.0, 0.01, 100)
 
 println(fp.greensFunctionHelmholtz(complex(1.0))(0.5, 0.0))
 
