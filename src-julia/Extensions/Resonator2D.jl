@@ -29,20 +29,20 @@ type Resonator2D
     computeMode :: Function
     computeAll :: Function
 
-    function Resonator2D (H :: Float64, Lx :: Float64, Ly :: Float64, delta :: Float64, maxn :: Int)
+    function Resonator2D (domain :: Resonator2DDomain, maxn :: Int)
         this = new ()
 
-        this.H = H
-        this.Lx = Lx
-        this.Ly = Ly
+        this.H = domain.H
+        this.Lx = domain.Lx
+        this.Ly = domain.Ly
         
-        this.delta = delta
+        this.delta = domain.S
         this.x0 = 0.0
         this.y0 = 0.0
 
         this.maxn = maxn
 
-        this.resonator = DirichletWell2D(-Lx / 2, Lx / 2, 0.0, Ly, maxn)
+        this.resonator = DirichletWell2D(-this.Lx / 2, this.Lx / 2, 0.0, this.Ly, maxn)
         this.resX = this.resonator.wellX
         this.resY = this.resonator.wellY
 
@@ -64,10 +64,10 @@ type Resonator2D
 
         this.greensFunctionWaveguideDn = function (energy :: Float64)
             pf = this.waveguide.greensFunctionHelmholtzDys(energy)
-            function fun (x, y, xs, ys; maxn = this.maxn)
+            function fff(x, y, xs, ys; maxn = this.maxn)
                 return -pf(x, y, xs, ys, maxn = maxn)
             end
-            return fun
+            return fff
         end
 
         this.computeAll = function (energy :: Float64)
@@ -75,7 +75,7 @@ type Resonator2D
             return this.computeMode(1, energy)
         end
 
-        this.computeMode = function fun(mode :: Int, energy :: Float64; verbose = false)
+        this.computeMode = function fff2(mode :: Int, energy :: Float64; verbose = false)
             @assert energy > this.wgY.eigenenergies[mode]
             kk = sqrt(complex(energy - this.wgY.eigenenergies[mode]))
 
@@ -130,8 +130,9 @@ type Resonator2D
             end
 
             T = abs(jtrans) / abs(jinc)
+            @printf("Energy = %.7f, T = %.3f\n", energy, T)
 
-            printfmt("Energy = {:.4f}, T = {:.2f}\n", energy, T)
+            # printfmt("Energy = {:.7f}, T = {:.3f}\n", energy, T) TODO WTF???
             return (wavefunction, T)
         end
 

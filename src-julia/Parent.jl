@@ -15,6 +15,7 @@ module Problems
 end
 
 module Extensions
+    include("Extensions/Resonator2DDomain.jl")
     include("Extensions/Resonator2D.jl")
 end
 

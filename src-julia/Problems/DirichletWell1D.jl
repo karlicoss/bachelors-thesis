@@ -28,7 +28,6 @@ type DirichletWell1D
             kk = sqrt(complex(energy))
             return function(x :: Float64, xs :: Float64)
                 if x < xs
-                    println(sin(kk * (x - a)) * sin(kk * (xs - b)))
                     return -sin(kk * (x - a)) * sin(kk * (xs - b)) / (kk * sin(kk * (b - a)))
                 else
                     return -sin(kk * (x - b)) * sin(kk * (xs - a)) / (kk * sin(kk * (b - a)))
