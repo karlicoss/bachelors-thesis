@@ -134,7 +134,7 @@ type Resonator2D
                     break
                 end
                 zmm = sqrt(energy - ee)
-                jtrans += abs2(alphaW) * (-this.wgY.deigenstates[mode](this.y0)) ^ 2 * 1.0 / (2 * zmm)
+                jtrans += abs2(alphaW) * (-this.wgY.deigenstates[mm](this.y0)) ^ 2 * 1im / (2 * zmm)
             end
 
             if verbose
@@ -145,6 +145,10 @@ type Resonator2D
             T = abs(jtrans) / abs(jinc)
             @printf("Energy = %.7f, T = %.3f\n", energy, T)
 
+            # if T > 1.001
+            #    T = 0.0
+            #    println("CUTTING") # TODO FUCK
+            #end
             # printfmt("Energy = {:.7f}, T = {:.3f}\n", energy, T) TODO WTF???
             return (wavefunction, T)
         end

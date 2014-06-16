@@ -114,7 +114,7 @@ function plotPdensity(
     close()
 end
 
-H = 1.0
+H = 2.0
 Lx = 2.5
 Ly = 1.0
 S = 0.01
@@ -142,7 +142,7 @@ sp = Resonator2D(domain, maxn)
 show(sp.resonator.eigenenergies[1:10])
 plotTransmissionOverEnergy(
     sp,
-    24.0, 24.2, 0.00001,
+    24.0, 24.1, 0.00001,
     lines = sp.resonator.eigenenergies)
 
 # maxnWf = 2
