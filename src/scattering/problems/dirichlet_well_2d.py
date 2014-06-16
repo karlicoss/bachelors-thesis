@@ -44,10 +44,8 @@ class DirichletWell2D:
     #         return res
     #     return fun
 
-    def greens_function_helmholtz_dy(self, energy, maxn=None):
-        if maxn is None:
-            maxn = self.maxn
-        def fun(x, y, xs, ys):
+    def greens_function_helmholtz_dy(self, energy):
+        def fun(x, y, xs, ys, maxn=self.maxn):
             res = complex(0.0)
             for m in range(1, maxn): # NOTE 1-indexing
                 # stderr.write("{}: {}\n".format(n, str(energy - self.wellY.eigenenergies[n])))
@@ -58,21 +56,19 @@ class DirichletWell2D:
             return res
         return fun
 
-    def greens_function_helmholtz_dy_slow(self, energy, maxn=None):
-        if maxn is None:
-            maxn = self.maxn
-        def fun(x, y, xs, ys):
-            res = complex(0.0)
-            for n in range(1, maxn):
-                for m in range(1, maxn): # NOTE 1-indexing
-                    cur = self.wellX.eigenfunctions[n](x)
-                    cur *= self.wellX.eigenfunctions[n](xs)
-                    cur *= self.wellY.eigenfunctions[m](y)
-                    cur *= self.wellY.deigenfunctions[m](y)
-                    cur /= (self.wellX.eigenenergies[n] + self.wellY.eigenenergies[m] - energy)
-                    res += cur
-            return res
-        return fun
+    # def greens_function_helmholtz_dy_slow(self, energy):
+    #     def fun(x, y, xs, ys, maxn=self.maxn):
+    #         res = complex(0.0)
+    #         for n in range(1, maxn):
+    #             for m in range(1, maxn): # NOTE 1-indexing
+    #                 cur = self.wellX.eigenfunctions[n](x)
+    #                 cur *= self.wellX.eigenfunctions[n](xs)
+    #                 cur *= self.wellY.eigenfunctions[m](y)
+    #                 cur *= self.wellY.deigenfunctions[m](ys)
+    #                 cur /= (self.wellX.eigenenergies[n] + self.wellY.eigenenergies[m] - energy)
+    #                 res += cur
+    #         return res
+    #     return fun
 
     def test(self):
         """

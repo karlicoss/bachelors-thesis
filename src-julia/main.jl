@@ -6,33 +6,6 @@ import Formatting: fmt
 
 using PyPlot
 
-# nw = DirichletWell1D(0.0, 2.0, 10)
-# println(nw.greensFunctionHelmholtz(10.0)(0.5, 1.3))
-
-H = 1.0
-Lx = 1.0
-Ly = 1.0
-S = 0.01
-
-domain = Resonator2DDomain(H, Lx, Ly, S)
-maxn = 100
-
-energy = 19.75944
-mode = 1
-
-sp = Resonator2D(domain, maxn)
-
-# for energy in [19.7: 0.01: 20.0]
-#    res.computeMode(mode, energy, verbose = true)
-#    println()
-# end
-
-# for energy in [19.75900: 0.000001: 19.75945]
-#    res.computeMode(mode, energy, verbose = false)
-# end
-
-
-
 # TODO HOW TO SET IMAGE SIZE???
 function plotTransmissionOverEnergy(
     dcs,
@@ -63,9 +36,9 @@ function plotTransmissionOverEnergy(
     yticks(yticks_, ylabels_)
     ylabel("T")
 
-    plot(xs, ys)
+    plot(xs, ys, antialiased = true, linewidth = 0.5)
 
-    savefig(fname, bbox_inches = "tight", dpi = 300)
+    savefig(fname, bbox_inches = "tight", dpi = 2000)
     close()
     return nothing
 end
@@ -141,11 +114,36 @@ function plotPdensity(
     close()
 end
 
+H = 1.0
+Lx = 2.5
+Ly = 1.0
+S = 0.01
 
+domain = Resonator2DDomain(H, Lx, Ly, S)
+maxn = 50
+
+sp = Resonator2D(domain, maxn)
+
+# energy = 56.0
+# mode = 1
+# println(sp.computeMode(mode, energy, verbose = true))
+
+
+# for energy in [19.7: 0.01: 20.0]
+#    res.computeMode(mode, energy, verbose = true)
+#    println()
+# end
+
+# for energy in [19.75900: 0.000001: 19.75945]
+#    res.computeMode(mode, energy, verbose = false)
+# end
+
+
+show(sp.resonator.eigenenergies[1:10])
 plotTransmissionOverEnergy(
-   res,
-   10.0, 21.0, 1.0,
-   lines = res.resonator.eigenenergies)
+    sp,
+    24.0, 24.2, 0.00001,
+    lines = sp.resonator.eigenenergies)
 
 # maxnWf = 2
 # fx = -6.0

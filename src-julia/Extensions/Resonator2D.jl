@@ -121,11 +121,24 @@ type Resonator2D
                 end
             end
 
-            xleft = -20.0
-            xright = 21.0
-            jinc = computeProbCurrentNumerical(uwf, xleft, -this.H, 0.0)
-            jtrans = computeProbCurrentNumerical(wavefunction, xleft, -this.H, 0.0)
+            # xleft = -20.0
+            # xright = 21.0
+            # jincn = computeProbCurrentNumerical(uwf, xleft, -this.H, 0.0)
+            # jtransn = computeProbCurrentNumerical(wavefunction, xleft, -this.H, 0.0)
+
+            jinc = 2 * 1im * kk
+            jtrans = 2 * 1im * kk - alphaW * (-this.wgY.deigenstates[mode](this.y0)) + conj(alphaW) * (-this.wgY.deigenstates[mode](this.y0))
+            for mm in 1: this.maxn
+                ee = this.wgY.eigenenergies[mm]
+                if ee > energy
+                    break
+                end
+                zmm = sqrt(energy - ee)
+                jtrans += abs2(alphaW) * (-this.wgY.deigenstates[mode](this.y0)) ^ 2 * 1.0 / (2 * zmm)
+            end
+
             if verbose
+                # printfmt("Jincn = {}, Jtransn = {}\n", jincn, jtransn)
                 printfmt("Jinc = {}, Jtrans = {}\n", jinc, jtrans)
             end
 

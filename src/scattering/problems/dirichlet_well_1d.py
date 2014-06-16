@@ -64,19 +64,20 @@ class DirichletWell1D:
         # TODO normalization
         def fun(x, xs):
             if x < xs:
-                return -np.sin(k * (x - self.a) * np.sin(k * (xs - self.b))) / (k * np.sin(k * (self.b - self.a)))
+                return -np.sin(k * (x - self.a)) * np.sin(k * (xs - self.b)) / (k * np.sin(k * (self.b - self.a)))
             else:
-                return -np.sin(k * (x - self.b) * np.sin(k * (xs - self.a))) / (k * np.sin(k * (self.b - self.a)))
+                return -np.sin(k * (x - self.b)) * np.sin(k * (xs - self.a)) / (k * np.sin(k * (self.b - self.a)))
         return fun
 
     def greens_function_helmholtz_dx(self, energy):
         k = np.sqrt(complex(energy))
+
         # TODO normalization
         def fun(x, xs):
             if x < xs:
-                return -np.sin(k * (x - self.a) * np.cos(k * (xs - self.b))) / np.sin(k * (self.b - self.a))
+                return -np.sin(k * (x - self.a)) * np.cos(k * (xs - self.b)) / np.sin(k * (self.b - self.a))
             else:
-                return -np.sin(k * (x - self.b) * np.cos(k * (xs - self.a))) / np.sin(k * (self.b - self.a))
+                return -np.sin(k * (x - self.b)) * np.cos(k * (xs - self.a)) / np.sin(k * (self.b - self.a))
         return fun
 
     def test(self):
@@ -100,4 +101,5 @@ class DirichletWell1D:
 
 if __name__ == '__main__':
     nw = DirichletWell1D(0.0, 2.0, 10)
-    nw.test()
+    # print(nw.greens_function_helmholtz(10.0)(0.5, 1.3))
+    # nw.test()

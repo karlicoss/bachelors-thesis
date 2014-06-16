@@ -71,7 +71,7 @@ def plot_transmission_size(domain: Resonator2DDomain,
     for Lx in xs:
         domain.Lx = Lx
         sp = Resonator2DDirichletScattering(domain.H, Lx, domain.Ly, domain.S, maxn)
-        res = sp.compute_scattering(mode, energy, verbose=False)
+        res = sp.compute_scattering(mode, energy, verbose=True)
         ys.append(res.T)
 
     inch = 2.5
@@ -100,8 +100,7 @@ def plot_transmission_size(domain: Resonator2DDomain,
 
 
 # TODO MODIFY PLOT_WAVEFUNCTION USAGES
-# TODO probably I should separate the desctiption of the domain and the solution
-def plot_pdensity(domain: Resonator2DDomain, wf,
+def plot_pdensity(domain: Resonator2DDomain, wf, maxn_wf: int,
                       fx: real, tx: real, dx: real,
                       dy: real,
                       fname="wavefunction.png",
@@ -113,7 +112,7 @@ def plot_pdensity(domain: Resonator2DDomain, wf,
     fy = fy - border
     ty = ty + border
 
-    pf = lambda x, y: cnorm2(wf(x, y))
+    pf = lambda x, y: cnorm2(wf(x, y, maxn=maxn_wf))
     pfc = lambda x, y: pf(x, y) if np.abs(x ** 2 + y ** 2) > (domain.S / 2) ** 2 else 0.0 # TODO this is to exclude the singulatiry
     vpf = np.vectorize(pfc)
 
@@ -171,13 +170,13 @@ def plot_pdensity(domain: Resonator2DDomain, wf,
 
 
 def test_resonator_dirichlet():
-    Lx = 2.3
+    Lx = 2.5
     Ly = 1.0
-    H = 2.0
-    S = 0.1
+    H = 1.0
+    S = 0.01
     domain = Resonator2DDomain(H, Lx, Ly, S)
 
-    maxn = 10  # TODO
+    maxn = 20  # TODO
     maxn_wf = 10
     sp = Resonator2DDirichletScattering(H, Lx, Ly, S, maxn)
 
@@ -190,35 +189,37 @@ def test_resonator_dirichlet():
 
     n = 1
 
-    # resenergies = sp.resonator.eigenenergies
-    # plot_transmission(sp,
-    #                   10.0, 100.0, 0.01,
-    #                   fname="output2/transmission.png",
-    #                   vlines=resenergies)
+    resenergies = sp.resonator.eigenenergies
+    plot_transmission_energy(sp,
+                            10.0, 50.0, 0.01,
+                            fname="output2/transmission.png",
+                            vlines=resenergies)
 
-    # energy = 19.0
-    # res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
+    # energy = 19.75944
+    # energy = 10.0
+    # res = sp.compute_scattering(n, energy, verbose=True)
     # plot_pdensity(domain,
-    #                   res.wf,
+    #                   res.wf, maxn_wf,
     #                   fx, tx, dx,
     #                   dy,
-    #                   fname="output2/pdensity.png")
+    #                   fname="output2/pdensity2.png")
 
-    energy = 19.0
-    plot_transmission_size(domain,
-                           1, energy,
-                           1.5, 3.0, 0.005,
-                           fname="output2/transmission_size.png",
-                           maxn=maxn
-                           )
+    # energy = 19.0
+    # plot_transmission_size(domain,
+    #                        1, energy,
+    #                        1.5, 3.0, 0.005,
+    #                        fname="output2/transmission_size.png",
+    #                        maxn=maxn
+    #                        )
 
-    # for energy in arange(80.0, 120.0, 0.1):
-    #     res = sp.compute_scattering(n, energy, maxn_wf=maxn_wf, verbose=True)
-    #     plot_wavefunction(res.wf,
-    #                           fx, tx, dx,
-    #                           fy, ty, dy,
-    #                           fname="output2/wavefunction{:.2f}.png".format(energy),
-    #                           title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
+    # for energy in arange(10.0, 45.0, 0.1):
+    #     res = sp.compute_scattering(n, energy, verbose=True)
+    #     plot_pdensity(domain,
+    #                   res.wf, maxn_wf,
+    #                   fx, tx, dx,
+    #                   dy,
+    #                   fname="output2/wavefunction{:.2f}.png".format(energy),
+    #                   title="Wavefunction at energy {:.2f}, T = {:.2f}".format(energy, res.T))
 
     # def fff(energy):
     #     res = sp.compute_scattering(n, energy)
@@ -235,7 +236,7 @@ def test_resonator_neumann():
     Lx = 1.0
     Ly = 1.0
     H = 1.0
-    delta = 0.1
+    delta = 0.001
     maxn = 1000  # TODO
     maxn_wf = 100
     sp = Resonator2DNewScattering(H, Lx, Ly, delta, maxn, maxn_wf)
@@ -253,10 +254,8 @@ def test_resonator_neumann():
 
     resenergies = [e1 + e2 for e1, e2 in itertools.product(sp.res_x_energies, sp.res_y_energies)]
     plot_transmission_energy(sp,
-                      10.0, 100.0, 0.01,
-                      maxt=1.0,
+                      25.0, 35.0, 0.001,
                       fname="output2/transmission.png",
-                      info="Transmission",
                       vlines=resenergies)
 
     # def fff(energy):

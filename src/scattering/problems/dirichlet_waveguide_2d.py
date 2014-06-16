@@ -27,15 +27,13 @@ class DirichletWaveguide2D:
         self.eigenfunctions = None # ???
 
     # TODO test
-    def greens_function_helmholtz_dy(self, energy, maxn=None):
-        if maxn is None:
-            maxn = self.maxn
-        def fun(x, y, xs, ys):
+    def greens_function_helmholtz_dy(self, energy):
+        def fun(x, y, xs, ys, maxn=self.maxn):
             res = complex(0.0)
-            for n in range(1, maxn):
-                gf = self.freeX.greens_function_helmholtz(energy - self.wellY.eigenenergies[n])
+            for m in range(1, maxn):
+                gf = self.freeX.greens_function_helmholtz(energy - self.wellY.eigenenergies[m])
                 # NOTE: no conjugation, wavefunctions are real
-                res += self.wellY.eigenfunctions[n](y) * self.wellY.deigenfunctions[n](ys) * gf(x, xs)
+                res += self.wellY.eigenfunctions[m](y) * self.wellY.deigenfunctions[m](ys) * gf(x, xs)
             return res
         return fun
 
