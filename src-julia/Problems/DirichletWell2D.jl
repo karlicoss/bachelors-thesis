@@ -12,6 +12,8 @@ type DirichletWell2D
 
     eigenenergies :: Array{Float64}
 
+    eigenenergiess # with state numbers
+
     greensFunctionHelmholtzDys :: Function
 
 
@@ -26,14 +28,30 @@ type DirichletWell2D
         this.wellX = DirichletWell1D(aX, bX, maxn)
         this.wellY = DirichletWell1D(aY, bY, maxn)
 
-        this.eigenenergies = sort([ex + ey for (ex, ey) in product(this.wellX.eigenenergies, this.wellY.eigenenergies)])
+        this.eigenenergiess = sort([(ex + ey, (i, j)) for ((i, ex), (j, ey)) in product(enumerate(this.wellX.eigenenergies), enumerate(this.wellY.eigenenergies))])
+        this.eigenenergies = map(x -> x[1], this.eigenenergiess)        
 
         this.greensFunctionHelmholtzDys = function (energy :: Float64)
             function fun(x :: Float64, y :: Float64, xs :: Float64, ys :: Float64; maxn = this.maxn)
                 res = 0.0im
                 for m = 1: maxn
                     gf = this.wellX.greensFunctionHelmholtz(energy - this.wellY.eigenenergies[m])
-                    res += this.wellY.eigenstates[m](y) * this.wellY.deigenstates[m](ys) * gf(x, xs)
+                    gg = gf(x, xs)
+                    if isnan(real(gg))
+                        # println(energy - this.wellY.eigenenergies[m])
+                        gg = 0.0
+                    end
+                    #println(gg)
+                    res += this.wellY.eigenstates[m](y) * this.wellY.deigenstates[m](ys) * gg
+                    # for n = 1: maxn
+                    #     tt = 1.0
+                    #     tt *= this.wellX.eigenstates[n](x)
+                    #     tt *= this.wellX.eigenstates[n](xs)
+                    #     tt *= this.wellY.eigenstates[m](y)
+                    #     tt *= this.wellY.deigenstates[m](ys)
+                    #     tt /= (this.wellX.eigenenergies[n] + this.wellY.eigenenergies[m] - energy)
+                    #     res += tt
+                    # end
                 end
                 return res
             end

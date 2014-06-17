@@ -83,7 +83,12 @@ type Resonator2D
 
             gamma = 0.57721566490153286060
             k0 = 1im / this.delta * exp(-gamma)
-            e0 = real(k0 ^ 2)
+            e0 = real(k0 ^ 2)            
+
+            if verbose
+                # println(e0)
+                printfmt("E = {}, E0 = {}\n", energy, e0)
+            end
 
             greensWaveguideDn = this.greensFunctionWaveguideDn(energy)
             greensWaveguide0Dn = this.greensFunctionWaveguideDn(e0)
@@ -97,8 +102,8 @@ type Resonator2D
                 printfmt("|FW| = {}, |FR| = {}\n", abs(FW), abs(FR))
             end
 
-            alphaR = -this.wgY.deigenstates[mode](this.y0) / (FW + FR)
-            alphaW = -alphaR
+            alphaW = -(-this.wgY.deigenstates[mode](this.y0)) / (FW + FR)
+            alphaR = -alphaW
             if verbose
                 printfmt("AW = {}, AR = {}\n", alphaW, alphaR)
             end
@@ -127,7 +132,7 @@ type Resonator2D
             # jtransn = computeProbCurrentNumerical(wavefunction, xleft, -this.H, 0.0)
 
             jinc = 2 * 1im * kk
-            jtrans = 2 * 1im * kk - alphaW * (-this.wgY.deigenstates[mode](this.y0)) + conj(alphaW) * (-this.wgY.deigenstates[mode](this.y0))
+            jtrans = 2 * 1im * kk + (-this.wgY.deigenstates[mode](this.y0)) * (conj(alphaW) - alphaW)
             for mm in 1: this.maxn
                 ee = this.wgY.eigenenergies[mm]
                 if ee > energy
@@ -143,8 +148,18 @@ type Resonator2D
             end
 
             T = abs(jtrans) / abs(jinc)
+            T = 1.0 / exp(10 * max(0, 1.0 - T))
             @printf("Energy = %.7f, T = %.3f\n", energy, T)
-
+            # if T < 0.5
+            #     @printf("Energy = %.7f, T = %.3f\n", energy, T)
+            # end
+            # # NN = 10.0
+            # AA = (-NN - sqrt(NN) * sqrt(4 + NN)) / 2
+            # BB = (NN + sqrt(NN) * sqrt(4 + NN)) / (2 * NN)
+            # T = 1.0 - (1 / (NN * T + AA) + BB)
+            # print(mT)
+            # T = 1 - mT
+            
             # if T > 1.001
             #    T = 0.0
             #    println("CUTTING") # TODO FUCK

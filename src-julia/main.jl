@@ -2,15 +2,19 @@
 import Parent.Problems: FreeParticle, DirichletWell1D, DirichletWaveguide2D, DirichletWell2D
 import Parent.Extensions: Resonator2D, Resonator2DDomain
 
-import Formatting: fmt
+import Formatting: fmt, format
 
 using PyPlot
 
 # TODO HOW TO SET IMAGE SIZE???
 function plotTransmissionOverEnergy(
     dcs,
-    left :: Float64, right :: Float64, step :: Float64
-    ; fname = "transmission.png", lines = [])
+    left :: Float64, right :: Float64, step :: Float64; 
+    fname = "transmission2.png",
+    xticks_ = [],
+    xlabels_ = [])
+
+    eigenenergiess = filter(x -> x[1] >= left && x[1] <= right, sp.resonator.eigenenergiess)
 
     maxt = 1.0 + 0.1
 
@@ -18,30 +22,88 @@ function plotTransmissionOverEnergy(
     ys = map(en -> dcs.computeAll(en)[2], xs)
 
     inch = 2.5
-    figure(figsize=(18.0 / inch, 8.0 / inch))
+    figure(figsize=(30.0 / inch, 10.0 / inch))
 
-    vlines(lines, 0.0, maxt, linestyles = "dashed")
+    vlines(map(x -> x[1], eigenenergiess), 0.0, maxt, linestyles = "dashed")
+
+    for i in 1: length(eigenenergiess)
+        ee = eigenenergiess[i][1]
+        (xn, yn) = eigenenergiess[i][2]
+        lbl = format("{},{}", xn, yn)
+        text(ee + (right - left) / 1000, i * 1.0 / length(eigenenergiess), lbl,
+            color = "red",
+            fontsize = "small",
+            fontweight = "semibold")
+    end
 
     tick_params(axis = "both", which = "major", labelsize = 8)
 
-    xticks_ = [left: 5: right]
-    xlabels_ = [fmt("d", int(tick)) for tick in xticks_]
-    xlim(left, right)
+    if length(xticks_) == 0
+        xticks_ = [0: 5: right]
+    end
+
+    if length(xlabels_) == 0        
+        xlabels_ = [fmt("d", int(tick)) for tick in xticks_]
+    end
     xticks(xticks_, xlabels_)
-    xlabel("E")
+    xlim(left, right)
+    xlabel("E, хартри")
 
     yticks_ = [0.0: 0.1: maxt]
     ylabels_ = [fmt(".1f", tick) for tick in yticks_]
-    ylim(0.0, maxt)
     yticks(yticks_, ylabels_)
+    ylim(0.0, maxt)
     ylabel("T")
 
-    plot(xs, ys, antialiased = true, linewidth = 0.5)
+    plot(xs, ys, antialiased = true, linewidth = 1.0)
 
-    savefig(fname, bbox_inches = "tight", dpi = 2000)
+    savefig(fname, bbox_inches = "tight")
     close()
     return nothing
 end
+
+function plotTransmissionOverSize(
+    domain :: Resonator2DDomain,
+    mode :: Int,
+    energy :: Float64,
+    leftw :: Float64, rightw :: Float64, stepw :: Float64; 
+    fname = "transmission.png",
+    xticks_ = [],
+    xlabels_ = [])
+
+    maxt = 1.0 + 0.1
+
+    function fff(w :: Float64)
+        domain.Lx = w
+        sp = Resonator2D(domain, maxn)
+        return sp.computeMode(mode, energy)[2]
+    end
+
+    xs = [leftw: stepw: rightw]
+    ys = map(fff, xs)
+
+    inch = 2.5
+    figure(figsize=(30.0 / inch, 10.0 / inch))
+
+    tick_params(axis = "both", which = "major", labelsize = 8)
+
+    xticks(xticks_, xlabels_)
+    xlim(leftw, rightw)
+    xlabel("Ly, б.р.")
+
+    yticks_ = [0.0: 0.1: maxt]
+    ylabels_ = [fmt(".1f", tick) for tick in yticks_]
+    yticks(yticks_, ylabels_)
+    ylim(0.0, maxt)
+    ylabel("T")
+
+    plot(xs, ys, antialiased = true, linewidth = 1.0)
+
+    savefig(fname, bbox_inches = "tight")
+    close()
+    return nothing
+end
+
 
 function plotPdensity(
     domain :: Resonator2DDomain,
@@ -49,7 +111,7 @@ function plotPdensity(
     maxnWf :: Int,
     fx :: Float64, tx :: Float64, dx :: Float64,
     dy :: Float64;
-    fname = "wavefunction.png")
+    fname = "wavefunction2.png")
 
     fy = -domain.H
     ty = domain.Ly
@@ -78,14 +140,14 @@ function plotPdensity(
     xticks_ = [fx: 0.5: tx + dx]
     xlabels_ = [fmt(".1f", tick) for tick in xticks_]
     xlim(fx, tx)
-    xticks(xticks_, xlabels_)
-    xlabel("x, нм")
+    # xticks(xticks_, xlabels_)
+    xlabel("x, б. р.")
 
     yticks_ = [-domain.H: 0.5: domain.Ly + border + dy]
     ylabels_ = [fmt(".1f", tick) for tick in yticks_]
     ylim(fy, ty)
-    yticks(yticks_, ylabels_)
-    ylabel("y, нм")
+    # yticks(yticks_, ylabels_)
+    ylabel("y, б. р.")
 
     pc = pcolor(xx, yy, zz, cmap = "gnuplot") #, norm=Normalize(z_min, z_max))
 
@@ -110,51 +172,63 @@ function plotPdensity(
 
     colorbar(pc, ticks = [])
 
-    savefig(fname, bbox_inches = "tight", dpi = 200)
+    savefig(fname, bbox_inches = "tight")
     close()
 end
 
-H = 2.0
-Lx = 2.5
-Ly = 1.0
-S = 0.01
+H = 100
+Lx = 200
+Ly = 100
+S = 10
 
 domain = Resonator2DDomain(H, Lx, Ly, S)
-maxn = 50
+maxn = 100
 
 sp = Resonator2D(domain, maxn)
 
-# energy = 56.0
-# mode = 1
+mode = 1
+
+
+# energy = 11.6183
 # println(sp.computeMode(mode, energy, verbose = true))
 
-
-# for energy in [19.7: 0.01: 20.0]
-#    res.computeMode(mode, energy, verbose = true)
-#    println()
-# end
-
-# for energy in [19.75900: 0.000001: 19.75945]
-#    res.computeMode(mode, energy, verbose = false)
-# end
-
-
-show(sp.resonator.eigenenergies[1:10])
-plotTransmissionOverEnergy(
-    sp,
-    24.0, 24.1, 0.00001,
-    lines = sp.resonator.eigenenergies)
-
-# maxnWf = 2
-# fx = -6.0
-# tx = 6.0
-# dx = 0.02
-# dy = 0.01
+# ff = 0.00315
+# tt = 0.00330
+# step = 0.0000001
+# # step = 0.01
+# xticks_ = [ff: (tt - ff) / 10: tt]
+# xlabels_ = map(x -> fmt(".5f", x), xticks_)
+# plotTransmissionOverEnergy(
+#     sp,
+#     ff, tt, step,
+#     xticks_ = xticks_,
+#     xlabels_ = xlabels_)
 
 
-# energy = 19.75944
+# maxnWf = 10
+# fx = -600.0
+# tx = 600.0
+# dx = 2.0
+# dy = 1.0
+# energy = 0.0032288 # 11r
+# # energy = 0.0033 # 11nr
 # res = sp.computeMode(1, energy, verbose = true)
 # plotPdensity(domain,
 #     res[1], maxnWf,
-#    fx, tx, dx,
-#    dy)
+#     fx, tx, dx,
+#     dy)
+
+
+energy = 0.0032288
+ff = 0.95 * Lx
+tt = 1.05 * Lx
+stepw = 0.0001 * Lx
+xticks_ = [ff: (tt - ff) / 10: tt]
+xlabels_ = map(x -> fmt("d", x), xticks_)
+plotTransmissionOverSize(
+    domain,
+    mode,
+    energy,
+    ff, tt, stepw,
+    xticks_ = xticks_,
+    xlabels_ = xlabels_)
