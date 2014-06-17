@@ -389,8 +389,8 @@ J_W(u, v) = 2 \pi A (a_W^g \cconj{b_W^u} - \cconj{a_W^f} b_W^v)
 Напомним, что домен оператора в окрестности нуля состоит из элементов вида:
 \[
 \begin{cases}
-a_R d_R(\vb{r}; E_D) + b_R |r| + o(|r|)  &, \vb{r} \in \Omega_R \\
-a_W d_W(\vb{r}; E_D) + b_W |r| + o(|r|)  &, \vb{r} \in \Omega_W \\
+a_R d_R(\vb{r}; E_D) + b_R r + o(r)  &, \vb{r} \in \Omega_R \\
+a_W d_W(\vb{r}; E_D) + b_W r + o(r)  &, \vb{r} \in \Omega_W \\
 \end{cases}
 \], где $E_D$ — регулярный параметр модели. Надо зафиксировать соотношения между $a_R, a_W, b_R, b_W$, чтобы получить самосопряженное расширение. Для этого рассмотрим граничную форму в пространстве $\Pi = \Pi_R \oplus \Pi_W$:
 \begin{align*}
@@ -427,15 +427,15 @@ b_R &= b_W
 
 Пользуясь этим, получим:
 \begin{ilist}
-# $a_R = \alpha_W$
+# $a_R = \alpha_R$
 # $a_W = \alpha_W$
-# $b_R = \alpha_W F_R$
+# $b_R = \alpha_R F_R$
 # $b_W = \alpha_W F_W + \pdv{u_{inc}}{n} (\vb{0})$
 \end{ilist}
 
-Воспользовавшись условиями нашего расширения, можно выразить все через, например, $\alpha_W$, получив $\alpha_W F_R = - \alpha_W F_W  + \pdv{u_{inc}}{y} (\vb{0})$, из чего выражается:
+Воспользовавшись условиями нашего расширения, можно выразить все через, например, $\alpha_W$, получив $-\alpha_W F_R = \alpha_W F_W  + \pdv{u_{inc}}{n} (\vb{0})$, из чего выражается:
 \begin{ilist}
-# $\alpha_W = \frac{\pdv{u_{inc}}{n} (\vb{0})}{F_R + F_W}$
+# $\alpha_W = \frac{-\pdv{u_{inc}}{n} (\vb{0})}{F_R + F_W}$
 # $\alpha_R = - \alpha_W$
 \end{ilist}
 
