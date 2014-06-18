@@ -21,11 +21,8 @@ from scattering.extensions.resonator_2d_new import Resonator2DNewScattering
 from scattering.tools import cnorm2
 
 
-def plot_transmission_energy(dcs, left, right, step, fname="transmission.png", vlines=None):
+def plot_transmission_energy(dcs, left, right, step, fname="transmission.png", vlines=[]):
     maxt = 1.0 + 0.1 # small margin to properly draw T = 1
-
-    if vlines is None:
-        vlines = []
 
     xs = arange(left, right, step)
     ys = list(map(lambda en: dcs.compute_scattering_full(en), xs))
@@ -55,7 +52,7 @@ def plot_transmission_energy(dcs, left, right, step, fname="transmission.png", v
 
     cax = ax.plot(xs, ys)
 
-    fig.savefig(fname, bbox_inches='tight', dpi=200)
+    fig.savefig(fname, bbox_inches='tight', dpi=500)
     plt.close(fig)
 
 def plot_transmission_size(domain: Resonator2DDomain,
@@ -172,11 +169,11 @@ def plot_pdensity(domain: Resonator2DDomain, wf, maxn_wf: int,
 def test_resonator_dirichlet():
     Lx = 2.5
     Ly = 1.0
-    H = 1.0
+    H = 2.0
     S = 0.01
     domain = Resonator2DDomain(H, Lx, Ly, S)
 
-    maxn = 20  # TODO
+    maxn = 100  # TODO
     maxn_wf = 10
     sp = Resonator2DDirichletScattering(H, Lx, Ly, S, maxn)
 
@@ -191,18 +188,18 @@ def test_resonator_dirichlet():
 
     resenergies = sp.resonator.eigenenergies
     plot_transmission_energy(sp,
-                            10.0, 50.0, 0.01,
+                            # 11.4584, 11.4586, 0.000001,
+                            2.5, 20.0, 0.0001,
                             fname="output2/transmission.png",
                             vlines=resenergies)
 
-    # energy = 19.75944
-    # energy = 10.0
+    # energy = 11.5536
     # res = sp.compute_scattering(n, energy, verbose=True)
     # plot_pdensity(domain,
     #                   res.wf, maxn_wf,
     #                   fx, tx, dx,
     #                   dy,
-    #                   fname="output2/pdensity2.png")
+    #                   fname="output2/pdensity.png")
 
     # energy = 19.0
     # plot_transmission_size(domain,
@@ -212,7 +209,7 @@ def test_resonator_dirichlet():
     #                        maxn=maxn
     #                        )
 
-    # for energy in arange(10.0, 45.0, 0.1):
+    # for energy in arange(24.05, 24.15, 0.001):
     #     res = sp.compute_scattering(n, energy, verbose=True)
     #     plot_pdensity(domain,
     #                   res.wf, maxn_wf,
